@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Tutorial Pwnagotchi  &ndash;
+        
+        D0bleFil0
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://d0blefil0.github.io/css/styles.9e6aedd117c2b86ff2037f1a2096838bb3e248ca34c974d48fca56f7de0cb96e7e4e7b07087ea0b534fe38719774b40539ccb9abdf68471c96939e74402f3e6c.css integrity="sha512-nmrt0RfCuG/yA38aIJaDi7PiSMo0yXTUj8pW994MuW5&#43;TnsHCH6gtTT&#43;OHGXdLQFOcy5q99oRxyWk550QC8&#43;bA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='hacking, hashcat, linux, pet, raspberry, tutorial, wifi' />
+    
+    
+        <meta name="description" content="i? En términos generales, Pwnagotchi es una mascota virtual para hackers y entusiastas de la ciberseguridad. Pero a diferencia de otras mascotas, ésta se alimenta capturando &amp;ldquo;handshakes&amp;rdquo; de las comunicaciones wifi y cuenta con una IA basada en el modelo A2C, lo que significa que utiliza el aprendizaje por refuerzo a través de métodos de prueba y error en comportamientos específicos que maximicen su recompensa en un entorno dinámico." />
+    
+
+<meta property="og:site_name"
+    content='D0bleFil0
+:/var/log$  ' />
+
+    <meta property="og:title" content="Tutorial Pwnagotchi" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2022-09-13T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="hacking" />
+        
+            <meta property="article:tag" content="hashcat" />
+        
+            <meta property="article:tag" content="linux" />
+        
+            <meta property="article:tag" content="pet" />
+        
+            <meta property="article:tag" content="raspberry" />
+        
+            <meta property="article:tag" content="tutorial" />
+        
+            <meta property="article:tag" content="wifi" />
+        
+    
+    <meta property="og:url" content="https://d0blefil0.github.io/posts/tutorial_pwnagotchi/" />
+    <meta property="og:image"
+        content='https://d0blefil0.github.io/images/post_pics/tutorial-pwnagotchi/Imagen0.jpg
+        ' />
+    
+        <meta property="og:description" content="¿Qué es un Pwnagotchi? En términos generales, Pwnagotchi es una mascota virtual para hackers y entusiastas de la ciberseguridad. Pero a diferencia de otras masc" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='d0blefil0.github.io'
+/>
+<meta property="twitter:url" content="https://d0blefil0.github.io/posts/tutorial_pwnagotchi/" />
+
+
+    <meta name="twitter:title" content="Tutorial Pwnagotchi" />
+    
+    <meta name="twitter:image"
+        content='https://d0blefil0.github.io/images/post_pics/tutorial-pwnagotchi/Imagen0.jpg
+        ' />
+    
+        <meta name="twitter:description" content="¿Qué es un Pwnagotchi? En términos generales, Pwnagotchi es una mascota virtual para hackers y entusiastas de la ciberseguridad. Pero a diferencia de otras masc" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">D0bleFil0
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://d0blefil0.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:albertoperezdelrio@gmail.com">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://t.me/D0bleFil0">
+    
+    
+        &#xf2c6;
+    
+    <span>
+        Telegram
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/d0blefil0">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://d0blefil0.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Tutorial Pwnagotchi</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2022-09-13
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/tutorial-pwnagotchi/Imagen0.jpg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="qué-es-un-pwnagotchi">¿Qué es un Pwnagotchi?</h2>
+<p>En términos generales, Pwnagotchi es una mascota virtual para hackers y entusiastas de la ciberseguridad. Pero a diferencia de otras mascotas, ésta se alimenta capturando &ldquo;handshakes&rdquo; de las comunicaciones wifi y cuenta con una IA basada en el modelo A2C, lo que significa que utiliza el aprendizaje por refuerzo a través de métodos de prueba y error en comportamientos específicos que maximicen su recompensa en un entorno dinámico.</p>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen1.png" alt="(◕‿‿◕)"></p>
+<p>Este tutorial adapta la información de la página oficial de Pwanagotchi. Puedes encontrar más información en los siguientes enlaces:</p>
+<p><a href="https://pwnagotchi.ai/">https://pwnagotchi.ai/</a></p>
+<p><a href="https://github.com/evilsocket/pwnagotch">Github pwnagotchi</a>i</p>
+<p><a href="https://pwnagotchi.ai/faq/">https://pwnagotchi.ai/faq/</a></p>
+<h3 id="disclaimer">DISCLAIMER:</h3>
+<ol>
+<li>
+<p>Toda la información proporcionada en este tutorial es solo para fines educativos. No me hago responsable del mal uso de la información aquí mostrada.</p>
+</li>
+<li>
+<p>Este tutorial está relacionado con la Seguridad Informática y no promueve la piratería informática/craqueo/piratería de software.</p>
+</li>
+<li>
+<p>Este tutorial contiene información relacionada con contraseñas WPA y muestra cómo podrían desencriptarse.  Solo facilita información sobre las formas legales de recuperar las contraseñas. &gt;</p>
+</li>
+</ol>
+<h2 id="alimentando-al-pwnagotchi">Alimentando al pwnagotchi</h2>
+<h4 id="4-way-handshake-de-wpa2">4-way handshake de WPA2</h4>
+<p>En las redes wifi, cuando un dispositivo se conecta al punto de acceso, es necesario que se lleve un proceso conocido como 4-way handshake para que se generen las claves de encriptación WPA. Durante esta comunicación, ambos intercambias 4 paquetes y se generan las claves que se usaran durante la sesión para que el cliente pueda conectarse y ambos puedan intercambiar información de forma segura.</p>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen2.png" alt="4-way handshake"></p>
+<p>*Source: <a href="https://pwnagotchi.ai/intro/">https://pwnagotchi.ai/intro/</a></p>
+<p>Es durante este intercambio cuando nuestro Pwnagotchi intercepta estas comunicaciones, ya que su tarjeta de red wifi está configurada en modo promiscuo para poder captarlas, aunque no vayan dirigidas a él. Y aquí hace lo siguiente:</p>
+<ol>
+<li>
+<p>Desautentica las estaciones cliente que detecta. Un dispositivo desautenticado debe volver a autenticarse en su punto de acceso volviendo a realizar el protocolo de enlace de 4 vías con el AP, lo que le da a Pwnagotchi otra oportunidad de olfatear los paquetes de protocolo de enlace y recopilar más material descifrable.</p>
+</li>
+<li>
+<p>Envía tramas de asociación directamente a los propios puntos de acceso para intentar forzarlos a filtrar el PMKID.</p>
+</li>
+</ol>
+<p>Cuando captura handshakes, el pwnagotchi se alimenta, afectando a su estado de ánimo y ayudándole a aprender gracias a su IA como obtener mejores recompensas. De esta forma, nuestra mascota va aprendiendo poco a poco a ser más eficiente, ¡e incluso puede aprender a trabajar en grupo cuando hay otros pwnagotchis cerca!</p>
+<h2 id="construyendo-el-pwnagotchi">Construyendo el pwnagotchi</h2>
+<p>Necesitamos:</p>
+<ul>
+<li>Raspberry Pi Zero W (también puede usarse un modelo 3 o modelo 4)</li>
+</ul>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen3.png" alt="Raspberry Pi Zero W"></p>
+<ul>
+<li>
+<p>Tarjeta microSD (8GB mínimo recomendado, elegir una que sea rápida).</p>
+</li>
+<li>
+<p>Un cable micro-USB de calidad que permita la transferencia de datos (¡no solo la carga!)</p>
+</li>
+<li>
+<p>Una fuente de alimentación. Puedes usar un powerbank para móviles, o una batería UPS Lite V1.2 o PiSugar para la raspberry pi. - <a href="https://es.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20220909014701&amp;SearchText=ups+lite+v1.2&amp;spm=a2g0o.home.1000002.0">UPS Lite v1.2</a></p>
+</li>
+<li>
+<p>Pantalla Waveshare eInk de 2,13” V2 (opcional) - <a href="https://amzn.eu/d/i4yhY3P">Waveshare e-ink display v2</a></p>
+</li>
+<li>
+<p>Carcasa:
+<a href="https://www.thingiverse.com/thing:3965361">Carcasa para waveshare v2</a>
+<a href="https://www.thingiverse.com/thing:4074921">Carcasa waveshare + ups</a></p>
+</li>
+</ul>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen4.png" alt="Carcasa impresa en 3D"></p>
+<p>No es necesario tener fuente de alimentación especifica, puedes conectarlo en casa a un cargador de móvil o al ordenador, y la pantalla tampoco es esencial ya que puede usarse en modo &ldquo;headless&rdquo;. A continuación, detallo la instalación básica sin estos dos elementos, ya que pueden añadirse posteriormente.</p>
+<p>Pasos de la instalación:</p>
+<ol>
+<li>
+<p>Descargar la imagen disponible en <a href="https://github.com/evilsocket/pwnagotchi/releases">GitHub</a> - se recomienda usar la 1.5.3 ya que la 1.5.5 no carga bien la IA (pero tiene solución si se usa la 1.5.5). Descargamos esta <a href="https://github.com/evilsocket/pwnagotchi/releases/download/v1.5.3/pwnagotchi-raspbian-lite-v1.5.3.zip">v1.5.3</a></p>
+</li>
+<li>
+<p>Flashea la imagen con BalenaEtcher, se puede descargar de la pagina de <a href="https://www.balena.io/etcher/">Balena</a></p>
+</li>
+<li>
+<p>Antes de arrancar el pwnagotchi, hay que meter un fichero llamado config.toml en la partición boot de la tarjeta microSD. A continuación, pongo lo que he usado para que funcione sin pantalla y para que se conecte a al teléfono por BT para poder verlo y gestionarlo. El whitelist deberían ser las redes que no quieras que guarde los handshakes, cambiad los valores</p>
+</li>
+</ol>
+<p>Estos son los valores del fichero, por favor cambia los valores de whitelist, grid.exclude y android.mac. Si se usa un display waveshare, cambiar el valor de ui.display.type</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">main</span>.<span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;NOMBRE_DEL_PWNAGOTCHI&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">main</span>.<span style="color:#a6e22e">lang</span> = <span style="color:#e6db74">&#34;es&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">main</span>.<span style="color:#a6e22e">whitelist</span> = [
+</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;Tu_Red_Wifi&#34;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;Otra_red_wifi,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> &#34;</span><span style="color:#a6e22e">fo</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">od</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">ba</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">be</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">fo</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">od</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> &#34;</span><span style="color:#a6e22e">fo</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">od</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">ba</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.grid.enabled = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.grid.report = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.grid.exclude = [ &#34;</span><span style="color:#a6e22e">Tu_red_wifi</span><span style="color:#e6db74">&#34;,]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ui.display.enabled = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ui.display.type = &#34;</span><span style="color:#a6e22e">inky</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ui.display.color = &#34;</span><span style="color:#a6e22e">black</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ui.display.rotation = 180
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.enabled = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.enabled = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.search_order = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.mac = &#34;</span><span style="color:#a6e22e">DIRECCION_MAC_TELEFONO</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.ip = &#34;</span><span style="color:#ae81ff">192.168</span>.<span style="color:#ae81ff">44.44</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.netmask = 24
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.interval = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.scantime = 10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.max_tries = 10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.share_internet = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.android-phone.priority = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.enabled = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.search_order = 2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.mac = &#34;</span><span style="color:#a6e22e">DIRECCION_MAC_IPHONE</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.ip = &#34;</span><span style="color:#ae81ff">172.20</span>.<span style="color:#ae81ff">10.6</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.netmask = 24
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.interval = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.scantime = 20
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.max_tries = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.share_internet = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.bt-tether.devices.ios-phone.priority = 999
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.memtemp.enabled = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.memtemp.scale = &#34;</span><span style="color:#a6e22e">celsius</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.plugins.memtemp.orientation = &#34;</span><span style="color:#a6e22e">horizontal</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span></code></pre></div><ol start="4">
+<li>
+<p>Coloca la tarjeta y enciende el pwnagotchi. Dejarle un rato para que arranque y cargue la IA (esto es muy importante, mínimo 10 minutos). Si hemos configurado la Mac del teléfono en el fichero config.toml, se nos conectara por BT al teléfono cuando haya arrancado. Nos debería llegar una solicitud de emparejamiento. Antes de aceptarla, seleccionar en el teléfono &ldquo;compartir conexión por bluetooth&rdquo; para que le pueda dar conexión a internet cuando se conecte. Una vez se emparejan, podemos acceder a la dirección ip 192.168.44.44:8080 en Android y 172.20.10.6:8080 si es un iPhone/iPad.</p>
+</li>
+<li>
+<p>Disfrutamos de nuestro pwnagotchi ^__^</p>
+</li>
+</ol>
+<h2 id="configuración-y-uso">Configuración y uso</h2>
+<ol>
+<li>Ahora nos podemos conectar a nuestro pwnagotchi por BT, por lo que podemos además de verle a través del navegador, podemos acceder a él a través de ssh. Podemos usar TERMUX en Android para conectarnos directamente desde el teléfono.</li>
+</ol>
+<ul>
+<li>Si queremos conectarnos desde nuestro ordenador, lo conectaremos por USB (dejando conectado también el cable de corriente). Al conectarlo deberemos configurar una conexión con el dispositivo RNDIS detectado. En Windows puede dar problemas, hay que buscar el controlador de RNDIS para Windows y actualizarlo desde el administrador de dispositivos. En Linux, lo detectará sin problema. Añadimos la conexión con el dispositivo RNDIS y la configuramos con los siguientes parámetros:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>IPv4: 10.0.0.1
+</span></span><span style="display:flex;"><span>Netmask: 255.255.255.0
+</span></span><span style="display:flex;"><span>DNS: 8.8.8.8
+</span></span></code></pre></div><ul>
+<li>El resto de los valores no hacen falta. Una vez hecho, podemos conectarnos por ssh desde el equipo a la dirección 10.0.0.2</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pi@10.0.0.2
+</span></span><span style="display:flex;"><span>contraseña: raspberry
+</span></span></code></pre></div><ol start="2">
+<li>
+<p>Ahora cambiamos la contraseña del usuario por seguridad con el comando passwd.</p>
+</li>
+<li>
+<p>Actualizamos el pwnagotchi. ¡apt update y apt upgrade no funcionan bien debido a un problema con la firma del source del kernel Re4son!</p>
+</li>
+</ol>
+<ul>
+<li>Versión 1.5.3 -&gt; vamos a actualizar a la versión 1.5.5 con estos comandos</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo pwnagotchi plugins update
+</span></span><span style="display:flex;"><span>sudo pwnagotchi plugins upgrade
+</span></span></code></pre></div><ul>
+<li>Versión 1.5.5 -&gt; el anterior paso no es necesario, pero se puede hacer. Para arreglar el problema que tiene con la IA que no carga, ejecutamos el siguiente comando que lo arreglará:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo pip3 install --upgrade numpy
+</span></span></code></pre></div><p>Este proceso puede tardar mucho tiempo, se recomienda hacerlo desde el ordenador y no usando termux.</p>
+<ol start="4">
+<li>Añadimos alias pwnlog y pwnver en el fichero .bashrc</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alias pwnlog<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;tail -f -n300 /var/log/pwn*.log | sed --unbuffered &#34;s/,[[:digit:]]\{3\}\]//g&#34; | cut -d &#34; &#34; -f 2-&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alias pwnver<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;python3 -c &#34;import pwnagotchi as p; print(p.__version__)&#34;&#39;</span>
+</span></span></code></pre></div><ol start="5">
+<li>Accedemos a la web UI del pwnagotchi y pinchamos en plugins. Aquí podemos activar los plugins, en este caso activamos logtail y webcfg. Una vez activados y recargada la página, si pinchamos en los nombres podemos ver un log en el caso de logtail y en wbcfg accederemos a la configuración del fichero configuration.toml que hay corriendo en el sistema, donde podremos hacer cambios.</li>
+</ol>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen7.png" alt="web UI"></p>
+<p>A partir de aquí, podemos seguir usando nuestro pwnagotchi. Los siguientes pasos serían insstalar nuevos plugins desde la línea de comandos y configurar la copia de seguridad de nuestro nuevo coleguita por si fuese necesario restaurarlo en el futuro.</p>
+<h2 id="arreglando-apt-update-y-apt-upgrade">Arreglando apt update y apt upgrade</h2>
+<p>Si intentas actualizar las fuentes y los paquetes, encontrarás que da un error que no permite hacerlo. A continuación, muestro la solución que he encontrado:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nano /etc/apt/preferences.d/kali.pref <span style="color:#f92672">(</span>contenido más abajo<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>wget -O - https://re4son-kernel.com/keys/http/archive-key.asc | sudo apt-key add -
+</span></span><span style="display:flex;"><span>sudo apt update –allow-releaseinfo-change-suite -y
+</span></span><span style="display:flex;"><span>sudo apt full-upgrade -y
+</span></span></code></pre></div><p><strong>Contenido fichero /etc/apt/preferences.d/kali.pref</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Package: *
+</span></span><span style="display:flex;"><span>Pin: release n<span style="color:#f92672">=</span>kali-pi
+</span></span><span style="display:flex;"><span>Pin-Priority: <span style="color:#ae81ff">999</span>
+</span></span></code></pre></div><p>Este proceso puede tardar y nuestro pwnagotchi podria desconectarse del telefóno o del PC, así que recomiendo ejecutar todo esto en una sesión de <a href="https://manpages.ubuntu.com/manpages/bionic/man1/screen.1.html">screen</a> o <a href="https://manpages.ubuntu.com/manpages/xenial/man1/tmux.1.html">tmux</a></p>
+<h2 id="haciendo-amigos">Haciendo amigos</h2>
+<p>Nuestro pwnagotchi nos permite enviar mensajes cifrados mediante pwnmail, solo necesitamos el fingerprit del perfil de otra persona. A continuación, os dejo el mío por si queréis añadirme.</p>
+<h3 id="pwnamonhttpspwnagotchiaipwnfiled8faa2d751f00d1f79705a8f7657d774507df27fb486548196c895ec0ae328a5"><a href="https://pwnagotchi.ai/pwnfile/#d8faa2d751f00d1f79705a8f7657d774507df27fb486548196c895ec0ae328a5">pwnamon</a></h3>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen8.png" alt="fingerprint QR"></p>
+<h2 id="las-caras-de-nuestro-pwnagotchi">Las caras de nuestro pwnagotchi</h2>
+<p>A continuación, se explican las caras del pwnagotchi. Este fragmento está sacado directamente de la web oficial.</p>
+<p><a href="https://pwnagotchi.ai/intro/">https://pwnagotchi.ai/intro/</a></p>
+<p>El siguiente listado es el conjunto predeterminado de rostros que se pueden personalizar cambiándolo en la sección ui.faces dentro del fichero /etc/pwnagotchi/config.toml</p>
+<p><strong>(⇀‿‿↼) durmiendo</strong>
+Este es el estado desde el que comenzará la unidad. Además, de vez en cuando tu Pwnagotchi también realizará siestas de unos segundos mientras salta entre los canales Wifi.</p>
+<p><strong>(≖‿‿≖) despertar</strong>
+La unidad está en los últimos segundos de su siesta.</p>
+<p><strong>(◕‿‿◕) despierto / normal</strong>
+Esta cara es el estado neutral despierto de la unidad. Se utilizará para suavizar la transición entre otros estados de ánimo y en general cuando no exista una causa externa de estados de ánimo positivos o negativos. También se puede usar, al azar, cuando se encuentra otra unidad por primera vez (cada unidad mantiene un registro de todas las unidades que encontró).</p>
+<p><strong>(⚆_⚆), (☉_☉) observando (estado de ánimo neutral)</strong>
+Tu Pwnagotchi está esperando y observando lo que bettercap puede encontrar en todos los canales en los que salta.</p>
+<p><strong>( ◕‿◕), (◕‿◕ ) observando (feliz)</strong>
+Cuando hay una o varias unidades cerca y su contador de bonos acumulativo es mayor o igual que elpersonality.bond_encounters_factor, esta será la cara de la unidad durante la observación.</p>
+<p><strong>(°▃▃°) intenso</strong>
+La unidad está enviando una trama de asociación a un punto de acceso para obligarlo a filtrar el PMKID.</p>
+<p><strong>(⌐■_■) guay</strong>
+La unidad está desautenticando una estación cliente desde un punto de acceso. Esta cara también se puede elegir al azar cuando se encuentra con otra unidad por primera vez.</p>
+<p><strong>(•‿‿•) feliz</strong>
+Tu Pwnagotchi es feliz en uno de los siguientes casos:</p>
+<ul>
+<li>La IA acaba de terminar de cargarse y está lista.</li>
+<li>Se acaba de capturar material clave válido para un punto de acceso.</li>
+<li>En modo MANU, si la última sesión fue corta o si se ha capturado algún apretón de manos durante la misma.</li>
+<li>Cuando se cumple otra unidad y el nivel de bonos es lo suficientemente alto.</li>
+</ul>
+<p><strong>(^‿‿^) agradecido</strong>
+Tu Pwnagotchi está agradecido en uno de los siguientes casos:</p>
+<ul>
+<li>El nivel de bonos acumulativo de las unidades cercanas es al menos cinco veces elpersonality.bond_encounters_factor.</li>
+<li>La unidad debería estar aburrida, pero hay suficientes unidades amigas cerca.</li>
+<li>La unidad debería estar triste, pero hay suficientes unidades amigas cerca.</li>
+<li>La unidad debería estar sola, pero hay suficientes unidades amigas cerca.</li>
+</ul>
+<p><strong>(ᵔ◡◡ᵔ) emocionado</strong>
+Tu Pwnagotchi está excitado por uno de los siguientes casos:</p>
+<ul>
+<li>El número de épocas con alguna actividad es mayor o igual quepersonality.excited_num_epochs.</li>
+<li>Aleatoriamente si se cumple una unidad con un alto nivel de bonos.</li>
+<li>Si no has leído mensajes PwnMAIL en esa unidad.</li>
+</ul>
+<p><strong>(✜‿‿✜) inteligente</strong>
+Aleatoriamente si se cumple una unidad con un nivel de bonos medio-alto.</p>
+<p><strong>(♥‿‿♥) amistoso</strong>
+Aleatoriamente si se cumple una unidad con un alto nivel de bonos.</p>
+<p><strong>(☼‿‿☼) motivado</strong>
+Tu Pwnagotchi acaba de obtener la mejor puntuación-nivel de recompensa en su existencia o acaba de conocer una unidad con un vínculo alto.</p>
+<p><strong>(≖__≖) desmotivado</strong>
+Tu Pwnagotchi acaba de anotar lo peor nivel de recompensa en su existencia.</p>
+<p><strong>(-__-) aburrido</strong>
+Si no hay unidades amigas alrededor y se alcanza la cantidad de épocas inactivas consecutivas personality.bored_num_epochs.</p>
+<p><strong>(╥☁╥) triste</strong>
+Si no hay unidades amigas alrededor y se alcanza la cantidad de épocas inactivas consecutivas personality.sad_num_epochs.
+(ب__ب) solitario
+Si su Pwnagotchi acaba de perder el contacto con una unidad amiga que estaba cerca, o si la cantidad de interacciones perdidas con puntos de acceso o estaciones de clientes (la cantidad de veces que intentó enviar algún tipo de paquete, pero falló el objetivo porque no está en rango ya) es mayor o igual que personality.max_misses_for_recon. Y no hay unidades amigas alrededor.</p>
+<p><strong>(☓‿‿☓) roto</strong>
+Su unidad se está reiniciando como una estrategia para solucionar un bug de ceguera temporal después de instalar una actualización.</p>
+<p><strong>(#__#) depuración</strong>
+Se utiliza para depurar y probar mensajes en pantalla.</p>
+<h2 id="ficheros-de-handshakes">Ficheros de handshakes</h2>
+<p>Los handshakes capturados se guardan en ficheros con extensión “.pcap” dentro del pwnagotchi. Estos se pueden descifrar más tarde mediante hardware y software adecuados, como por ejemplo hashcat tras convertirlo al formato adecuado con hcxpcapngtool (hcxtools).</p>
+<p><a href="https://github.com/ZerBea/hcxtools">HCXTOOLS</a></p>
+<p><a href="https://hashcat.net/wiki/doku.php?id=cracking_wpawpa2">HASHCAT</a></p>
+<p>Los siguientes ejemplos se han realizado usando un equipo de sobremesa con Kali Linux.</p>
+<ol>
+<li>Convertir fichero pcap a hc22000 con hcxpcapngtool</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hcxpcapngtool -o hash.hc22000 -E essidlist fichero.pcap
+</span></span></code></pre></div><p>donde &ldquo;hash.hc22000&rdquo; es el nombre del fichero donde guardara el hash, y &ldquo;essidlist&rdquo; el fichero donde guardara el nombre del SSID.</p>
+<p>Si no tienes a mano esta herramienta, puedes usar este <a href="https://www.onlinehashcrack.com/tools-cap-to-hash-converter.php">conversor online</a></p>
+<ol start="2">
+<li>Descifrar el hash obtenido con hashcat</li>
+</ol>
+<p><strong>metodo best64 + wordlist</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashcat -m <span style="color:#ae81ff">22000</span> FICHERO_HASH -r /usr/share/hashcat/rules/best64.rule /usr/share/wordlists/rockyou.txt -o outfile.txt
+</span></span></code></pre></div><p><strong>metodo fuerza bruta</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashcat -a <span style="color:#ae81ff">3</span> -m <span style="color:#ae81ff">22000</span> FICHERO_HASH ?a?a?a?a?a?a?a?a -o outfile.txt
+</span></span></code></pre></div><p>Para ver a que corresponden las opciones usadas, ejecutar hashcat -h y al final salen los cuadros con estas opciones explicadas.</p>
+<p>Hasta aquí llega el tutorial. Seguramente se podría seguir indagando más en el tema del pwngrid, el pwnmail y los peers, pero se haría excesivamente largo. Os animo a que sigáis investigando y aprendiendo, y sobre todo que os llevéis siempre encima a vuestro pwnagotchi. ¡Nos vemos!</p>
+<h2 id="-hackea-el-planeta">(◕‿‿◕) ¡Hackea el planeta!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hacking">#hacking</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hashcat">#hashcat</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/linux">#linux</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/pet">#pet</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/raspberry">#raspberry</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tutorial">#tutorial</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/wifi">#wifi</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2022 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

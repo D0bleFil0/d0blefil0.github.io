@@ -9,17 +9,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Wed, 28 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Hello, world</title>
-      <link>https://d0blefil0.github.io/posts/prueba/</link>
-      <pubDate>Wed, 28 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://d0blefil0.github.io/posts/prueba/</guid>
-      <description>Prueba Hola gente. Al final me he puesto y me he creado un pequeño blog estático.
-He usado Hugo para hacerlo y GitHub Pages para el hospedaje. Aunque sinceramente no espero actualizarlo mucho, creo que puede ser útil para guardarme las notas sobre linux, ethical hacking y/o tutoriales que me vaya haciendo.</description>
-    </item>
-    
+    <lastBuildDate>Tue, 13 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Tutorial Pwnagotchi</title>
       <link>https://d0blefil0.github.io/posts/tutorial_pwnagotchi/</link>

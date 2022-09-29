@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Aircrack-ng: hacking de redes WiFi  &ndash;
+        
+        D0bleFil0
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://d0blefil0.github.io/css/styles.9e6aedd117c2b86ff2037f1a2096838bb3e248ca34c974d48fca56f7de0cb96e7e4e7b07087ea0b534fe38719774b40539ccb9abdf68471c96939e74402f3e6c.css integrity="sha512-nmrt0RfCuG/yA38aIJaDi7PiSMo0yXTUj8pW994MuW5&#43;TnsHCH6gtTT&#43;OHGXdLQFOcy5q99oRxyWk550QC8&#43;bA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='cracking, hacking, hashcat, linux, tutorial, wifi' />
+    
+    
+        <meta name="description" content=" de redes WiFi En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona Aircrack-ng:" />
+    
+
+<meta property="og:site_name"
+    content='D0bleFil0
+:/var/log$  ' />
+
+    <meta property="og:title" content="Aircrack-ng: hacking de redes WiFi" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2022-09-29T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="cracking" />
+        
+            <meta property="article:tag" content="hacking" />
+        
+            <meta property="article:tag" content="hashcat" />
+        
+            <meta property="article:tag" content="linux" />
+        
+            <meta property="article:tag" content="tutorial" />
+        
+            <meta property="article:tag" content="wifi" />
+        
+    
+    <meta property="og:url" content="https://d0blefil0.github.io/posts/aircrack-ng_hacking_wifi/" />
+    <meta property="og:image"
+        content='https://d0blefil0.github.io/images/post_pics/tutorial-aircrack/aircrack-ng-new-logo.jpg
+        ' />
+    
+        <meta property="og:description" content="Aircrack-ng: hacking de redes WiFi En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='d0blefil0.github.io'
+/>
+<meta property="twitter:url" content="https://d0blefil0.github.io/posts/aircrack-ng_hacking_wifi/" />
+
+
+    <meta name="twitter:title" content="Aircrack-ng: hacking de redes WiFi" />
+    
+    <meta name="twitter:image"
+        content='https://d0blefil0.github.io/images/post_pics/tutorial-aircrack/aircrack-ng-new-logo.jpg
+        ' />
+    
+        <meta name="twitter:description" content="Aircrack-ng: hacking de redes WiFi En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">D0bleFil0
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://d0blefil0.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:albertoperezdelrio@gmail.com">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/d0blefil0">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://d0blefil0.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Aircrack-ng: hacking de redes WiFi</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2022-09-29
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/tutorial-aircrack/aircrack-ng-new-logo.jpg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="aircrack-ng-hacking-de-redes-wifi">Aircrack-ng: hacking de redes WiFi</h2>
+<p>En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona <strong>Aircrack-ng</strong>:</p>
+<ul>
+<li><strong>Monitorización</strong>: Escaneo de redes y captura de paquetes. Usaremos las herrmientas <em>airmon-ng</em> (cambia la interfaz wifi a modo monitor) y <em>airodum-ng</em> (scan y captura).</li>
+<li><strong>Ataques</strong>: Replay attacks, desautenticaciones, puntos de acces falsos y otros ataques. Se usará el paquete <em>aireplay-n</em>.</li>
+<li><strong>Cracking</strong>: Romper contraseñas WEP y WPA/WPA2-PSK. Aquí usaremos <em>aircrack-ng</em>.</li>
+</ul>
+<p>Aunque la guía está hecha en Linux, todo esto puede hacerse sin problema en Windows y MacOS, en la misma página oficial vienen los pasos para instalarlo en dichas plataformas.</p>
+<p><a href="https://www.aircrack-ng.org/">Página oficial de Aircrack-ng</a></p>
+<p><a href="https://github.com/aircrack-ng/aircrack-ng">Github Aircrack-ng</a></p>
+<h2 id="teoría">Teoría</h2>
+<h4 id="4-way-handshake-de-wpa2">4-way handshake de WPA2</h4>
+<p>Como nos vamos a cenar en capturar paquetes de redes protegidas con WPA/WPA2, vamos a conocer un poco el proceso. Aunque ya lo expliqué en el post anterior (tutorial del pwnagotchi), recordarlo no está demás. Para poder obtener los hashes de las contraseñas WPA y podr crackearlas, es necesario capturar paquetes que contengan paquetes del protocolo 4-way handshake, en el que se intercambian mensajes con la clave precompartida (PSK) para validar la sesión entre el cliente y el punto de acceso.</p>
+<p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen2.png" alt="4-way handshake"></p>
+<p>*Source: <a href="https://pwnagotchi.ai/intro/">https://pwnagotchi.ai/intro/</a></p>
+<p>Mientras se monitoizan las redes, AP y clente pueden intercambar dichas clave precompartidas. Pero si con eso no fuese suficiente, usaremos las mismas técnicas que aprendimos con nuestro amigo pwnagotchi (copio y pego del anterior post):</p>
+<ol>
+<li>
+<p>Desautentica las estaciones cliente que detecta. Un dispositivo desautenticado debe volver a autenticarse en su punto de acceso volviendo a realizar el protocolo de enlace de 4 vías con el AP, lo que le da a Pwnagotchi otra oportunidad de olfatear los paquetes de protocolo de enlace y recopilar más material descifrable.</p>
+</li>
+<li>
+<p>Envía tramas de asociación directamente a los propios puntos de acceso para intentar forzarlos a filtrar el PMKID.</p>
+</li>
+</ol>
+<p>Si tenemos exito y logamos capturar los paquetes que contengan los handshakes, podremos extraer el hash de la PSK y crackearlo mediante un ataque de fuerza bruta o de diccionario.</p>
+<p><img src="/images/post_pics/tutorial-aircrack/19.png" alt="paquetes WPA"></p>
+<h2 id="vamos-al-lío">Vamos al lío</h2>
+<ol>
+<li>
+<p>Lo primero es instalarlo. No quiero extederme mucho, ya que viene instalado por defecto en Kali Linux y Parrot OS, pero si no lo teneis en vuestro sistema echad un vistazo al <a href="https://github.com/aircrack-ng/aircrack-ng">Github de Aircrack-ng</a>. Tambien necesitarás un adaptador WiFi que permita el modo monitor (muchos adaptadores integrados en portatiles no lo admiten, es posible que necesites un adaptador externo). Si tienes una Raspberry P es una buena opción, yo la he probado y funciona sin problema.</p>
+</li>
+<li>
+<p>Lo siguiente que voy a hacer es revisar las interfaces de red y comprobar que está funcionando correctamente. Ejecutamos el comando ip para verlo. Despues, pondremos la interfaz inalambrica en modo monitor.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ip a
+</span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/01.png" alt="Aircrack-ng Logo"></p>
+<p>Aqui es important tener en cuenta como se llama la interfaz wifi. En mi caso, se llama wlan0, pero puede tener otro nombre. Además, es posible que los servicios en marcha impidan que se cambie a modo monitor, en tal caso hay que ejecutar los siguientes comandos:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo airmon-ng check kill
+</span></span><span style="display:flex;"><span>sudo airmon-ng start wlan0
+</span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/02.png" alt="airmon-ng"></p>
+<p>En la captura se ve que ejecuto primero el de start wlan0 pero me da un error ya que hay servicios fucionando que lo impiden. En mi caso, ejecuté el check kill y despues el start wlan0 de nuevo.</p>
+<ol start="3">
+<li>Ahora que la tarjeta wifi esta en modo monitor, podemos escanear las redes a nuestro alcance y analizar cual será el objetivo. He preparado una red llamada <strong>AP_test</strong> que usaré como objetivo. La contraseña que he preparado para esta red es sencilla, de modo que pueda explicar el proceso completo de forma segura. Mientras se monitrizan las redes wifi, podemos usar el tabulador para seleccionar los AP y movernos por ellos con las flechas. Además, podemos marcar con colores las redes con la tecla M, o podemos ordenarlas con la tecla S por diferentes criterios.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo airodump-ng start wlan0mon
+</span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/04.png" alt="airdump-ng"></p>
+<ol start="4">
+<li>Tras elegir el objetivo, vamos a monitorizar el AP elegido y guardarmos los datos en varios ficheros. Necesitamos capturar los paquetes WPA de la clave precompartida. Usaremos el mismo comando que en el punto anterior, pero sta vez añadiremos las opiones para enfocarnos en el AP elegido, el canal en el que trabaja y estableceremos el prefijo de los ficheros generados.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo airodump-ng start wlan0mon -c <span style="color:#e6db74">&#34;numero de canal&#34;</span> --bssid <span style="color:#e6db74">&#34;mac address del AP&#34;</span> -w <span style="color:#e6db74">&#34;nombre_fichero&#34;</span>
+</span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/07.png" alt="airdump-ng"></p>
+<p>Si la señal es buena y los clientes y el AP intercambian paquetes que contengan los WPAhandshakes, el programa nos indicará que se ha consguido con un mensaje en la esquina superior derecha que pone &ldquo;[&ldquo;WPA hanshake: mac address AP&rsquo;&rdquo;]&rdquo;</p>
+<p><img src="/images/post_pics/tutorial-aircrack/08.png" alt="WPA handshake capturado"></p>
+<ol start="5">
+<li>Por último, ya solo nos queda tratar los ficheros .cap obtenidos y crackear los hashes resultantes para obtener la clave WPA/WPA2. Aunque se puede hacer con el propio <strong>aircrack-ng</strong>, he optado por hacerlo como explqué en el tutorial del pwnagotchi, usando <strong>hcxtools</strong> para convertir el fichero de las capturas y <strong>hashcat</strong> para crackear la contraseña.</li>
+</ol>
+<p><img src="/images/post_pics/tutorial-aircrack/10.png" alt="ficheros obtenidos"></p>
+<p>Con el siguiente comando se pued convertir el fichero .cap al formato <em>hc22000</em> que necesita <em>hashcat</em> para atacar la clave.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hcxpcapngtool -o hash.hc22000 fichero.cap
+</span></span></code></pre></div><p>dónde <em>-o hash.hc2000</em> es el fichero de salida.</p>
+<p><img src="/images/post_pics/tutorial-aircrack/13.png" alt="hcxpcapngtool"></p>
+<p><img src="/images/post_pics/tutorial-aircrack/14.png" alt="hash"></p>
+<ul>
+<li>
+<p><a href="https://github.com/ZerBea/hcxtools">HCXTOOLS</a></p>
+</li>
+<li>
+<p><a href="https://hashcat.net/wiki/doku.php?id=cracking_wpawpa2">HASHCAT</a></p>
+</li>
+</ul>
+<p>*Puedes usar el conversor online de la pagina de <a href="https://hashcat.net/cap2hashcat">hashcat</a>.</p>
+<p>Finalmente, atacamos la contraseña con <strong>hashcat</strong> tal y como hicimos en la guía del pwnagotchi:</p>
+<p><strong>ataque de diccionario</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashcat -m <span style="color:#ae81ff">22000</span> FICHERO_HASH /usr/share/wordlists/rockyou.txt -o outfile.txt
+</span></span></code></pre></div><p><strong>metodo fuerza bruta</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashcat -a <span style="color:#ae81ff">3</span> -w <span style="color:#ae81ff">3</span> -m <span style="color:#ae81ff">22000</span> FICHERO_HASH ?a?a?a?a?a?a?a?a --increment --increment-min<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span> --increment-max<span style="color:#f92672">=</span><span style="color:#ae81ff">14</span> -o outfile.txt
+</span></span></code></pre></div><ul>
+<li><strong>-a 3</strong> indica ataque de diccionario.</li>
+<li><strong>-w 3</strong> para indicar carga de trabajo alta.</li>
+<li><strong>&ndash;increment</strong> es para hacer un ataque incremental, añadiremos también una longitud mínima y una máxima (WPA tiene a partir de 8 caracteres).</li>
+</ul>
+<p><img src="/images/post_pics/tutorial-aircrack/15.png" alt="hashcat"></p>
+<p>Hay que tener en cuenta que un ataque de fuerza bruta puede tardar horas, dias o semana (en el mejor de los casos), segun lo compleja que sea la contraseña. Por ello, lo mejor es hacer un ataque de diccionario. Cuanto más grande sea el diccionario, más probabilidades de romper la contraseña tendremos.</p>
+<p>Para ello, hay muchos listados que nos pueden ser útiles. A continuación dejo varios recursos para descargar diccionarios.</p>
+<ul>
+<li><a href="https://github.com/danielmiessler/SecLists">https://github.com/danielmiessler/SecLists</a></li>
+<li><a href="https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm">https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm</a></li>
+<li><a href="https://weakpass.com/wordlist/big">https://weakpass.com/wordlist/big</a></li>
+<li><a href="https://weakpass.com/all-in-one">https://weakpass.com/all-in-one</a></li>
+</ul>
+<p>En mi caso, hice un ataque de fuerza bruta usando la máscara <em>abcd?d?d?d?d</em> para acortar el tiempod de procesamiento, ya que la contraseña empieza por <em>abcd</em> y despues he usado los comodines <em>?d</em> para indicar las posiciones donde a un caracter numérico.</p>
+<p><img src="/images/post_pics/tutorial-aircrack/17.png" alt="caracked"></p>
+<p>El resultado ha sido <strong>abcd1234</strong>, una contraseña muy fácil de crackear para poder demostrar el proceso. Así que recordad:</p>
+<h3 id="usad-contraseñas-complejas-que-mezclen-simbolos-letras-y-números-para-estar-más-protegidos--">Usad contraseñas complejas que mezclen simbolos, letras y números para estar más protegidos ;-)</h3>
+<h2 id="-hackea-el-planeta">(◕‿‿◕) ¡Hackea el planeta!</h2>
+<hr>
+<h3 id="disclaimer">DISCLAIMER:</h3>
+<ol>
+<li>
+<p>Toda la información proporcionada en este tutorial es solo para fines educativos. No me hago responsable del mal uso de la información aquí mostrada.</p>
+</li>
+<li>
+<p>Este tutorial está relacionado con la Seguridad Informática y no promueve la piratería informática/craqueo/piratería de software.</p>
+</li>
+<li>
+<p>Este tutorial contiene información relacionada con contraseñas WPA y muestra cómo podrían desencriptarse.  Solo facilita información sobre las formas legales de recuperar las contraseñas.</p>
+</li>
+</ol>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/cracking">#cracking</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hacking">#hacking</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hashcat">#hashcat</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/linux">#linux</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tutorial">#tutorial</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/wifi">#wifi</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2022 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

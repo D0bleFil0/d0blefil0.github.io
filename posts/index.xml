@@ -16,7 +16,7 @@
       <pubDate>Tue, 13 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://d0blefil0.github.io/posts/tutorial_pwnagotchi/</guid>
-      <description>¿Qué es un Pwnagotchi? En términos generales, Pwnagotchi es una mascota virtual para hackers y entusiastas de la ciberseguridad. Pero a diferencia de otras mascotas, ésta se alimenta capturando &amp;ldquo;handshakes&amp;rdquo; de las comunicaciones wifi y cuenta con una IA basada en el modelo A2C, lo que significa que utiliza el aprendizaje por refuerzo a través de métodos de prueba y error en comportamientos específicos que maximicen su recompensa en un entorno dinámico.</description>
+      <description>¿Qué es un Pwnagotchi? &amp;gt; En términos generales, Pwnagotchi es una mascota virtual para hackers y entusiastas de la ciberseguridad. Pero a diferencia de otras mascotas, ésta se alimenta capturando &amp;ldquo;handshakes&amp;rdquo; de las comunicaciones wifi y cuenta con una IA basada en el modelo A2C, lo que significa que utiliza el aprendizaje por refuerzo a través de métodos de prueba y error en comportamientos específicos que maximicen su recompensa en un entorno dinámico.</description>
     </item>
     
     <item>
@@ -25,7 +25,7 @@
       <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://d0blefil0.github.io/posts/hello-world/</guid>
-      <description>Empiezo otro blog Hola gente. Al final me he puesto y me he creado un pequeño blog estático.
+      <description>Empiezo otro blog &amp;gt; Hola gente. Al final me he puesto y me he creado un pequeño blog estático.
 He usado Hugo para hacerlo y GitHub Pages para el hospedaje. Aunque sinceramente no espero actualizarlo mucho, creo que puede ser útil para guardarme las notas sobre linux, ethical hacking y/o tutoriales que me vaya haciendo.</description>
     </item>
     

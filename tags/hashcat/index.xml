@@ -9,7 +9,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Tue, 13 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/tags/hashcat/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/tags/hashcat/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Aircrack-ng: hacking de redes WiFi</title>
+      <link>https://d0blefil0.github.io/posts/aircrack-ng_hacking_wifi/</link>
+      <pubDate>Thu, 29 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://d0blefil0.github.io/posts/aircrack-ng_hacking_wifi/</guid>
+      <description>Aircrack-ng: hacking de redes WiFi &amp;gt; En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona Aircrack-ng:</description>
+    </item>
+    
     <item>
       <title>Tutorial Pwnagotchi</title>
       <link>https://d0blefil0.github.io/posts/tutorial_pwnagotchi/</link>

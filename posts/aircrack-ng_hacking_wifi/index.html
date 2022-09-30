@@ -282,7 +282,7 @@
 <p><a href="https://github.com/aircrack-ng/aircrack-ng">Github Aircrack-ng</a></p>
 <h2 id="teoría">Teoría</h2>
 <h4 id="4-way-handshake-de-wpa2">4-way handshake de WPA2</h4>
-<p>Como nos vamos a cenar en capturar paquetes de redes protegidas con WPA/WPA2, vamos a conocer un poco el proceso. Aunque ya lo expliqué en el post anterior (tutorial del pwnagotchi), recordarlo no está demás. Para poder obtener los hashes de las contraseñas WPA y podr crackearlas, es necesario capturar paquetes que contengan paquetes del protocolo 4-way handshake, en el que se intercambian mensajes con la clave precompartida (PSK) para validar la sesión entre el cliente y el punto de acceso.</p>
+<p>Como nos vamos a centrar en capturar paquetes de redes protegidas con WPA/WPA2, vamos a conocer un poco el proceso. Aunque ya lo expliqué en el post anterior (tutorial del pwnagotchi), recordarlo no está demás. Para poder obtener los hashes de las contraseñas WPA y podr crackearlas, es necesario capturar paquetes que contengan paquetes del protocolo 4-way handshake, en el que se intercambian mensajes con la clave precompartida (PSK) para validar la sesión entre el cliente y el punto de acceso.</p>
 <p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen2.png" alt="4-way handshake"></p>
 <p>*Source: <a href="https://pwnagotchi.ai/intro/">https://pwnagotchi.ai/intro/</a></p>
 <p>Mientras se monitoizan las redes, AP y clente pueden intercambar dichas clave precompartidas. Pero si con eso no fuese suficiente, usaremos las mismas técnicas que aprendimos con nuestro amigo pwnagotchi (copio y pego del anterior post):</p>

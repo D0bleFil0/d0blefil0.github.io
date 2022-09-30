@@ -43,7 +43,7 @@
         <meta name="keywords" content='cracking, hacking, hashcat, linux, tutorial, wifi' />
     
     
-        <meta name="description" content=" de redes WiFi &amp;gt; En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona Aircrack-ng:" />
+        <meta name="description" content=" de redes WiFi &amp;gt; En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona Aircrack-ng." />
     
 
 <meta property="og:site_name"
@@ -271,27 +271,27 @@
     
     
     <div><h2 id="aircrack-ng-hacking-de-redes-wifi-">Aircrack-ng: hacking de redes WiFi &gt;</h2>
-<p>En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona <strong>Aircrack-ng</strong>:</p>
+<p>En este post voy a explicar brevemente los principales conceptos del hacking de redes WiFi, obviamente con fines educativos y en un entorno controlado. Para analizar las redes inalámbricas y crackear las contraeñas voy a usar el conjunto de herramientas que proporiona <strong>Aircrack-ng</strong>.</p>
 <ul>
 <li><strong>Monitorización</strong>: Escaneo de redes y captura de paquetes. Usaremos las herrmientas <em>airmon-ng</em> (cambia la interfaz wifi a modo monitor) y <em>airodum-ng</em> (scan y captura).</li>
 <li><strong>Ataques</strong>: Replay attacks, desautenticaciones, puntos de acces falsos y otros ataques. Se usará el paquete <em>aireplay-n</em>.</li>
 <li><strong>Cracking</strong>: Romper contraseñas WEP y WPA/WPA2-PSK. Aquí usaremos <em>aircrack-ng</em>.</li>
 </ul>
-<p>Aunque la guía está hecha en Linux, todo esto puede hacerse sin problema en Windows y MacOS, en la misma página oficial vienen los pasos para instalarlo en dichas plataformas.</p>
+<p>Aunque la guía está hecha en Linux (con Kali instalado en una Raspberry Pi 4), todo esto puede hacerse sin problema en Windows y MacOS, en la misma página oficial vienen los pasos para instalarlo en dichas plataformas.</p>
 <p><a href="https://www.aircrack-ng.org/">Página oficial de Aircrack-ng</a></p>
 <p><a href="https://github.com/aircrack-ng/aircrack-ng">Github Aircrack-ng</a></p>
 <h2 id="teoría">Teoría</h2>
-<h4 id="4-way-handshake-de-wpa2">4-way handshake de WPA2</h4>
-<p>Como nos vamos a centrar en capturar paquetes de redes protegidas con WPA/WPA2, vamos a conocer un poco el proceso. Aunque ya lo expliqué en el post anterior (tutorial del pwnagotchi), recordarlo no está demás. Para poder obtener los hashes de las contraseñas WPA y podr crackearlas, es necesario capturar paquetes que contengan paquetes del protocolo 4-way handshake, en el que se intercambian mensajes con la clave precompartida (PSK) para validar la sesión entre el cliente y el punto de acceso.</p>
+<h4 id="protocolo-4-way-handshake">Protocolo 4-way handshake</h4>
+<p>Como nos vamos a centrar en capturar paquetes de redes protegidas con WPA/WPA2, vamos a conocer un poco el proceso. Aunque ya lo expliqué en el post anterior (tutorial del pwnagotchi), recordarlo no está demás. Para poder obtener los hashes de las contraseñas WPA y poder crackearlas, es necesario capturar paquetes que contengan paquetes del protocolo 4-way handshake, en el que se intercambian mensajes con la clave precompartida (PSK) para validar la sesión entre el cliente y el punto de acceso.</p>
 <p><img src="/images/post_pics/tutorial-pwnagotchi/Imagen2.png" alt="4-way handshake"></p>
 <p>*Source: <a href="https://pwnagotchi.ai/intro/">https://pwnagotchi.ai/intro/</a></p>
 <p>Mientras se monitoizan las redes, AP y clente pueden intercambar dichas clave precompartidas. Pero si con eso no fuese suficiente, usaremos las mismas técnicas que aprendimos con nuestro amigo pwnagotchi (copio y pego del anterior post):</p>
 <ol>
 <li>
-<p>Desautentica las estaciones cliente que detecta. Un dispositivo desautenticado debe volver a autenticarse en su punto de acceso volviendo a realizar el protocolo de enlace de 4 vías con el AP, lo que le da a Pwnagotchi otra oportunidad de olfatear los paquetes de protocolo de enlace y recopilar más material descifrable.</p>
+<p>Desautenticar los clientes conectados al AP. Un dispositivo desautenticado debe volver a autenticarse en su punto de acceso volviendo a realizar el protocolo 4-way handshake con el AP, permitiendo capturar los paquetes de protocolo de enlace y recopilar más material descifrable.</p>
 </li>
 <li>
-<p>Envía tramas de asociación directamente a los propios puntos de acceso para intentar forzarlos a filtrar el PMKID.</p>
+<p>Envíar tramas de asociación directamente a los propios puntos de acceso para intentar forzarlos a filtrar el PMKID.</p>
 </li>
 </ol>
 <p>Si tenemos exito y logamos capturar los paquetes que contengan los handshakes, podremos extraer el hash de la PSK y crackearlo mediante un ataque de fuerza bruta o de diccionario.</p>
@@ -299,33 +299,33 @@
 <h2 id="vamos-al-lío">Vamos al lío</h2>
 <ol>
 <li>
-<p>Lo primero es instalarlo. No quiero extederme mucho, ya que viene instalado por defecto en Kali Linux y Parrot OS, pero si no lo teneis en vuestro sistema echad un vistazo al <a href="https://github.com/aircrack-ng/aircrack-ng">Github de Aircrack-ng</a>. Tambien necesitarás un adaptador WiFi que permita el modo monitor (muchos adaptadores integrados en portatiles no lo admiten, es posible que necesites un adaptador externo). Si tienes una Raspberry P es una buena opción, yo la he probado y funciona sin problema.</p>
+<p>Lo primero es instalarlo. No quiero extederme mucho, ya que viene instalado por defecto en Kali Linux y Parrot OS, pero si no lo teneis en vuestro sistema echad un vistazo al <a href="https://github.com/aircrack-ng/aircrack-ng">Github de Aircrack-ng</a>. Tambien necesitarás un adaptador WiFi que permita el modo monitor (muchos adaptadores integrados en portatiles no lo admiten, es posible que necesites un adaptador externo). Si tienes una Raspberry Pi es una buena opción, yo la he probado y funciona sin problemas.</p>
 </li>
 <li>
-<p>Lo siguiente que voy a hacer es revisar las interfaces de red y comprobar que está funcionando correctamente. Ejecutamos el comando ip para verlo. Despues, pondremos la interfaz inalambrica en modo monitor.</p>
+<p>Lo siguiente que voy a hacer es revisar las interfaces de red y comprobar que está funcionando correctamente. Ejecutamos el comando <em>ip a</em> para ver las interfaces y la configuración de las mismas. Despues, pondremos la interfaz inalambrica en modo monitor, de forma que pueda capturar paquetes e inyectar si es necesario.</p>
 </li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ip a
 </span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/01.png" alt="Aircrack-ng Logo"></p>
-<p>Aqui es important tener en cuenta como se llama la interfaz wifi. En mi caso, se llama wlan0, pero puede tener otro nombre. Además, es posible que los servicios en marcha impidan que se cambie a modo monitor, en tal caso hay que ejecutar los siguientes comandos:</p>
+<p>Aqui es importante tener en cuenta como se llama la interfaz wifi que vamos a usar. En mi caso, se llama <strong>wlan0</strong>, pero puede tener otro nombre. Además, es posible que los servicios en marcha impidan que se cambie a modo monitor, en tal caso hay que ejecutar los siguientes comandos:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo airmon-ng check kill
 </span></span><span style="display:flex;"><span>sudo airmon-ng start wlan0
 </span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/02.png" alt="airmon-ng"></p>
-<p>En la captura se ve que ejecuto primero el de start wlan0 pero me da un error ya que hay servicios fucionando que lo impiden. En mi caso, ejecuté el check kill y despues el start wlan0 de nuevo.</p>
+<p>En la captura se ve que ejecuto primero el comando de <em>start wlan0</em> pero me da un error ya que hay servicios fucionando que lo impiden. En mi caso, ejecuté el <em>check kill</em> y despues el <em>start wlan0</em> de nuevo.</p>
 <ol start="3">
-<li>Ahora que la tarjeta wifi esta en modo monitor, podemos escanear las redes a nuestro alcance y analizar cual será el objetivo. He preparado una red llamada <strong>AP_test</strong> que usaré como objetivo. La contraseña que he preparado para esta red es sencilla, de modo que pueda explicar el proceso completo de forma segura. Mientras se monitrizan las redes wifi, podemos usar el tabulador para seleccionar los AP y movernos por ellos con las flechas. Además, podemos marcar con colores las redes con la tecla M, o podemos ordenarlas con la tecla S por diferentes criterios.</li>
+<li>Ahora que la tarjeta wifi esta en modo monitor, podemos escanear las redes a nuestro alcance y analizar cual será el objetivo. He preparado una red llamada <strong>AP_test</strong> que usaré como objetivo. La contraseña que he preparado para esta red es sencilla, <strong>acd1234</strong>, de modo que pueda explicar el proceso completo de forma segura. Mientras se monitrizan las redes wifi, podemos usar el tabulador para seleccionar los AP y movernos por ellos con las flechas. Además, podemos marcar con colores las redes con la tecla <strong>M</strong>, o podemos ordenarlas con la tecla <strong>S</strong> por diferentes criterios.</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo airodump-ng start wlan0mon
 </span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/04.png" alt="airdump-ng"></p>
 <ol start="4">
-<li>Tras elegir el objetivo, vamos a monitorizar el AP elegido y guardarmos los datos en varios ficheros. Necesitamos capturar los paquetes WPA de la clave precompartida. Usaremos el mismo comando que en el punto anterior, pero sta vez añadiremos las opiones para enfocarnos en el AP elegido, el canal en el que trabaja y estableceremos el prefijo de los ficheros generados.</li>
+<li>Tras elegir el objetivo, vamos a monitorizar el AP elegido y guardarmos los datos en varios ficheros. Necesitamos capturar los paquetes WPA que contengan potencalmente la clave precompartida. Usaremos el mismo comando que en el punto anterior, pero sta vez añadiremos las opiones para enfocarnos en el AP elegido, el canal en el que trabaja y estableceremos el prefijo de los ficheros generados.</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo airodump-ng start wlan0mon -c <span style="color:#e6db74">&#34;numero de canal&#34;</span> --bssid <span style="color:#e6db74">&#34;mac address del AP&#34;</span> -w <span style="color:#e6db74">&#34;nombre_fichero&#34;</span>
 </span></span></code></pre></div><p><img src="/images/post_pics/tutorial-aircrack/07.png" alt="airdump-ng"></p>
-<p>Si la señal es buena y los clientes y el AP intercambian paquetes que contengan los WPAhandshakes, el programa nos indicará que se ha consguido con un mensaje en la esquina superior derecha que pone &ldquo;[&ldquo;WPA hanshake: mac address AP&rsquo;&rdquo;]&rdquo;</p>
+<p>Si la señal es buena y los clientes y el AP intercambian paquetes que contengan los WPAhandshakes, el programa nos indicará que se ha consguido con un mensaje en la esquina superior derecha que pone <strong>[WPA hanshake: &ldquo;mac address AP&rdquo;]</strong></p>
 <p><img src="/images/post_pics/tutorial-aircrack/08.png" alt="WPA handshake capturado"></p>
 <ol start="5">
-<li>Por último, ya solo nos queda tratar los ficheros .cap obtenidos y crackear los hashes resultantes para obtener la clave WPA/WPA2. Aunque se puede hacer con el propio <strong>aircrack-ng</strong>, he optado por hacerlo como explqué en el tutorial del pwnagotchi, usando <strong>hcxtools</strong> para convertir el fichero de las capturas y <strong>hashcat</strong> para crackear la contraseña.</li>
+<li>Por último, ya solo nos queda tratar los ficheros <em>.cap</em> obtenidos y crackear los hashes resultantes para obtener la clave WPA/WPA2. Aunque se puede hacer con el propio <strong>aircrack-ng</strong>, he optado por hacerlo como explqué en el tutorial del pwnagotchi, usando <strong>hcxtools</strong> para convertir el fichero de las capturas al formato que <strong>hashcat</strong> necesita para crackear la contraseña.</li>
 </ol>
 <p><img src="/images/post_pics/tutorial-aircrack/10.png" alt="ficheros obtenidos"></p>
 <p>Con el siguiente comando se pued convertir el fichero .cap al formato <em>hc22000</em> que necesita <em>hashcat</em> para atacar la clave.</p>
@@ -356,15 +356,15 @@
 <p>Hay que tener en cuenta que un ataque de fuerza bruta puede tardar horas, dias o semana (en el mejor de los casos), segun lo compleja que sea la contraseña. Por ello, lo mejor es hacer un ataque de diccionario. Cuanto más grande sea el diccionario, más probabilidades de romper la contraseña tendremos.</p>
 <p>Para ello, hay muchos listados que nos pueden ser útiles. A continuación dejo varios recursos para descargar diccionarios.</p>
 <ul>
-<li><a href="https://github.com/danielmiessler/SecLists">https://github.com/danielmiessler/SecLists</a></li>
-<li><a href="https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm">https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm</a></li>
-<li><a href="https://weakpass.com/wordlist/big">https://weakpass.com/wordlist/big</a></li>
-<li><a href="https://weakpass.com/all-in-one">https://weakpass.com/all-in-one</a></li>
+<li><a href="https://github.com/danielmiessler/SecLists">Github SecLists</a></li>
+<li><a href="https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm">Crackstation wordlist</a></li>
+<li><a href="https://weakpass.com/wordlist/big">Wakpass Big lists</a></li>
+<li><a href="https://weakpass.com/all-in-one">Weakpass All-in-ne lists</a></li>
 </ul>
 <p>En mi caso, hice un ataque de fuerza bruta usando la máscara <em>abcd?d?d?d?d</em> para acortar el tiempod de procesamiento, ya que la contraseña empieza por <em>abcd</em> y despues he usado los comodines <em>?d</em> para indicar las posiciones donde a un caracter numérico.</p>
 <p><img src="/images/post_pics/tutorial-aircrack/17.png" alt="caracked"></p>
-<p>El resultado ha sido <strong>abcd1234</strong>, una contraseña muy fácil de crackear para poder demostrar el proceso. Así que recordad:</p>
-<h3 id="usad-contraseñas-complejas-que-mezclen-simbolos-letras-y-números-para-estar-más-protegidos--">Usad contraseñas complejas que mezclen simbolos, letras y números para estar más protegidos ;-)</h3>
+<p>Tras finalizar el ataque, el resultado obtenido ha sido <strong>abcd1234</strong>, una contraseña muy fácil de crackear. Este ejemplo sirve para comprobar que las contraseñas sencillas que todo el mundo ha usado en algún momento que otro, son faciles de desencriptar con las herramientas y el tiempo necesario. El uso de contraseñas tipo <strong>Madrid_2022</strong>, <strong>p@ssw0rd!2815</strong> y combinaciones similres son inseguras, ya que pueden romperse con ataques combinados de diccionario y mascaras o reglas de permutación. Así que recordad:</p>
+<p><strong>Usad contraseñas complejas que mezclen simbolos, letras y números para estar más protegidos!</strong></p>
 <h2 id="-hackea-el-planeta">(◕‿‿◕) ¡Hackea el planeta!</h2>
 <hr>
 <h3 id="disclaimer">DISCLAIMER:</h3>

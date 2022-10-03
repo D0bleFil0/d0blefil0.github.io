@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <meta charset="UTF-8"/>
         
-        <link type="text/css" rel="stylesheet" href="https://d0blefil0.github.io/css/styles.5f3c76e2d23e58a3b27c8ede4ee6104d1f7bf33b0ef198ca3350a90fe59a0c5ba98a4d1cc9b1d34c79db5ba8975a15d7848b7e11c5bd103d3c195643c4c8f152.css" integrity="sha512-Xzx24tI+WKOyfI7eTuYQTR978zsO8ZjKM1CpD+WaDFupik0cybHTTHnbW6iXWhXXhIt+EcW9ED08GVZDxMjxUg==" />
+        <link type="text/css" rel="stylesheet" href="https://d0blefil0.github.io/css/styles.ce9925d22b4994bf63441f8df50035cad19384791df2b56f761280268455200158b2bdeea77edafb1e647e1ae7930c3bea13d35d96bd154e21472b0da4f4c57f.css" integrity="sha512-zpkl0itJlL9jRB+N9QA1ytGThHkd8rVvdhKAJoRVIAFYsr3up37a+x5kfhrnkww76hPTXZa9FU4hRysNpPTFfw==" />
         <style>
           .aboutfeeds {
             margin: 24px 0; padding: 12px;

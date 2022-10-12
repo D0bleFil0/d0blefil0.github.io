@@ -9,7 +9,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Thu, 29 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Basic Pentesting - THM</title>
+      <link>https://d0blefil0.github.io/posts/basic-pentesting/</link>
+      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://d0blefil0.github.io/posts/basic-pentesting/</guid>
+      <description>Basic Pentesting - TryHackMe &amp;gt; Hoy traigo unos apuntes para una máquina sencilla de TryHackMe que repasa los coneptos más básicos de reconocimiento, ataques de fuerza bruta y escalación de privilegios. A continuación dejo el enlace de THM:
+Basic Pentesting</description>
+    </item>
+    
     <item>
       <title>Aircrack-ng: hacking de redes WiFi</title>
       <link>https://d0blefil0.github.io/posts/aircrack-ng_hacking_wifi/</link>

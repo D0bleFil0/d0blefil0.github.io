@@ -9,22 +9,49 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Thu, 29 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://d0blefil0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>cracking</title>
-      <link>https://d0blefil0.github.io/tags/cracking/</link>
-      <pubDate>Thu, 29 Sep 2022 00:00:00 +0000</pubDate>
+      <title>CTF</title>
+      <link>https://d0blefil0.github.io/tags/ctf/</link>
+      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://d0blefil0.github.io/tags/cracking/</guid>
+      <guid>https://d0blefil0.github.io/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hacking</title>
       <link>https://d0blefil0.github.io/tags/hacking/</link>
-      <pubDate>Thu, 29 Sep 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
       
       <guid>https://d0blefil0.github.io/tags/hacking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>THM</title>
+      <link>https://d0blefil0.github.io/tags/thm/</link>
+      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://d0blefil0.github.io/tags/thm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tryhackme</title>
+      <link>https://d0blefil0.github.io/tags/tryhackme/</link>
+      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://d0blefil0.github.io/tags/tryhackme/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cracking</title>
+      <link>https://d0blefil0.github.io/tags/cracking/</link>
+      <pubDate>Thu, 29 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://d0blefil0.github.io/tags/cracking/</guid>
       <description></description>
     </item>
     

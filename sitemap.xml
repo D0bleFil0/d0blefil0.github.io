@@ -2,31 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://k3ssdev.github.io/posts/basic-pentesting/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://k3ssdev.github.io/tags/ctf/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/easy/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/hacking/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/posts/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/simple_ctf/</loc>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/thm/</loc>
-    <lastmod>2022-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/tryhackme/</loc>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/writeup/</loc>
+    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/basic-pentesting/</loc>
     <lastmod>2022-10-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/posts/aircrack-ng_hacking_wifi/</loc>

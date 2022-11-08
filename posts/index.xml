@@ -9,7 +9,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Wed, 12 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Simple CTF - THM</title>
+      <link>https://k3ssdev.github.io/posts/simple_ctf/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/simple_ctf/</guid>
+      <description>Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración. La habitación de TryHackMe nos hace unas primeras preguntas relacionadas con este paso, que son:
+¿Cuantos servicios están funcionando en el puerto 1000? ¿Cual es el servicio del puerto más alto?</description>
+    </item>
+    
     <item>
       <title>Basic Pentesting - THM</title>
       <link>https://k3ssdev.github.io/posts/basic-pentesting/</link>

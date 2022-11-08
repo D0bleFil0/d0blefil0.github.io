@@ -396,8 +396,12 @@ Enumeración El primer paso que hay que dar en toda prueba de penetración es el
 </span></span><span style="display:flex;"><span>Disallow: /openemr-5_0_1_3 
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># End of &#34;$Id: robots.txt 3494 2003-03-19 15:37:44Z mike $&#34;.</span>
-</span></span></code></pre></div><p>Entro en la dirección encontrada y veo que tienen un CMS llamado <strong>CMS Made Simple (version 2.2.8)</strong>. Hago una busqueda rápida para ver que vulnerabilidades puede tener.</p>
+</span></span></code></pre></div><p>Entro en la dirección encontrada y veo que tienen un CMS llamado <strong>CMS Made Simple (version 2.2.8)</strong>.</p>
+<p><img src="/images/post_pics/simple-ctf/simple_ctf_03.png" alt=""></p>
+<p><img src="/images/post_pics/simple-ctf/simple_ctf_04.png" alt=""></p>
+<p>Hago una busqueda rápida para ver que vulnerabilidades puede tener.</p>
 <p><a href="https://www.exploit-db.com/exploits/46635">https://www.exploit-db.com/exploits/46635</a></p>
+<p><img src="/images/post_pics/simple-ctf/simple_ctf_05.png" alt=""></p>
 <p><strong>CVE-2019-9053</strong> es una vulnerabilidad de tipo <strong>SQL Injection</strong>. En el script que descargo vienen unas intrucciones:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Example usage <span style="color:#f92672">(</span>with cracking password<span style="color:#f92672">)</span>: exploit.py -u http://target-uri --crack -w /path-wordlist<span style="color:#e6db74">&#34;
 </span></span></span></code></pre></div><p>Aquí acaba la fase de recopilación de información, en principio&hellip;</p>

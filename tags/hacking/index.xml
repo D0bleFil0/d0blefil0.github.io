@@ -16,8 +16,8 @@
       <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/posts/simple_ctf/</guid>
-      <description>Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración. La habitación de TryHackMe nos hace unas primeras preguntas relacionadas con este paso, que son:
-¿Cuantos servicios están funcionando en el puerto 1000? ¿Cual es el servicio del puerto más alto?</description>
+      <description>Seguimos con los writeups de TryHackMe. Hoy le toca el turno a una sala fácil pensada tambien para principiantes llamada Simple CTF. En esta máquina hay que conseguir dos banderas para completarla. Vamos allá.
+Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración.</description>
     </item>
     
     <item>

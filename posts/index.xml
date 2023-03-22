@@ -9,7 +9,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I&#39;m back</title>
+      <link>https://k3ssdev.github.io/posts/back/</link>
+      <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/back/</guid>
+      <description>Mi vuelta después de varios meses&amp;hellip; ¡Hola a todos! Después de varios meses ausente por aquí, por fin he vuelto. He estado bastante ocupado estudiando para los exámenes de primer semestre del CFGS de Desarrollo de Aplicaciones Multiplataforma, así que no he tenido más remedio que pausar algunas cosas.</description>
+    </item>
+    
     <item>
       <title>Simple CTF - TryHackMe</title>
       <link>https://k3ssdev.github.io/posts/simple_ctf/</link>

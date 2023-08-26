@@ -9,7 +9,79 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Wed, 22 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Burp Suite</title>
+      <link>https://k3ssdev.github.io/tags/burp-suite/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/burp-suite/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Directory Enumeration</title>
+      <link>https://k3ssdev.github.io/tags/directory-enumeration/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/directory-enumeration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>easy</title>
+      <link>https://k3ssdev.github.io/tags/easy/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/easy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>File Upload Vulnerability</title>
+      <link>https://k3ssdev.github.io/tags/file-upload-vulnerability/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/file-upload-vulnerability/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gobuster</title>
+      <link>https://k3ssdev.github.io/tags/gobuster/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/gobuster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Privilege escalation</title>
+      <link>https://k3ssdev.github.io/tags/privilege-escalation/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/privilege-escalation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reverse Shell</title>
+      <link>https://k3ssdev.github.io/tags/reverse-shell/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/reverse-shell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SUID</title>
+      <link>https://k3ssdev.github.io/tags/suid/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/suid/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>personal</title>
       <link>https://k3ssdev.github.io/tags/personal/</link>
@@ -25,15 +97,6 @@
       <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/tags/ctf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>easy</title>
-      <link>https://k3ssdev.github.io/tags/easy/</link>
-      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/easy/</guid>
       <description></description>
     </item>
     

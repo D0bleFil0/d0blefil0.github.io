@@ -289,6 +289,7 @@
 </span></span></code></pre></div><p>El escaneo reveló un directorio llamado <code>/internal</code>.</p>
 <h3 id="explotación-de-la-vulnerabilidad">Explotación de la Vulnerabilidad</h3>
 <p>Mi siguiente paso fue intentar subir un archivo PHP como shell inversa, pero me encontré con restricciones en la extensión del archivo. Luego, creé una lista de extensiones PHP y utilicé Burp Suite para realizar un ataque &ldquo;sniper&rdquo;.</p>
+<p><img src="/images/post_pics/vulnversity/burp_suite.png" alt="Burp Suite"></p>
 <p>Después de varios intentos, descubrí que la extensión <code>.phtml</code> permitía eludir la comprobación de extensiones de archivos. Subí un archivo llamado <code>shell.phtml</code> que contenía una shell inversa.</p>
 <h3 id="obtención-de-acceso">Obtención de Acceso</h3>
 <p>Para obtener acceso, abrí una shell inversa utilizando Netcat:</p>

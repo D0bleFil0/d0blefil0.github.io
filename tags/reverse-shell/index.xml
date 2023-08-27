@@ -16,7 +16,7 @@
       <pubDate>Sun, 27 Aug 2023 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/posts/blue/</guid>
-      <description>Introducción En este artículo, compartiré mi experiencia al hackear una máquina Windows en un entorno controlado, lo que me permitió aprender valiosas lecciones sobre seguridad informática y pruebas de penetración. Los siguientes son mis apuntes detallados sobre los pasos que seguí para completar la tarea.</description>
+      <description>Introducción Se trata de la segunda máquina de la serie &amp;ldquo;Offensive Pentesting&amp;rdquo; de TryHackMe, que se centra en la explotación de la vulnerabilidad EternalBlue en sistemas Windows. Es una sala sencilla, destinada a familiarizarse con el reconocimiento, la explotación y el escalamiento de privilegios en sistemas Windows y en uso de Metasploit y Meterpreter.</description>
     </item>
     
     <item>

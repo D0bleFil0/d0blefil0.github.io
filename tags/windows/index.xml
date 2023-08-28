@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>“Windows&#34; on K3ssDev
+    <title>Windows on K3ssDev
 :/var/log$  </title>
     <link>https://k3ssdev.github.io/tags/windows/</link>
-    <description>Recent content in “Windows&#34; on K3ssDev
+    <description>Recent content in Windows on K3ssDev
 :/var/log$  </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Mon, 28 Aug 2023 11:00:00 +0200</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Aug 2023 00:00:00 +0200</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alfred [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/alfred/</link>
+      <pubDate>Tue, 29 Aug 2023 00:00:00 +0200</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/alfred/</guid>
+      <description>Introducción La segunda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrecta en Jenkins, un servidor de automatización. Se utilizará Nishang en una aplicación Windows para obtener acceso inicial y escalada de privilegios.</description>
+    </item>
+    
     <item>
       <title>Steel Mountain [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/steel-mountain/</link>

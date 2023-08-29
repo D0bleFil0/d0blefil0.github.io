@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nishang on K3ssDev
+:/var/log$  </title>
+    <link>https://k3ssdev.github.io/tags/nishang/</link>
+    <description>Recent content in Nishang on K3ssDev
+:/var/log$  </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
+    <lastBuildDate>Wed, 30 Aug 2023 00:00:00 +0200</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/nishang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackPark [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/hackpark/</link>
+      <pubDate>Wed, 30 Aug 2023 00:00:00 +0200</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/hackpark/</guid>
+      <description>Introducción Subimos un puntito el nivel de dificultad con “HackPark”, la siguiente máquina las series “Offensive Pentesting” de TryHackMe. En esta sala se practican cosas como la fuerza bruta con Hydra contra una app web, el uso de exploits con Metasploit y la elevación de privilegios en Windows.</description>
+    </item>
+    
+  </channel>
+</rss>

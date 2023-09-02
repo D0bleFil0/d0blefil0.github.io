@@ -2,10 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://k3ssdev.github.io/tags/burp/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/dirb/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://k3ssdev.github.io/tags/easy/</loc>
     <lastmod>2023-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/posts/game-zone/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/intruder/</loc>
     <lastmod>2023-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/john/</loc>
@@ -20,10 +29,22 @@
     <loc>https://k3ssdev.github.io/tags/metasploit/</loc>
     <lastmod>2023-09-01T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://k3ssdev.github.io/tags/meterpreter/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/msfvenom/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://k3ssdev.github.io/posts/</loc>
     <lastmod>2023-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/privilege-escalation/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/skynet/</loc>
+    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/smb/</loc>
     <lastmod>2023-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/sqli/</loc>
@@ -51,9 +72,6 @@
     <lastmod>2023-08-30T00:00:00+02:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/medium/</loc>
-    <lastmod>2023-08-30T00:00:00+02:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/meterpreter/</loc>
     <lastmod>2023-08-30T00:00:00+02:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/nishang/</loc>

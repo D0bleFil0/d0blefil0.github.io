@@ -20,6 +20,15 @@
     </item>
     
     <item>
+      <title>Skynet [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/skynet/</link>
+      <pubDate>Fri, 01 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/skynet/</guid>
+      <description>Introducción Me enfrento a la primera máquina de &amp;ldquo;Offensive Pentesting&amp;rdquo; que no tiene una guía paso a paso. En este caso, se trata de una máquina de nivel fácil, por lo que no debería ser muy complicada. El objetivo es obtener acceso a la máquina y obtener la flag del usuario y la flag del root.</description>
+    </item>
+    
+    <item>
       <title>Alfred [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/alfred/</link>
       <pubDate>Tue, 29 Aug 2023 00:00:00 +0200</pubDate>

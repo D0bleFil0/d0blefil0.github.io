@@ -9,7 +9,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Sat, 02 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Daily Bugle [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/daily-bugle/</link>
+      <pubDate>Sun, 03 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/daily-bugle/</guid>
+      <description>Introducción La primera sala dificil del path “Offensive Pentesting¨, con una temática de Spiderman. La sala tiene como objetivo comprometer la máquina y obtener las banderas de usuario y root usando una vulnerabilidad de Joomla y un exploit de escalada de privilegios.</description>
+    </item>
+    
     <item>
       <title>Skynet [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/skynet/</link>

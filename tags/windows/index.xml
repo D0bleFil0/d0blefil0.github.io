@@ -9,7 +9,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Tue, 12 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Buffer Overflow Prep [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/bufferoverflow_prep/</link>
+      <pubDate>Tue, 19 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/bufferoverflow_prep/</guid>
+      <description>Introducción Esta sala de TryHackMe consiste en realizar una explotación de Buffer Overflow en la aplicación oscp.exe con herramientas como Immunity Debugger, Mona, y msfvenom en un entorno controlado. Es una sala de aprendizaje orientada a la preparación de ataques Buffer Overflow para la certificación OSCP, pero tambíen es un tutorial estupendo para aprender los conceptos básicos de este tipo de ataques.</description>
+    </item>
+    
     <item>
       <title>Internal, Penetration Testing Challenge [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/internal/</link>

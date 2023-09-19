@@ -9,11 +9,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Sat, 09 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EternalBlue</title>
       <link>https://k3ssdev.github.io/tags/eternalblue/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/tags/eternalblue/</guid>
       <description></description>
@@ -22,9 +22,108 @@
     <item>
       <title>GoBuster</title>
       <link>https://k3ssdev.github.io/tags/gobuster/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/tags/gobuster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hard</title>
+      <link>https://k3ssdev.github.io/tags/hard/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/hard/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Metasploit</title>
+      <link>https://k3ssdev.github.io/tags/metasploit/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/metasploit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MS17-010</title>
+      <link>https://k3ssdev.github.io/tags/ms17-010/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/ms17-010/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pkexec</title>
+      <link>https://k3ssdev.github.io/tags/pkexec/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/pkexec/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Privilege Escalation</title>
+      <link>https://k3ssdev.github.io/tags/privilege-escalation/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/privilege-escalation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Report</title>
+      <link>https://k3ssdev.github.io/tags/report/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/report/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Simulation</title>
+      <link>https://k3ssdev.github.io/tags/simulation/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/simulation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TryHackMe</title>
+      <link>https://k3ssdev.github.io/tags/tryhackme/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/tryhackme/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Windows</title>
+      <link>https://k3ssdev.github.io/tags/windows/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/windows/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wordpress</title>
+      <link>https://k3ssdev.github.io/tags/wordpress/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/wordpress/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wpscan</title>
+      <link>https://k3ssdev.github.io/tags/wpscan/</link>
+      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/tags/wpscan/</guid>
       <description></description>
     </item>
     
@@ -38,74 +137,11 @@
     </item>
     
     <item>
-      <title>Metasploit</title>
-      <link>https://k3ssdev.github.io/tags/metasploit/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/metasploit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>MS17-010</title>
-      <link>https://k3ssdev.github.io/tags/ms17-010/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/ms17-010/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>PrintSpoofer</title>
       <link>https://k3ssdev.github.io/tags/printspoofer/</link>
       <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/tags/printspoofer/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Privilege Escalation</title>
-      <link>https://k3ssdev.github.io/tags/privilege-escalation/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/privilege-escalation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Report</title>
-      <link>https://k3ssdev.github.io/tags/report/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/report/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Simulation</title>
-      <link>https://k3ssdev.github.io/tags/simulation/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/simulation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>TryHackMe</title>
-      <link>https://k3ssdev.github.io/tags/tryhackme/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/tryhackme/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Windows</title>
-      <link>https://k3ssdev.github.io/tags/windows/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/windows/</guid>
       <description></description>
     </item>
     
@@ -214,15 +250,6 @@
       <pubDate>Sun, 03 Sep 2023 00:00:00 +0000</pubDate>
       
       <guid>https://k3ssdev.github.io/tags/gtfobins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Hard</title>
-      <link>https://k3ssdev.github.io/tags/hard/</link>
-      <pubDate>Sun, 03 Sep 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://k3ssdev.github.io/tags/hard/</guid>
       <description></description>
     </item>
     

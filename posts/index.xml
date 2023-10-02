@@ -9,7 +9,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Sun, 01 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gatekeeper [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/gatekeeper/</link>
+      <pubDate>Mon, 02 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/gatekeeper/</guid>
+      <description>Introducción Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &amp;ldquo;dificil&amp;rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla.</description>
+    </item>
+    
     <item>
       <title>Brainstorm [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/brainstorm/</link>

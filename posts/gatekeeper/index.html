@@ -40,10 +40,10 @@
 <meta name="author" content="Alberto Pérez" />
 
     
-        <meta name="keywords" content='¨Psexec&#34;, Buffer Overflow, Exploit Development, Hard, Immunity Debugger, Metasploit, Meterpreter, Mona, Privilege Escalation, Python, Reverse Shell, TryHackMe, Windows' />
+        <meta name="keywords" content='Buffer Overflow, Exploit Development, Immunity Debugger, Medium, Metasploit, Meterpreter, Mona, Privilege Escalation, Psexec, Python, Reverse Shell, TryHackMe, Windows' />
     
     
-        <meta name="description" content="per es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &amp;ldquo;dificil&amp;rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla." />
+        <meta name="description" content="per es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &amp;ldquo;media&amp;rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla." />
     
 
 <meta property="og:site_name"
@@ -60,15 +60,13 @@
         content='2023-10-02T00:00:00Z&#43;0000' />
     
         
-            <meta property="article:tag" content="¨Psexec&#34;" />
-        
             <meta property="article:tag" content="Buffer Overflow" />
         
             <meta property="article:tag" content="Exploit Development" />
         
-            <meta property="article:tag" content="Hard" />
-        
             <meta property="article:tag" content="Immunity Debugger" />
+        
+            <meta property="article:tag" content="Medium" />
         
             <meta property="article:tag" content="Metasploit" />
         
@@ -77,6 +75,8 @@
             <meta property="article:tag" content="Mona" />
         
             <meta property="article:tag" content="Privilege Escalation" />
+        
+            <meta property="article:tag" content="Psexec" />
         
             <meta property="article:tag" content="Python" />
         
@@ -287,7 +287,7 @@
     
     
     <div><h2 id="introducción">Introducción</h2>
-<p>Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &ldquo;dificil&rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla. Sigue formando parte del bloque de Buffer Overflow del path &ldquo;Offensive Pentesting&rdquo; de TryHackMe, por lo que es recomendable haber completado las anteriores salas de este bloque y haber recopilado unos buenos apuntes sobre el tema antes de meterse en faena.</p>
+<p>Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &ldquo;media&rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla. Sigue formando parte del bloque de Buffer Overflow del path &ldquo;Offensive Pentesting&rdquo; de TryHackMe, por lo que es recomendable haber completado las anteriores salas de este bloque y haber recopilado unos buenos apuntes sobre el tema antes de meterse en faena.</p>
 <h2 id="escaneo-de-puertos">Escaneo de puertos</h2>
 <p>Realizo un escaneo con nmap en dos pasos, primero un escaneo rápido para ver que puertos están abiertos y luego un escaneo completo de los puertos abiertos para obtener más información sobre los servicios que están corriendo en ellos.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sS --min-rate <span style="color:#ae81ff">5000</span> -p- -Pn -v -oN nmap_inicial 10.10.223.27
@@ -1154,7 +1154,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>Th3_M4y0r_C0ngr4tul4t3s_U<span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>meterpreter &gt;
 </span></span></code></pre></div><h2 id="conclusiones">Conclusiones</h2>
-<p>Esta sala ha sido bastante más difícil que las anteriores. He tenido que investigar bastante para poder encontrar la forma de escalar privilegios usando firefox. Además del script de python firepwd.py, se supone que hay una forma de hacerlo con Hashcat, pero no supe como hacerlo y tampoco quise invertir mucho tiempo en ello, sabiendo que ya hay una forma de hacerlo con el script de python que es relativamente sencilla. Lo aprendido durante esta sala y los apuntes que he guardado me serán de utilidad en el futuro, no me cabe duda.</p>
+<p>Esta sala ha sido bastante más difícil que las anteriores, aunque sea de dificultad media. He tenido que investigar bastante para poder encontrar la forma de escalar privilegios usando firefox. Además del script de python firepwd.py, se supone que hay una forma de hacerlo con Hashcat, pero no supe como hacerlo y tampoco quise invertir mucho tiempo en ello, sabiendo que ya hay una forma de hacerlo con el script de python que es relativamente sencilla. Lo aprendido durante esta sala y los apuntes que he guardado me serán de utilidad en el futuro, no me cabe duda.</p>
 <h2 id="-hack-the-planet">(◕‿‿◕) Hack the planet!</h2>
 </div>
 </article>
@@ -1163,12 +1163,6 @@
     <p class="articleTagsContainer">
         <span> </span>
         <strong>Tags:</strong>
-        
-            <a
-                
-                class="buttonTag"
-                
-                href="/tags/psexec">#¨Psexec&#34;</a>
         
             <a
                 
@@ -1186,13 +1180,13 @@
                 
                 class="buttonTag"
                 
-                href="/tags/hard">#Hard</a>
+                href="/tags/immunity-debugger">#Immunity Debugger</a>
         
             <a
                 
                 class="buttonTag"
                 
-                href="/tags/immunity-debugger">#Immunity Debugger</a>
+                href="/tags/medium">#Medium</a>
         
             <a
                 
@@ -1217,6 +1211,12 @@
                 class="buttonTag"
                 
                 href="/tags/privilege-escalation">#Privilege Escalation</a>
+        
+            <a
+                
+                class="buttonTag"
+                
+                href="/tags/psexec">#Psexec</a>
         
             <a
                 

@@ -9,7 +9,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Mon, 02 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/metasploit/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 08 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/metasploit/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Brainpan 1 [TryHackMe]</title>
+      <link>https://k3ssdev.github.io/posts/brainpan1/</link>
+      <pubDate>Sun, 08 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://k3ssdev.github.io/posts/brainpan1/</guid>
+      <description>Introducción La última máquina que he hecho en TryHackMe ha sido Brainpan 1. Se trata de una máquina de nivel &amp;ldquo;difícil&amp;rdquo; para la que necesitaremos explotar un buffer overflow de un binario de Windows que se está ejecutando en un una máquina Linux.</description>
+    </item>
+    
     <item>
       <title>Gatekeeper [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/gatekeeper/</link>

@@ -27,38 +27,3 @@
     </item>
   </channel>
 </rss>
-v.github.io/posts/bufferoverflow_prep/</link>
-      <pubDate>Tue, 19 Sep 2023 00:00:00 +0000</pubDate>
-      <guid>https://k3ssdev.github.io/posts/bufferoverflow_prep/</guid>
-      <description>Introducción Esta sala de TryHackMe consiste en realizar una explotación de Buffer Overflow en la aplicación oscp.exe con herramientas como Immunity Debugger, Mona, y msfvenom en un entorno controlado. Es una sala de aprendizaje orientada a la preparación de ataques Buffer Overflow para la certificación OSCP, pero tambíen es un tutorial estupendo para aprender los conceptos básicos de este tipo de ataques.</description>
-    </item>
-    <item>
-      <title>Internal, Penetration Testing Challenge [TryHackMe]</title>
-      <link>https://k3ssdev.github.io/posts/internal/</link>
-      <pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
-      <guid>https://k3ssdev.github.io/posts/internal/</guid>
-      <description>Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas.</description>
-    </item>
-    <item>
-      <title>Relevant, Penetration Testing Challenge [TryHackMe]</title>
-      <link>https://k3ssdev.github.io/posts/relevant/</link>
-      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      <guid>https://k3ssdev.github.io/posts/relevant/</guid>
-      <description>Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas.</description>
-    </item>
-    <item>
-      <title>HackPark [TryHackMe]</title>
-      <link>https://k3ssdev.github.io/posts/hackpark/</link>
-      <pubDate>Wed, 30 Aug 2023 00:00:00 +0200</pubDate>
-      <guid>https://k3ssdev.github.io/posts/hackpark/</guid>
-      <description>Introducción Subimos un puntito el nivel de dificultad con “HackPark”, la siguiente máquina las series “Offensive Pentesting” de TryHackMe. En esta sala se practican cosas como la fuerza bruta con Hydra contra una app web, el uso de exploits con Metasploit y la elevación de privilegios en Windows.</description>
-    </item>
-    <item>
-      <title>Alfred [TryHackMe]</title>
-      <link>https://k3ssdev.github.io/posts/alfred/</link>
-      <pubDate>Tue, 29 Aug 2023 00:00:00 +0200</pubDate>
-      <guid>https://k3ssdev.github.io/posts/alfred/</guid>
-      <description>Introducción La segunda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrecta en Jenkins, un servidor de automatización. Se utilizará Nishang en una aplicación Windows para obtener acceso inicial y escalada de privilegios.</description>
-    </item>
-  </channel>
-</rss>

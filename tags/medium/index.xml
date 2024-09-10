@@ -6,54 +6,45 @@
     <link>https://k3ssdev.github.io/tags/medium/</link>
     <description>Recent content in Medium on K3ssDev
 :/var/log$  </description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Mon, 02 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/medium/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Oct 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://k3ssdev.github.io/tags/medium/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gatekeeper [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/gatekeeper/</link>
       <pubDate>Mon, 02 Oct 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/gatekeeper/</guid>
       <description>Introducción Gatekeeper es una máquina de TryHackMe que nos pide explotar una vulnerabilidad de buffer overflow en un binario de Windows sin apenas dar ninguna información sobre el objetivo ni sobre que tipo de binario puede ser. Esta sala es de dificultad &amp;ldquo;media&amp;rdquo; y requiere un esfuerzo adicional respecto a las anteriores para poder explotarla.</description>
     </item>
-    
     <item>
       <title>Brainstorm [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/brainstorm/</link>
       <pubDate>Sun, 01 Oct 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/brainstorm/</guid>
       <description>Introducción Brainstorm es una máquina virtual vulnerable de TryHackMe con un nivel de dificultad media. El objetivo es obtener acceso a la máquina y obtener el flag root.txt. Forma parte del learning path de Offensive Pentesting Path, y está dentro del bloque de &amp;ldquo;Buffer Overflow&amp;rdquo;, por lo que el objetivo es explotar un buffer overflow en una aplicación vulnerable para obtener acceso a la máquina.</description>
     </item>
-    
     <item>
       <title>Relevant, Penetration Testing Challenge [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/relevant/</link>
       <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/relevant/</guid>
       <description>Introducción Esta máquina es un simulacro de una prueba de penetración como las que se pueden encontrar en un entorno laboral. El objetivo es obtener acceso a la máquina y escalar privilegios. Es de dificultad Media, y salvo unas instrucciones iniciales, no hay pistas.</description>
     </item>
-    
     <item>
       <title>Overpass 2 - Hacked [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/overpass2/</link>
       <pubDate>Mon, 04 Sep 2023 00:03:00 +0200</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/overpass2/</guid>
       <description>Introducción Overpass dos es una sala distinta a las anteriores, esta vez no se trata de atacar un objetivo, si no de analizar un ataque y recuperar el control de una máquina que ha sido vulnerada. La primera parte consiste en analizar el tráfico de red capturado en un fichero pcapng con Wireshark, y una vez se haya descubierto el método usado por los atacantes, entrar en el equipo y conseguir las banderas.</description>
     </item>
-    
     <item>
       <title>HackPark [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/hackpark/</link>
       <pubDate>Wed, 30 Aug 2023 00:00:00 +0200</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/hackpark/</guid>
       <description>Introducción Subimos un puntito el nivel de dificultad con “HackPark”, la siguiente máquina las series “Offensive Pentesting” de TryHackMe. En esta sala se practican cosas como la fuerza bruta con Hydra contra una app web, el uso de exploits con Metasploit y la elevación de privilegios en Windows.</description>
     </item>
-    
   </channel>
 </rss>

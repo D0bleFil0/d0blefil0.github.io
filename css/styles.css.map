@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "styles.css",
-	"sourceRoot": "/home/k3ss/Documentos/repositorios/blog_dev_hugo",
+	"sourceRoot": "/home/kess/Documentos/blog_dev_hugo",
 	"sources": [
 		"themes/hugo-ficurinia/assets/scss/style.scss"
 	],

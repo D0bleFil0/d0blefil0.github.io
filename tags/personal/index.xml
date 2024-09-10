@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>personal on K3ssDev
+    <title>Personal on K3ssDev
 :/var/log$  </title>
     <link>https://k3ssdev.github.io/tags/personal/</link>
-    <description>Recent content in personal on K3ssDev
+    <description>Recent content in Personal on K3ssDev
 :/var/log$  </description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Wed, 22 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/personal/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://k3ssdev.github.io/tags/personal/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>I&#39;m back</title>
       <link>https://k3ssdev.github.io/posts/back/</link>
       <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/back/</guid>
       <description>Vuelta al tajo.. Después de varios meses de abandono, hago el intento de retomar esto. He estado bastante ocupado estudiando para los exámenes de primer semestre del CFGS de Desarrollo de Aplicaciones Multiplataforma, así que no he tenido más remedio que pausar algunas cosas&amp;hellip; Pero ya estoy de vuelta y con ganas de seguir aprendiendo y compartiendo.</description>
     </item>
-    
   </channel>
 </rss>

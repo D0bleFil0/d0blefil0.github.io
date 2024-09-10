@@ -6,91 +6,73 @@
     <link>https://k3ssdev.github.io/tags/easy/</link>
     <description>Recent content in Easy on K3ssDev
 :/var/log$  </description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <copyright>Licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).</copyright>
-    <lastBuildDate>Sat, 02 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://k3ssdev.github.io/tags/easy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Sep 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://k3ssdev.github.io/tags/easy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Skynet [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/skynet/</link>
       <pubDate>Sat, 02 Sep 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/skynet/</guid>
       <description>Introducción Me enfrento a la primera máquina de &amp;ldquo;Offensive Pentesting&amp;rdquo; que no tiene sugerencias de que ir haciendo. En este caso, se trata de una máquina de nivel fácil, por lo que no debería ser muy complicada aún sin las recomendaciones que proporcionaban las anteriores salas.</description>
     </item>
-    
     <item>
       <title>Game Zone [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/game-zone/</link>
       <pubDate>Fri, 01 Sep 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/game-zone/</guid>
       <description>Introducción Continúo con el learning path “Offensive Pentesting¨, esta vez con una maquina sencilla que presenta un ejemplo práctico de SQL Injection con sqlmap y el uso de un túnel SSH para exponer un servicio bloqueado por firewall, para finalmente logra acceso privilegiado con Metaploit.</description>
     </item>
-    
     <item>
       <title>Alfred [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/alfred/</link>
       <pubDate>Tue, 29 Aug 2023 00:00:00 +0200</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/alfred/</guid>
       <description>Introducción La segunda sala del bloque “Advanced Exploitation” en el path “Offensive Pentesting”. En esta sala se aprende a explotar una configuración incorrecta en Jenkins, un servidor de automatización. Se utilizará Nishang en una aplicación Windows para obtener acceso inicial y escalada de privilegios.</description>
     </item>
-    
     <item>
       <title>Steel Mountain [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/steel-mountain/</link>
       <pubDate>Mon, 28 Aug 2023 11:00:00 +0200</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/steel-mountain/</guid>
       <description>Introducción Steel Mountain es la cuarta máquina de la serie &amp;ldquo;Offensive Pentesting&amp;rdquo; de TryHackMe. Es una sala fácil que tiene como objetivo aprender sobre escalada de privilegios en un entorno Windows comprometido. En esta máquina, se explora la explotación de una vulnerabilidad conocida en un servidor web, se obtiene acceso inicial, se explora la enumeración y finalmente se logra escalar privilegios para obtener control total sobre la máquina.</description>
     </item>
-    
     <item>
       <title>Kenobi [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/kenobi/</link>
       <pubDate>Mon, 28 Aug 2023 10:00:00 +0200</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/kenobi/</guid>
       <description>Introducción La sala ¨Kenobi” está pensada como introducción de la serie “Offensive Pentesting”. Es la tercera máquina, y tiene una dificultad baja. El objetivo es vulnerar una máquina Linux para obtener acceso a un recurso compartido de Samba, manipular una versión vulnerable de proftpd para obtener acceso inicial y escalar privilegios a root a través de un binario SUID.</description>
     </item>
-    
     <item>
       <title>Blue [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/blue/</link>
       <pubDate>Sun, 27 Aug 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/blue/</guid>
       <description>Introducción Se trata de la segunda máquina de la serie &amp;ldquo;Offensive Pentesting&amp;rdquo; de TryHackMe, que se centra en la explotación de la vulnerabilidad EternalBlue en sistemas Windows. Es una sala sencilla, destinada a familiarizarse con el reconocimiento, la explotación y el escalamiento de privilegios en sistemas Windows y en uso de Metasploit y Meterpreter.</description>
     </item>
-    
     <item>
       <title>Vulnversity [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/vulnversity/</link>
       <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/vulnversity/</guid>
       <description>Introducción Vulnversity es la primera máquina a vulnerar del learning path “Offensive Pentesting” de TryHackMe. Es una sala sencilla que sirve para practicar los fundamentos vistos durante el path de “Jr Penetration Tester”. El objetivo principal era identificar vulnerabilidades y puntos de entrada en el sistema a partir de una aplicación web, así como realizar una escalada de privilegios para obtener acceso root.</description>
     </item>
-    
     <item>
       <title>Simple CTF [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/simple_ctf/</link>
       <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/simple_ctf/</guid>
-      <description>Seguimos con los writeups de TryHackMe. Hoy le toca el turno a una sala fácil pensada tambien para principiantes llamada Simple CTF. En esta máquina hay que conseguir dos banderas para completarla. Vamos allá.
-Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración.</description>
+      <description>Seguimos con los writeups de TryHackMe. Hoy le toca el turno a una sala fácil pensada tambien para principiantes llamada Simple CTF. En esta máquina hay que conseguir dos banderas para completarla. Vamos allá.&#xA;Enumeración El primer paso que hay que dar en toda prueba de penetración es el de enumeración.</description>
     </item>
-    
     <item>
       <title>Basic Pentesting [TryHackMe]</title>
       <link>https://k3ssdev.github.io/posts/basic-pentesting/</link>
       <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://k3ssdev.github.io/posts/basic-pentesting/</guid>
       <description>Basic Pentesting - TryHackMe &amp;gt; Hoy traigo unos apuntes que me he hecho para una máquina fácil de TryHackMe. En ella se repasan los coneptos más básicos de reconocimiento, ataques de fuerza bruta y enumeración de servicios. A continuación dejo el enlace de THM:</description>
     </item>
-    
   </channel>
 </rss>
